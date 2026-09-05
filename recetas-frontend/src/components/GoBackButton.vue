@@ -14,7 +14,7 @@ const props = defineProps({
   },
 })
 const goBack = () => {
-  if(props.to){
+  if (props.to) {
     router.push(props.to)
   } else {
     router.go(-1)
@@ -24,8 +24,8 @@ const goBack = () => {
 
 <template>
   <button
-    @click = "goBack"
-    class="inline-flex items-center justify-center px-4 py-2 bg-white border border-green-800 rounded-md font-semibold text-xs text-green-800 hover:text-white uppercase tracking-widest  hover:bg-green-800 0 focus:outline-none  disabled:opacity-25 transition ease-in-out duration-150"
+    @click="goBack"
+    class="inline-flex items-center justify-center px-6 py-2.5 bg-transparent border-2 border-verde rounded-calido font-principal font-semibold text-sm text-verde hover:bg-verde hover:text-crema focus:outline-none disabled:opacity-25 transition ease-in-out duration-150"
   >
     <slot />
   </button>

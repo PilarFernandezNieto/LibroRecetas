@@ -116,8 +116,8 @@ const handleSubmit = () => {
 <template>
   <div class="py-12">
     <div class="w-[90%] lg:w-full max-w-7xl mx-auto sm:px-6 lg:px-8">
-      <div class="bg-amber-50 overflow-hidden shadow-sm sm:rounded-md py-4 px-4 md:px-8">
-        <div class="bg-white shadow-sm p-4 rounded-md">
+      <div class="bg-amber-50 overflow-hidden shadow-xs sm:rounded-md py-4 px-4 md:px-8">
+        <div class="bg-white shadow-xs p-4 rounded-md">
           <form @submit.prevent="handleSubmit">
             <div>
               <InputLabel for="nombre" value="Nombre" />
@@ -175,7 +175,7 @@ const handleSubmit = () => {
                 <select
                   v-model="form.categoria_id"
                   id="categoria"
-                  class="mt-2 w-full border-gray-300 focus:border-green-800 focus:ring-green-800 rounded-md shadow-sm"
+                  class="mt-2 w-full border-gray-300 focus:border-green-800 focus:ring-green-800 rounded-md shadow-xs"
                 >
                   <option value="">-------------</option>
                   <option
@@ -193,7 +193,7 @@ const handleSubmit = () => {
                 <select
                   v-model="form.dificultad_id"
                   id="dificultades"
-                  class="mt-2 w-full border-gray-300 focus:border-green-800 focus:ring-green-800 rounded-md shadow-sm"
+                  class="mt-2 w-full border-gray-300 focus:border-green-800 focus:ring-green-800 rounded-md shadow-xs"
                 >
                   <option value="">-------------</option>
                   <option
@@ -230,7 +230,7 @@ const handleSubmit = () => {
                 ref="selectRef"
                 name="ingredientes"
                 id="ingredientes"
-                class="mt-2 w-full border-gray-300 focus:border-green-800 focus:ring-green-800 rounded-md shadow-sm"
+                class="mt-2 w-full border-gray-300 focus:border-green-800 focus:ring-green-800 rounded-md shadow-xs"
                 @change="handleIngredientChange"
               >
                 <option selected>-------------</option>

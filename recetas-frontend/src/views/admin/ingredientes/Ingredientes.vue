@@ -40,7 +40,7 @@ const ingredientesFiltrados = computed(() => {
 
     <div class="py-12">
       <div class="w-[90%] lg:w-full max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-amber-50 overflow-hidden shadow-sm sm:rounded-md py-4 px-4 md:px-8">
+        <div class="bg-amber-50 overflow-hidden shadow-xs sm:rounded-md py-4 px-4 md:px-8">
           <template v-if="ingredienteStore.loading">
             <div class="flex justify-center mb-8">
               <fwb-spinner size="10" color="green" />
@@ -52,7 +52,7 @@ const ingredientesFiltrados = computed(() => {
               <input
                 id="buscar"
                 type="text"
-                class="w-full p-2 border border-green-800 rounded-l-md focus:outline-none focus:border-green-800 focus:ring-green-800 placeholder-gray-400"
+                class="w-full p-2 border border-green-800 rounded-l-md focus:outline-hidden focus:border-green-800 focus:ring-green-800 placeholder-gray-400"
                 placeholder="Buscar ingrediente"
                 v-model="buscar"
               />

@@ -24,7 +24,7 @@ const handleResendEmailVerification = async () => await resendEmailVerification(
     </div>
 
     <div
-      class="mb-4 font-medium text-sm text-green-700 bg-green-100 px-4 py-2 rounded"
+      class="mb-4 font-medium text-sm text-green-700 bg-green-100 px-4 py-2 rounded-sm"
       v-if="status"
     >
       Un nuevo enlace de verificación ha sido enviado a la dirección de correo electrónico que

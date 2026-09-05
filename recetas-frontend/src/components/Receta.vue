@@ -69,7 +69,7 @@ const showAlert = (id) => {
     </div>
 
     <div class="flex flex-col gap-4 w-full">
-      <div v-if="getImagen(receta.imagen)" class="w-full aspect-[4/3] overflow-hidden rounded-md">
+      <div v-if="getImagen(receta.imagen)" class="w-full aspect-4/3 overflow-hidden rounded-md">
         <img
           :src="getImagen(receta.imagen)"
           :alt="receta.nombre"

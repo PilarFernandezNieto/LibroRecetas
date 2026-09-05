@@ -2,24 +2,33 @@
 const props = defineProps({
   modelValue: String,
 })
-const emit = defineEmits(['update:modelValue']) // Para emitir el cambio de valor al padre
+const emit = defineEmits(['update:modelValue'])
 
-// Cuando el valor cambie, emitimos el nuevo valor al componente padre
 const onInput = (event) => {
   emit('update:modelValue', event.target.value)
 }
 </script>
 <template>
-  <div class="w-72 mx-auto flex justify-center py-5">
+  <form
+    role="search"
+    aria-label="Buscar recetas"
+    class="w-full max-w-xl mx-auto flex items-center gap-2 bg-antracita rounded-calido py-2 pl-5 pr-2 my-2 shadow-lg shadow-antracita/20"
+    @submit.prevent
+  >
+    <i class="fa-solid fa-magnifying-glass text-crema/70 text-sm"></i>
     <input
-      type="text"
-      class="w-full p-2 border border-green-900 rounded-l-md focus:outline-none focus:ring-green-900 placeholder-gray-500"
-      placeholder="Buscar"
+      type="search"
+      class="w-full border-none outline-none bg-transparent flex-1 py-2.5 text-crema placeholder-crema/50 font-principal text-sm focus:ring-0"
+      placeholder="Buscar recetas, ingredientes…"
+      aria-label="Buscar recetas, ingredientes"
       :value="modelValue"
       @input="onInput"
     />
-    <i
-      class="fa-solid fa-magnifying-glass bg-green-900 hover:bg-green-950 text-white p-3 rounded-r-md border border-green-900"
-    ></i>
-  </div>
+    <button
+      type="submit"
+      class="bg-verde-200 text-verde-900 border-none rounded-calido px-6 py-2.5 text-sm font-principal font-semibold cursor-pointer shrink-0 hover:bg-crema transition-colors"
+    >
+      Buscar
+    </button>
+  </form>
 </template>

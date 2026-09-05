@@ -20,13 +20,13 @@ const showingNavigationDropdown = ref(false)
 
 <!-- PARA TODAS LA VISTAS QUE NO NECESITAN LOGIN -->
 <template>
-  <div class="min-h-screen sm:pt-0">
+  <div class="min-h-screen sm:pt-0 bg-crema selection:bg-verde-200 selection:text-antracita">
     <!-- Navegación principal -->
-    <nav class="shadow bg-amber-50 text-white">
+    <nav class="bg-papel border-b border-antracita/10">
       <div class="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8">
         <div class="flex justify-between">
           <!-- Logo -->
-          <div class="flex items-center flex-shrink-0">
+          <div class="flex items-center shrink-0">
             <RouterLink :to="{ name: 'home' }">
               <ApplicationLogo class="block w-48" />
             </RouterLink>
@@ -55,7 +55,7 @@ const showingNavigationDropdown = ref(false)
                     <span class="inline-flex rounded-md">
                       <button
                         type="button"
-                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-principal font-medium rounded-calido text-verde-900 bg-crema hover:bg-verde hover:text-crema focus:outline-none transition ease-in-out duration-150"
                       >
                         {{ user?.name }}
 
@@ -90,7 +90,7 @@ const showingNavigationDropdown = ref(false)
           <div class="-mr-2 flex items-center sm:hidden">
             <button
               @click="showingNavigationDropdown = !showingNavigationDropdown"
-              class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-green-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-green-800 transition duration-150 ease-in-out"
+              class="inline-flex items-center justify-center p-2 rounded-calido text-verde-900/60 hover:text-verde hover:bg-papel focus:outline-none focus:bg-papel focus:text-verde transition duration-150 ease-in-out"
             >
               <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                 <path
@@ -166,11 +166,7 @@ const showingNavigationDropdown = ref(false)
     </nav>
 
     <main>
-      <!-- Page Heading -->
-      <div
-        class="bg-banner-principal bg-cover bg-center bg-no-repeat h-64 sm:h-80 md:h-96 lg:h-[680px]"
-      ></div>
-      <header  v-if="$slots.header">
+      <header v-if="$slots.header" class="font-titulares text-verde-900 bg-crema">
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <slot name="header" />
         </div>
@@ -181,7 +177,7 @@ const showingNavigationDropdown = ref(false)
         <slot />
       </div>
     </main>
-    <div class="w-full py-8 sm:px-6 lg:px-8 overflow-hidden bg-amber-50">
+    <div class="w-full py-10 sm:px-6 lg:px-8 overflow-hidden bg-papel border-t border-antracita/10">
       <Footer />
     </div>
   </div>

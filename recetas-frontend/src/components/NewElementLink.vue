@@ -12,7 +12,7 @@ const props = defineProps({
 <template>
   <RouterLink
     :to="to"
-    class="inline-flex items-center justify-center px-4 py-2 bg-green-800 border border-transparent rounded-md font-semibold text-sm text-white tracking-widest hover:bg-green-950 focus:bg-green-900 active:bg-green-950 focus:outline-none transition ease-in-out duration-150"
+    class="inline-flex items-center justify-center px-5 py-2.5 bg-verde border border-transparent rounded-calido font-principal font-semibold text-sm text-crema hover:bg-verde-900 focus:bg-verde-800 active:bg-verde-900 focus:outline-none transition ease-in-out duration-150"
   >
     <slot />
   </RouterLink>

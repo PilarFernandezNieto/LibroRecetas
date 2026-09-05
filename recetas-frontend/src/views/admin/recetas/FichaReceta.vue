@@ -35,7 +35,7 @@ const safeInstrucciones = computed(() =>
     </template>
     <div class="py-12">
       <div class="w-[90%] lg:w-full max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-amber-50 overflow-hidden shadow-sm sm:rounded-md px-4 py-4 md:px-8">
+        <div class="bg-amber-50 overflow-hidden shadow-xs sm:rounded-md px-4 py-4 md:px-8">
           <template v-if="recetaStore.loading">
             <div class="flex justify-center mb-8">
               <fwb-spinner size="10" color="green" />
@@ -63,7 +63,7 @@ const safeInstrucciones = computed(() =>
               </div>
 
             </div>
-            <div v-if="getImagen(recetaStore.receta.imagen)" class="w-full aspect-[4/3] overflow-hidden rounded">
+            <div v-if="getImagen(recetaStore.receta.imagen)" class="w-full aspect-4/3 overflow-hidden rounded-sm">
               <img
                 :src="getImagen(recetaStore.receta.imagen)"
                 :alt="recetaStore.receta.nombre"

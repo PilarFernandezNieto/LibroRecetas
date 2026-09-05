@@ -1,28 +1,74 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Outfit:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
-/* @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Yeseva+One&family=Work+Sans:ital,wght@0,300..700;1,300..700&display=swap')
+layer(base);
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
+@plugin '@tailwindcss/forms';
+@plugin 'flowbite/plugin';
+
+@source '../../node_modules/flowbite-vue/**/*.{js,jsx,ts,tsx,vue}';
+@source '../../node_modules/flowbite/**/*.{js,jsx,ts,tsx}';
+
+@custom-variant dark (@media (prefers-color-scheme: dark));
+
+@theme {
+  --font-titulares: 'Yeseva One', serif;
+  --font-principal: 'Work Sans', sans-serif;
+
+  --color-antracita: #211f1b;
+  --color-antracita-800: #2b2823;
+  --color-crema: #f3ead9;
+  --color-papel: #ecdfc3;
+  --color-verde: #4a654f;
+  --color-verde-200: #c9e7cc;
+  --color-verde-700: #3d5542;
+  --color-verde-800: #354a3a;
+  --color-verde-900: #293a2e;
+  --color-marron: #8a5a34;
+  --color-marron-600: #795038;
+  --color-marron-700: #5c3d24;
+
+  --radius-suave: 14px;
+  --radius-calido: 18px;
+
+  --width-contenedor-sm: 50%;
+
+  --background-image-fondo-fruta: url('/img/fondo_fruta_vegetales.jpg');
+  --background-image-banner-principal: url('/img/banner.png');
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
 @layer base {
-  html {
-    font-family: 'Outfit', serif;
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
   }
 }
 
-.cinzel-regular {
-  font-family: 'Cinzel', serif;
-  font-optical-sizing: auto;
+@layer base {
+  html {
+    font-family: 'Work Sans', sans-serif;
+  }
+}
+
+.titulares-regular {
+  font-family: 'Yeseva One', serif;
   font-weight: 400;
   font-style: normal;
 }
 
-.urbanist-regular {
-  font-family: 'Outfit', serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
+.principal-regular {
+  font-family: 'Work Sans', sans-serif;
 }
 
 ol {
@@ -37,18 +83,45 @@ ul {
   list-style-type: disc;
   padding-left: 1.5rem;
 }
+
 .fondo-base {
-  background-color: #fef3c7;
-  background-image: url("data:image/svg+xml,%3Csvg width='42' height='44' viewBox='0 0 42 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='Page-1' fill='none' fill-rule='evenodd'%3E%3Cg id='brick-wall' fill='%23ffc107' fill-opacity='0.4'%3E%3Cpath d='M0 0h42v44H0V0zm1 1h40v20H1V1zM0 23h20v20H0V23zm22 0h20v20H22V23z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-color: #faf6ec;
 }
 .instrucciones a {
-  color: #166534;
+  color: #4a654f;
   transition: all 300ms ease;
 }
 .instrucciones a:hover {
-  color: #14532d;
+  color: #293a2e;
   font-weight: 600;
 }
 .instrucciones p {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.instrucciones ol {
+  list-style: none;
+  counter-reset: paso;
+  padding-left: 0;
+}
+.instrucciones ol > li {
+  counter-increment: paso;
+  position: relative;
+  padding-left: 46px;
+  margin-bottom: 1.1rem;
+}
+.instrucciones ol > li::before {
+  content: counter(paso);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #c9e7cc;
+  color: #211f1b;
+  font-weight: 600;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

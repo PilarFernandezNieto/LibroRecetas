@@ -27,8 +27,8 @@ const handleCategoria = async () => {
     </template>
     <div class="py-12">
       <div class="w-[90%] lg:w-full max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-amber-50 overflow-hidden shadow-sm sm:rounded-md py-4 px-4 md:px-8">
-          <div class="bg-white shadow-sm p-4 rounded-md w-full lg:w-2/6 mx-auto">
+        <div class="bg-amber-50 overflow-hidden shadow-xs sm:rounded-md py-4 px-4 md:px-8">
+          <div class="bg-white shadow-xs p-4 rounded-md w-full lg:w-2/6 mx-auto">
             <form @submit.prevent="handleCategoria()">
               <div>
                 <InputLabel for="nombre" value="Nombre" />
