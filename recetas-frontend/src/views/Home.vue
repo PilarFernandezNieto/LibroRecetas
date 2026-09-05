@@ -45,30 +45,41 @@ const getRecetasIndex = async (page = 1, search = '') => {
 
 <template>
   <GuestLayout>
-    <div class="relative flex flex-col min-h-screen bg-crema selection:bg-verde-200 selection:text-antracita">
+    <div
+      class="relative flex flex-col min-h-screen bg-crema selection:bg-verde-200 selection:text-antracita"
+    >
       <!-- HERO -->
       <section class="w-full -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div class="max-w-7xl mx-auto flex flex-wrap gap-10 md:gap-14 items-center">
-          <div class="flex-1 min-w-70 relative flex items-center justify-center min-h-70 md:min-h-95">
+          <div
+            class="flex-1 min-w-70 relative flex items-center justify-center min-h-70 md:min-h-95"
+          >
             <div
               class="absolute w-[86%] h-[80%] bg-papel"
               style="transform: rotate(-4deg) translate(-10px, 10px)"
             ></div>
-            <div class="relative w-[84%] aspect-4/3 shadow-xl overflow-hidden" style="transform: rotate(2deg)">
-              <img src="/img/banner.png" alt="Mesa de recetas de temporada" class="w-full h-full object-cover" />
+            <div
+              class="relative w-[84%] aspect-4/3 shadow-xl overflow-hidden"
+              style="transform: rotate(2deg)"
+            >
+              <img
+                src="/img/banner.png"
+                alt="Mesa de recetas de temporada"
+                class="w-full h-full object-cover"
+              />
             </div>
           </div>
           <div class="flex-1 min-w-70 max-w-xl">
             <span
               class="inline-block text-verde font-principal font-semibold text-sm tracking-widest uppercase mb-4"
-              >Recetario digital editorial</span
+              >Recetario</span
             >
             <h1 class="font-titulares text-4xl md:text-5xl leading-tight text-verde-900 mb-5">
-              Recetas con alma, hechas para compartir
+              Recetas para compartir
             </h1>
             <p class="text-verde-900/80 font-principal text-lg mb-8 max-w-md">
-              Una colección de platos de siempre, contados con calma: ingredientes honestos, pasos
-              claros y fotografías que huelen a casa.
+              Una colección de platos con ingredientes honestos, pasos claros y fotografías que
+              huelen a casa.
             </p>
             <Buscador v-model="buscar" />
           </div>
