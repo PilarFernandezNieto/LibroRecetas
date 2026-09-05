@@ -12,7 +12,7 @@ const onInput = (event) => {
   <form
     role="search"
     aria-label="Buscar recetas"
-    class="w-full max-w-xl mx-auto flex items-center gap-2 border border-antracita rounded-sm pl-5 my-2 shadow-lg shadow-antracita/20"
+    class="w-full max-w-xl mx-auto flex items-center gap-2 border border-antracita/30 rounded-sm pl-5 my-2 shadow-lg shadow-antracita/20"
     @submit.prevent
   >
     <i class="fa-solid fa-magnifying-glass text-crema/70 text-sm"></i>
@@ -26,7 +26,7 @@ const onInput = (event) => {
     />
     <button
       type="submit"
-      class="bg-verde-900 text-crema border border-transparent rounded-tr-sm rounded-br-sm px-6 py-2.5 text-sm font-principal font-semibold cursor-pointer shrink-0 hover:text-verde-900 hover:bg-transparent hover:border-l-verde-900 transition-colors"
+      class="bg-verde-900 text-crema border border-transparent rounded-tr-sm rounded-br-sm px-6 py-2.5 text-sm font-principal font-semibold cursor-pointer shrink-0 hover:text-verde-900 hover:bg-transparent hover:border-l-verde-900 transition-all ease-in duration-300"
     >
       Buscar
     </button>
