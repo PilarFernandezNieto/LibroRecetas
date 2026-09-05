@@ -33,7 +33,10 @@ const getRecetasIndex = async (page = 1, search = '') => {
     const { data } = await axios.get(`/api/recetas?page=${page}&buscar=${search}`)
     recetas.value = data
   } catch (error) {
-    toastStore.addToast({ type: 'error', message: error?.response?.data?.message ?? 'Error al cargar las recetas' })
+    toastStore.addToast({
+      type: 'error',
+      message: error?.response?.data?.message ?? 'Error al cargar las recetas',
+    })
   } finally {
     loading.value = false
   }
@@ -42,7 +45,7 @@ const getRecetasIndex = async (page = 1, search = '') => {
 
 <template>
   <GuestLayout>
-    <div class="relative flex flex-col min-h-screen bg-crema">
+    <div class="relative flex flex-col min-h-screen bg-crema selection:bg-verde-200 selection:text-antracita">
       <!-- HERO -->
       <section class="w-full -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div class="max-w-7xl mx-auto flex flex-wrap gap-10 md:gap-14 items-center">

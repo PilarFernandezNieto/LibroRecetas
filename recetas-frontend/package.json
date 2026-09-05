@@ -2,6 +2,7 @@
   "name": "breeze-api-vue",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite --force",
     "build": "vite build",
@@ -23,10 +24,10 @@
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.3",
-    "@tailwindcss/postcss": "^4.3.3",
-    "@vitejs/plugin-vue": "^4.2.3",
+    "@tailwindcss/vite": "^4.3.3",
+    "@vitejs/plugin-vue": "^5.2.4",
     "postcss": "^8.4.24",
     "tailwindcss": "^4.3.3",
-    "vite": "^4.3.9"
+    "vite": "^5.4.21"
   }
 }
