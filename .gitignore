@@ -1,0 +1,34 @@
+# ===== Frontend (Vue 3 + Vite) =====
+recetas-frontend/node_modules/
+recetas-frontend/dist/
+recetas-frontend/.env
+recetas-frontend/.env.local
+recetas-frontend/.env.*.local
+recetas-frontend/*.log
+
+# ===== Backend (Laravel) =====
+recetas-backend/vendor/
+recetas-backend/node_modules/
+recetas-backend/.env
+recetas-backend/.env.backup
+recetas-backend/storage/*.key
+recetas-backend/bootstrap/cache/*.php
+recetas-backend/public/storage
+recetas-backend/public/hot
+recetas-backend/storage/logs/*.log
+recetas-backend/storage/framework/cache/data/*
+recetas-backend/storage/framework/sessions/*
+recetas-backend/storage/framework/views/*
+
+# ===== Carpetas de la raíz (fuera de frontend/backend) =====
+/capturas/
+/diseños/
+/Imagenes/
+/recetas/
+
+# ===== General / Editor / SO =====
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
