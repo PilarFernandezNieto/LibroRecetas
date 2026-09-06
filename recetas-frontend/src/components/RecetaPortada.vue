@@ -20,36 +20,34 @@ const filtrados = computed(() => {
 </script>
 
 <template>
-  <div
-    class="flex flex-col overflow-hidden bg-papel h-full transition-transform hover:-translate-y-1 hover:shadow-lg"
+  <RouterLink
+    :to="{ name: 'ver-receta', params: { id: receta.id } }"
+    class="block relative rounded-sm overflow-hidden group"
+    style="aspect-ratio: 4/5"
   >
-    <div v-if="getImagen(receta.imagen)" class="w-full aspect-4/3 overflow-hidden">
-      <img
-        class="w-full h-full object-cover object-center"
-        :src="getImagen(receta.imagen)"
-        :alt="`Imagen de ${receta.nombre}`"
-        loading="lazy"
-      />
-    </div>
-    <div v-else class="w-full aspect-4/3 overflow-hidden bg-crema">
-      <img src="/img/no_img.png" class="w-full h-full object-cover" />
-    </div>
-    <div class="flex-1 flex flex-col px-5 py-5">
-      <span class="text-marron-700 text-xs font-principal font-semibold tracking-widest uppercase">
-        {{ receta.categoria?.nombre }}<template v-if="receta.dificultad?.nombre"> · {{ receta.dificultad.nombre }}</template>
+    <img
+      v-if="getImagen(receta.imagen)"
+      :src="getImagen(receta.imagen)"
+      :alt="`Imagen de ${receta.nombre}`"
+      loading="lazy"
+      class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+    />
+    <img
+      v-else
+      src="/img/no_img.png"
+      class="absolute inset-0 w-full h-full object-cover bg-papel"
+    />
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: linear-gradient(to top, rgba(20, 18, 15, 0.9), rgba(20, 18, 15, 0.1) 55%)"
+    ></div>
+    <div class="absolute inset-x-0 bottom-0 p-6 pointer-events-none">
+      <span class="text-[#c9d6b8] text-xs tracking-wider uppercase font-principal">
+        {{ receta.categoria?.nombre }} · {{ receta.dificultad?.nombre }}
       </span>
-      <h3 class="font-titulares text-xl text-verde-900 mt-2 mb-2 min-h-14 leading-tight">
+      <h3 class="font-titulares text-crema text-2xl mt-2 leading-tight">
         {{ receta.nombre }}
       </h3>
-      <ul class="mb-3 flex-1 text-sm text-verde-900/80 font-principal space-y-1">
-        <li v-for="(valor, clave) in filtrados" :key="clave">
-          <span v-if="valor != ''" class="font-semibold capitalize">{{ clave }}: </span>
-          <span v-if="valor > 0 || valor != ''" class="font-medium">{{ valor }}</span>
-        </li>
-      </ul>
-      <NewElementLink class="mt-2 self-start" :to="{ name: 'ver-receta', params: { id: receta.id } }"
-        >Ver receta</NewElementLink
-      >
     </div>
-  </div>
+  </RouterLink>
 </template>

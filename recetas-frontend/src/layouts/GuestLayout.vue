@@ -25,10 +25,11 @@ const showingNavigationDropdown = ref(false)
     <nav class="bg-papel border-b border-antracita/10">
       <div class="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8">
         <!-- Hamburger -->
-        <div class="-mr-2 flex items-center justify-end sm:hidden">
+
+        <div v-if="isLoggedIn" class="-mr-2 flex items-center justify-end sm:hidden">
           <button
             @click="showingNavigationDropdown = !showingNavigationDropdown"
-            class="inline-flex items-center justify-center p-2 rounded-calido text-verde-900/60 hover:text-verde hover:bg-papel focus:outline-none focus:bg-papel focus:text-verde transition duration-150 ease-in-out"
+            class="inline-flex items-center justify-center p-2 rounded-sm text-verde-900/60 hover:text-verde hover:bg-papel focus:outline-none focus:bg-papel focus:text-verde transition duration-150 ease-in-out"
           >
             <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
               <path

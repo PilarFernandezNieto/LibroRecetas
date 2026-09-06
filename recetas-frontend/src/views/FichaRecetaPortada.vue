@@ -62,43 +62,63 @@ const { getImagen } = useImagen()
             />
             <div
               class="absolute inset-0 pointer-events-none"
-              style="background: linear-gradient(to top, rgba(20, 18, 15, 0.75), rgba(20, 18, 15, 0) 45%)"
+              style="
+                background: linear-gradient(
+                  to top,
+                  rgba(20, 18, 15, 0.75),
+                  rgba(20, 18, 15, 0) 45%
+                );
+              "
             ></div>
           </div>
           <div v-else class="w-full aspect-4/5 overflow-hidden bg-papel">
             <img src="/img/no_img.png" class="w-full h-full object-cover" />
           </div>
           <div class="absolute left-6 bottom-6 flex gap-2 flex-wrap">
-            <span v-if="receta.categoria?.nombre" class="bg-crema text-antracita text-xs font-principal px-4 py-2 rounded-full">
+            <span
+              v-if="receta.categoria?.nombre"
+              class="bg-crema text-antracita text-xs font-principal px-4 py-2 rounded-sm"
+            >
               {{ receta.categoria.nombre }}
             </span>
-            <span v-if="receta.dificultad?.nombre" class="bg-verde text-crema text-xs font-principal px-4 py-2 rounded-full">
+            <span
+              v-if="receta.dificultad?.nombre"
+              class="bg-verde text-crema text-xs font-principal px-4 py-2 rounded-sm"
+            >
               Dificultad: {{ receta.dificultad.nombre }}
             </span>
           </div>
         </div>
 
         <div class="md:col-span-7">
-          <span class="text-verde font-principal font-semibold text-sm tracking-widest uppercase">Receta de la semana</span>
           <h1 class="font-titulares text-4xl md:text-5xl leading-tight text-verde-900 mt-3 mb-5">
             {{ receta.nombre }}
           </h1>
           <p class="text-lg text-verde-900/80 font-principal mb-6 max-w-lg">{{ receta.intro }}</p>
 
-          <div v-if="Object.keys(filtrados).length" class="flex gap-8 flex-wrap mb-8 pb-6 border-b border-antracita/10">
+          <div
+            v-if="Object.keys(filtrados).length"
+            class="flex gap-8 flex-wrap mb-8 pb-6 border-b border-antracita/10"
+          >
             <div v-for="(valor, clave) in filtrados" :key="clave">
-              <div v-if="valor != '' && (valor > 0 || valor != '')" class="text-xs uppercase tracking-wide text-verde-900/60 font-principal">
+              <div
+                v-if="valor != '' && (valor > 0 || valor != '')"
+                class="text-xs uppercase tracking-wide text-verde-900/60 font-principal"
+              >
                 {{ clave }}
               </div>
-              <div v-if="valor != '' && (valor > 0 || valor != '')" class="text-base font-principal text-verde-900 mt-1">
+              <div
+                v-if="valor != '' && (valor > 0 || valor != '')"
+                class="text-base font-principal text-verde-900 mt-1"
+              >
                 {{ valor }}
               </div>
             </div>
           </div>
 
-          <div class="mt-2 bg-antracita text-crema rounded-calido p-7 mb-10">
+          <div class="mt-2 bg-marron-700 text-crema rounded-sm p-7 mb-10">
             <h2 class="font-titulares text-xl mb-4">Ingredientes</h2>
-            <ul class="columns-1 sm:columns-2 gap-8 font-principal space-y-2">
+            <ul class="list-none pl-0 columns-1 sm:columns-2 gap-8 font-principal space-y-2">
               <li
                 v-for="ingrediente in receta.ingredientes"
                 :key="ingrediente.id"
@@ -112,7 +132,10 @@ const { getImagen } = useImagen()
           </div>
 
           <h2 class="font-titulares text-2xl text-verde-900 mb-4">Elaboración</h2>
-          <div class="text-base font-principal instrucciones text-verde-900/90" v-html="safeInstrucciones"></div>
+          <div
+            class="text-base font-principal instrucciones text-verde-900/90"
+            v-html="safeInstrucciones"
+          ></div>
 
           <GoBackButton class="mt-8">Atrás</GoBackButton>
         </div>

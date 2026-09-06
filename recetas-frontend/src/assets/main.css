@@ -79,10 +79,10 @@ ol {
 li {
   margin-bottom: 0.5rem;
 }
-ul {
+/* ul {
   list-style-type: disc;
   padding-left: 1.5rem;
-}
+} */
 
 .fondo-base {
   background-color: #faf6ec;

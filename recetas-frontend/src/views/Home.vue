@@ -52,14 +52,14 @@ const getRecetasIndex = async (page = 1, search = '') => {
       <section class="w-full -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div class="max-w-7xl mx-auto flex flex-wrap gap-10 md:gap-14 items-center">
           <div
-            class="flex-1 min-w-70 relative flex items-center justify-center min-h-70 md:min-h-95"
+            class="flex-1 min-w-70 relative flex items-center justify-center min-h-70 md:min-h-95 pl-8 pr-3 sm:pl-10 sm:pr-4"
           >
             <div
-              class="absolute w-[97%] h-full bg-papel"
-              style="transform: rotate(4deg) translate(-10px, 10px)"
+              class="absolute inset-0 m-auto w-[90%] h-[90%] bg-papel shadow-[0_20px_45px_rgba(0,0,0,0.6)]"
+              style="transform: rotate(4deg) translate(18px, 16px)"
             ></div>
             <div
-              class="relative w-[95%] aspect-4/3 shadow-xl overflow-hidden"
+              class="relative w-[95%] aspect-square shadow-xl overflow-hidden"
               style="transform: rotate(-2deg)"
             >
               <img
