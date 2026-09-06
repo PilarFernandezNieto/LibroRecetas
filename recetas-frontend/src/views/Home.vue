@@ -55,15 +55,15 @@ const getRecetasIndex = async (page = 1, search = '') => {
             class="flex-1 min-w-70 relative flex items-center justify-center min-h-70 md:min-h-95"
           >
             <div
-              class="absolute w-[86%] h-[80%] bg-papel"
-              style="transform: rotate(-4deg) translate(-10px, 10px)"
+              class="absolute w-[97%] h-full bg-papel"
+              style="transform: rotate(4deg) translate(-10px, 10px)"
             ></div>
             <div
-              class="relative w-[84%] aspect-4/3 shadow-xl overflow-hidden"
-              style="transform: rotate(2deg)"
+              class="relative w-[95%] aspect-4/3 shadow-xl overflow-hidden"
+              style="transform: rotate(-2deg)"
             >
               <img
-                src="/img/banner.png"
+                src="/img/platos_en_mesa.jpg"
                 alt="Mesa de recetas de temporada"
                 class="w-full h-full object-cover"
               />
