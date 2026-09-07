@@ -44,6 +44,34 @@ El frontend queda disponible en **http://localhost:3000**.
 
 ---
 
+## Build y despliegue en producción
+
+El backend está desplegado en un VPS y **sirve también el frontend**: el `dist/` generado por Vite se copia dentro de `public/` del Laravel, junto al `index.php` del backend. Al compartir dominio, no hace falta configurar CORS entre ambos. (Los datos concretos del servidor de producción están en notas privadas, no en este repo).
+
+Vite carga las variables de entorno con esta prioridad (mayor a menor): `.env.[modo].local` > `.env.local` > `.env.[modo]` > `.env`. Por eso, si `.env.local` tiene un valor puesto, **gana sobre `.env.production`** aunque hagas build de producción — hay que tenerlo en cuenta antes de compilar para desplegar.
+
+```bash
+npm run build
+```
+
+Genera `dist/index.html` + `dist/assets/*.js|css` (nombres con hash, cambian en cada build).
+
+### Subir el build al servidor
+
+1. En el servidor, por SSH, dentro de la carpeta de la app: vacía los assets del build anterior (evita acumular basura):
+   ```bash
+   ./deploy.sh pre
+   ```
+2. Por SFTP, sube el contenido de `dist/` (`index.html` + carpeta `assets/`) a la carpeta `public/` del backend en el servidor. **No** subas ni sobrescribas `index.php`, `.htaccess`, `storage` ni `img/` — son del backend.
+3. En el servidor, limpia y recachea Laravel:
+   ```bash
+   ./deploy.sh post
+   ```
+
+Ver [recetas-backend/README.md](../recetas-backend/README.md#despliegue-en-producción) para el flujo completo (incluye el caso de cambios en el backend).
+
+---
+
 ## Estructura del proyecto
 
 ```

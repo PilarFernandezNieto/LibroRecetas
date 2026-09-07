@@ -216,6 +216,39 @@ php artisan tinker                 # Consola interactiva de Laravel
 
 ---
 
+## Despliegue en producción
+
+Desplegado en un VPS (Ubuntu + Apache), sirviendo **frontend y backend desde el mismo dominio** (el `dist/` de Vite se copia dentro de `public/`, junto al `index.php` de Laravel). Al ir en el mismo origen, no hace falta CORS entre ambos.
+
+La subida de archivos se hace manualmente por SFTP (no hay git en el servidor); los comandos de mantenimiento se ejecutan por SSH usando el script [`deploy.sh`](deploy.sh) incluido en la raíz del proyecto. Los datos concretos del servidor (dominio, rutas, proveedor) están documentados aparte en notas privadas, no en este repo público.
+
+### Flujo — solo cambios de frontend
+
+```bash
+# 1. En el servidor, por SSH, dentro de la carpeta de la app: vacía los assets del build anterior
+./deploy.sh pre
+
+# 2. En local: build de producción (ver recetas-frontend/README.md)
+# 3. Sube por SFTP index.html y la carpeta assets/ a la carpeta public/ del servidor
+
+# 4. En el servidor: limpia y recachea Laravel
+./deploy.sh post
+```
+
+### Flujo — con cambios de backend
+
+```bash
+# Sube los archivos PHP modificados por SFTP (sin tocar vendor/, storage/, .env)
+# Luego, en el servidor, dentro de la carpeta de la app:
+./deploy.sh post --composer --migrate
+```
+
+`--composer` reinstala dependencias (`composer install --no-dev --optimize-autoloader`); `--migrate` corre `php artisan migrate --force`. Omite el flag correspondiente si no aplica.
+
+⚠️ No subir nunca `.env` por SFTP desde local — el del servidor tiene sus propios valores de producción (`APP_ENV=production`, `SESSION_DOMAIN`, etc.) y sobrescribirlo rompería la sesión/CORS.
+
+---
+
 ## Tecnologías
 
 | Herramienta     | Versión |

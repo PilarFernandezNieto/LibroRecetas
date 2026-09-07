@@ -26,6 +26,9 @@ recetas-backend/storage/framework/views/*
 /Imagenes/
 /recetas/
 
+# ===== Notas de despliegue privadas (dominio real, rutas de servidor) =====
+DEPLOY.md
+
 # ===== General / Editor / SO =====
 .vscode/
 .idea/
