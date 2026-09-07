@@ -36,12 +36,13 @@ const form = ref({
 
 const ingredientesSeleccionados = ref((props.receta.ingredientes || []).map((ing) => ({ ...ing })))
 const ingredienteSeleccionado = ref(null)
+const ingredienteIdElegido = ref('')
 const cantidadIngrediente = ref('')
 const unidadMedida = ref('')
 const showModal = ref(false)
 const nuevaImagen = ref(null)
-const selectRef = ref(null)
 const cantidadInputRef = ref(null)
+const errorIngredienteDuplicado = ref('')
 
 watch(showModal, async (val) => {
   if (val) {
@@ -50,13 +51,22 @@ watch(showModal, async (val) => {
   }
 })
 
-const handleIngredientChange = (event) => {
-  const selectedId = event.target.value
-  const ingrediente = ingredientesTodos.value?.find((ing) => ing.id === parseInt(selectedId))
-  if (ingrediente) {
-    ingredienteSeleccionado.value = ingrediente
-    showModal.value = true
+const handleIngredientChange = () => {
+  const ingrediente = ingredientesTodos.value?.find(
+    (ing) => ing.id === parseInt(ingredienteIdElegido.value),
+  )
+  if (!ingrediente) return
+
+  const yaSeleccionado = ingredientesSeleccionados.value.some((ing) => ing.id === ingrediente.id)
+  if (yaSeleccionado) {
+    errorIngredienteDuplicado.value = `${ingrediente.nombre} ya está en la lista de ingredientes.`
+    ingredienteIdElegido.value = ''
+    return
   }
+
+  errorIngredienteDuplicado.value = ''
+  ingredienteSeleccionado.value = ingrediente
+  showModal.value = true
 }
 
 const eliminarIngrediente = (index) => ingredientesSeleccionados.value.splice(index, 1)
@@ -66,7 +76,7 @@ const closeModal = () => {
   cantidadIngrediente.value = ''
   unidadMedida.value = ''
   ingredienteSeleccionado.value = null
-  if (selectRef.value) selectRef.value.value = ''
+  ingredienteIdElegido.value = ''
 }
 
 const handleCantidadChange = () => {
@@ -166,7 +176,7 @@ const handleSubmit = () => {
                 <select
                   v-model="form.categoria_id"
                   id="categoria"
-                  class="mt-2 w-full bg-crema border-papel focus:border-verde focus:ring-verde rounded-suave shadow-sm"
+                  class="mt-2 w-full bg-crema border-papel focus:border-verde focus:ring-verde rounded-sm shadow-sm"
                 >
                   <option value="">-------------</option>
                   <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
@@ -180,7 +190,7 @@ const handleSubmit = () => {
                 <select
                   v-model="form.dificultad_id"
                   id="dificultades"
-                  class="mt-2 w-full bg-crema border-papel focus:border-verde focus:ring-verde rounded-suave shadow-sm"
+                  class="mt-2 w-full bg-crema border-papel focus:border-verde focus:ring-verde rounded-sm shadow-sm"
                 >
                   <option value="">-------------</option>
                   <option
@@ -198,7 +208,7 @@ const handleSubmit = () => {
             <div class="my-8">
               <label
                 for="imagen"
-                class="cursor-pointer inline-flex bg-verde text-crema py-2 px-4 rounded-suave hover:bg-verde-800 focus:ring-2 focus:ring-verde text-sm font-principal"
+                class="cursor-pointer inline-flex bg-verde text-crema py-2 px-4 rounded-sm hover:bg-verde-800 focus:ring-2 focus:ring-verde text-sm font-principal"
               >
                 Subir imagen
               </label>
@@ -207,19 +217,19 @@ const handleSubmit = () => {
             </div>
 
             <div v-if="imagenActual" class="mb-4">
-              <img :src="imagenActual" alt="imagen actual" class="w-40 rounded-suave" />
+              <img :src="imagenActual" alt="imagen actual" class="w-40 rounded-sm" />
             </div>
 
             <div class="mt-4 md:mt-0">
               <InputLabel for="ingredientes" value="Ingredientes" />
               <select
-                ref="selectRef"
+                v-model="ingredienteIdElegido"
                 name="ingredientes"
                 id="ingredientes"
-                class="mt-2 w-full bg-crema border-papel focus:border-verde focus:ring-verde rounded-suave shadow-sm"
+                class="mt-2 w-full bg-crema border-papel focus:border-verde focus:ring-verde rounded-sm shadow-sm"
                 @change="handleIngredientChange"
               >
-                <option selected>-------------</option>
+                <option value="">-------------</option>
                 <option
                   v-for="ingrediente in ingredientesTodos"
                   :key="ingrediente.id"
@@ -228,16 +238,19 @@ const handleSubmit = () => {
                   {{ ingrediente.nombre }}
                 </option>
               </select>
-              <InputError class="mt-2" :message="errors.ingredientes?.[0]" />
+              <InputError
+                class="mt-2"
+                :message="errorIngredienteDuplicado || errors.ingredientes?.[0]"
+              />
             </div>
 
-            <div class="mt-4 p-4 border border-verde rounded-suave">
+            <div class="mt-4 p-4 border border-verde rounded-sm">
               <InputLabel class="font-medium">Ingredientes seleccionados:</InputLabel>
               <ul class="pl-0 space-y-2 mt-2">
                 <li
                   v-for="(ingrediente, index) in ingredientesSeleccionados"
                   :key="ingrediente.id"
-                  class="bg-papel p-2 rounded-suave flex justify-between items-center font-principal text-sm text-verde-900"
+                  class="bg-papel p-2 rounded-sm flex justify-between items-center font-principal text-sm text-verde-900"
                 >
                   <span
                     >{{ ingrediente.nombre }} - {{ ingrediente.cantidad }}
@@ -246,7 +259,7 @@ const handleSubmit = () => {
                   <button
                     type="button"
                     @click="eliminarIngrediente(index)"
-                    class="ml-4 bg-red-600 hover:bg-red-700 text-white rounded-suave px-3 py-1 font-bold"
+                    class="ml-4 bg-red-600 hover:bg-red-700 text-white rounded-sm px-3 py-1 font-bold"
                   >
                     <i class="fa-solid fa-xmark text-white"></i>
                   </button>
@@ -260,14 +273,15 @@ const handleSubmit = () => {
               <InputError class="mt-2" :message="errors.instrucciones?.[0]" />
             </div>
 
-            <PrimaryButton
-              class="w-full mt-4"
-              :class="{ 'opacity-25': processing }"
-              :disabled="processing"
-              >{{ textoBoton }}</PrimaryButton
-            >
+            <div class="mt-6 flex justify-end gap-3">
+              <GoBackButton>Atrás</GoBackButton>
+              <PrimaryButton
+                :class="{ 'opacity-25': processing }"
+                :disabled="processing"
+                >{{ textoBoton }}</PrimaryButton
+              >
+            </div>
           </form>
-          <GoBackButton class="w-full mt-2">Atrás</GoBackButton>
         </div>
       </div>
     </div>
@@ -301,7 +315,7 @@ const handleSubmit = () => {
         <div class="mt-4 flex justify-center gap-3">
           <button
             type="button"
-            class="px-4 py-2 rounded-suave border border-papel text-verde-900/70 hover:bg-papel"
+            class="px-4 py-2 rounded-sm border border-papel text-verde-900/70 hover:bg-papel"
             @click="closeModal"
           >
             Cancelar

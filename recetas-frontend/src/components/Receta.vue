@@ -30,7 +30,7 @@ const showAlert = (id) => {
     class="grid md:grid-cols-12 gap-1 lg:gap-4 items-center bg-crema p-5 border-b border-papel font-principal"
   >
     <div class="col-span-1">
-      <div class="w-12 h-12 rounded-suave overflow-hidden bg-papel">
+      <div class="w-16 h-16 rounded-sm overflow-hidden bg-papel">
         <img
           v-if="getImagen(receta.imagen)"
           :src="getImagen(receta.imagen)"
@@ -41,19 +41,18 @@ const showAlert = (id) => {
         <img v-else src="/img/no_img.png" class="w-full h-full object-cover" />
       </div>
     </div>
-    <div class="col-span-3 min-w-0">
+    <div class="col-span-4 min-w-0">
       <RouterLink
         :to="{ name: 'receta', params: { id: receta.id } }"
-        class="font-titulares text-base text-verde-900 hover:text-verde block truncate"
+        class="font-titulares text-base text-verde-900 hover:text-verde block"
         title="Ver receta"
         >{{ receta.nombre }}</RouterLink
       >
-      <p class="text-sm text-verde-900/60 truncate">{{ receta.intro }}</p>
     </div>
     <p class="col-span-2 text-verde-900/80 truncate">{{ receta.categoria?.nombre }}</p>
     <p class="col-span-2 text-verde-900/80 truncate">{{ receta.dificultad?.nombre }}</p>
     <p class="col-span-1 text-verde-900/80 truncate">{{ receta.tiempo }}</p>
-    <div class="flex justify-center gap-2 col-span-3">
+    <div class="flex justify-center gap-2 col-span-2">
       <EditButton :to="{ name: 'editar-receta', params: { id: receta.id } }"></EditButton>
       <DeleteButton @click="showAlert(receta.id)"></DeleteButton>
     </div>

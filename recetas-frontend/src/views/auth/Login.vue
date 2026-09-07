@@ -30,13 +30,26 @@ const handleLogin = async () => await login(processing, errors, form.value)
     <form @submit.prevent="handleLogin()">
       <div>
         <InputLabel for="email" value="Email" />
-        <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" autofocus autocomplete="username" />
+        <TextInput
+          id="email"
+          type="email"
+          class="mt-1 block w-full"
+          v-model="form.email"
+          autofocus
+          autocomplete="username"
+        />
         <InputError class="mt-2" :message="errors.email?.[0]" />
       </div>
 
       <div class="mt-4">
         <InputLabel for="password" value="Contraseña" />
-        <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" autocomplete="current-password" />
+        <TextInput
+          id="password"
+          type="password"
+          class="mt-1 block w-full"
+          v-model="form.password"
+          autocomplete="current-password"
+        />
         <InputError class="mt-2" :message="errors.password?.[0]" />
       </div>
 
@@ -48,16 +61,28 @@ const handleLogin = async () => await login(processing, errors, form.value)
       </div>
 
       <div class="flex flex-col md:flex-row md:justify-between items-center gap-2 my-4">
-        <RouterLink :to="{ name: 'forgot-password' }" class="underline text-sm font-principal text-verde-900/70 hover:text-verde rounded-suave focus:outline-none">
+        <RouterLink
+          :to="{ name: 'forgot-password' }"
+          class="underline text-sm font-principal text-verde-900/70 hover:text-verde rounded-sm focus:outline-none"
+        >
           ¿Has olvidado tu contraseña?
         </RouterLink>
-        <RouterLink :to="{ name: 'register' }" class="underline text-sm font-principal text-verde-900/70 hover:text-verde rounded-suave focus:outline-none">
+        <RouterLink
+          :to="{ name: 'register' }"
+          class="underline text-sm font-principal text-verde-900/70 hover:text-verde rounded-sm focus:outline-none"
+        >
           ¿Todavía no tienes cuenta?
         </RouterLink>
       </div>
 
-      <PrimaryButton class="w-full" :class="{ 'opacity-25': processing }" :disabled="processing">Inicia sesión</PrimaryButton>
+      <PrimaryButton class="w-full" :class="{ 'opacity-25': processing }" :disabled="processing"
+        >Inicia sesión</PrimaryButton
+      >
     </form>
-    <RouterLink :to="{ name: 'home' }" class="mt-4 flex justify-center text-sm font-principal text-verde-900/70 hover:text-verde">Volver</RouterLink>
+    <RouterLink
+      :to="{ name: 'home' }"
+      class="mt-4 flex justify-center text-sm font-principal text-verde-900/70 hover:text-verde"
+      >Volver</RouterLink
+    >
   </AuthLayout>
 </template>

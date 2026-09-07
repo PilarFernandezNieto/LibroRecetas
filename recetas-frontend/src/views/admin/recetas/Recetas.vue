@@ -34,22 +34,22 @@ watch(buscar, (nuevoValor) => {
           <template v-if="recetaStore.loading">
             <div class="flex justify-center mb-8"><fwb-spinner size="10" color="green" /></div>
           </template>
-          <div class="flex flex-col gap-4 lg:flex-row mb-4 justify-end">
+          <div class="flex gap-4 mb-4 justify-end">
             <div class="flex items-center justify-center">
               <input
                 type="text"
-                class="w-full p-2 bg-crema border border-verde rounded-l-suave focus:outline-none focus:border-verde focus:ring-verde placeholder-verde-900/40"
+                class="w-full p-2 bg-crema border border-verde rounded-l-sm focus:outline-none focus:border-verde focus:ring-verde placeholder-verde-900/40"
                 placeholder="Buscar receta"
                 v-model="buscar"
               />
               <i
                 v-if="buscar.trim() !== ''"
-                class="fa-solid fa-xmark cursor-pointer bg-verde hover:bg-verde-800 text-crema p-3 rounded-r-suave border border-verde"
+                class="fa-solid fa-xmark cursor-pointer bg-verde hover:bg-verde-800 text-crema p-3 rounded-r-sm border border-verde"
                 @click="limpiarBusqueda"
               ></i>
               <i
                 v-else
-                class="fa-solid fa-magnifying-glass bg-verde hover:bg-verde-800 text-crema p-3 rounded-r-suave border border-verde"
+                class="fa-solid fa-magnifying-glass bg-verde hover:bg-verde-800 text-crema p-3 rounded-r-sm border border-verde"
               ></i>
             </div>
             <NewElementLink :to="{ name: 'nueva-receta' }">Nueva receta</NewElementLink>
@@ -57,9 +57,12 @@ watch(buscar, (nuevoValor) => {
           <div
             class="grid md:grid-cols-12 gap-1 lg:gap-4 px-2 pb-2 border-b border-papel text-xs uppercase tracking-wide text-verde-900/50 font-principal"
           >
-            <span class="col-span-1"></span><span class="col-span-3">Receta</span
-            ><span class="col-span-2">Categoría</span><span class="col-span-2">Dificultad</span
-            ><span class="col-span-1">Tiempo</span><span class="col-span-3"></span>
+            <span class="col-span-1"></span>
+            <span class="col-span-4">Receta</span>
+            <span class="col-span-2">Categoría</span>
+            <span class="col-span-2">Dificultad</span>
+            <span class="col-span-1">Tiempo</span>
+            <span class="col-span-2"></span>
           </div>
           <Receta v-for="receta in recetaStore.recetas.data" :key="receta.id" :receta="receta" />
         </div>

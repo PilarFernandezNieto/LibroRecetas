@@ -44,10 +44,10 @@ const showingNavigationDropdown = ref(false)
             <div class="ml-3 relative">
               <Dropdown align="right" width="48">
                 <template #trigger>
-                  <span class="inline-flex rounded-suave">
+                  <span class="inline-flex rounded-sm">
                     <button
                       type="button"
-                      class="inline-flex items-center px-3 py-2 border border-transparent text-base leading-4 font-medium rounded-suave text-verde-900/70 bg-crema hover:text-verde focus:outline-none transition ease-in-out duration-150"
+                      class="inline-flex items-center px-3 py-2 border border-transparent text-base leading-4 font-medium rounded-sm text-verde-900/70 bg-crema hover:text-verde focus:outline-none transition ease-in-out duration-150"
                     >
                       {{ user?.name }}
                       <svg
@@ -75,7 +75,7 @@ const showingNavigationDropdown = ref(false)
           <div class="-mr-2 flex items-center sm:hidden">
             <button
               @click="showingNavigationDropdown = !showingNavigationDropdown"
-              class="inline-flex items-center justify-center p-2 rounded-suave text-verde-900/50 hover:text-verde hover:bg-papel focus:outline-none focus:bg-papel focus:text-verde transition duration-150 ease-in-out"
+              class="inline-flex items-center justify-center p-2 rounded-sm text-verde-900/50 hover:text-verde hover:bg-papel focus:outline-none focus:bg-papel focus:text-verde transition duration-150 ease-in-out"
             >
               <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                 <path

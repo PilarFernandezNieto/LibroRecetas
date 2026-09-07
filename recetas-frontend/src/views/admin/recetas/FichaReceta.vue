@@ -84,7 +84,7 @@ const safeInstrucciones = computed(() => DOMPurify.sanitize(recetaStore.receta.i
               Instrucciones
             </h3>
             <div
-              class="my-4 text-lg bg-crema border border-papel p-4 rounded-suave instrucciones"
+              class="my-4 text-lg bg-crema border border-papel p-4 rounded-sm instrucciones"
               v-html="safeInstrucciones"
             ></div>
           </div>

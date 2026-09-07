@@ -54,7 +54,7 @@ const handleSubmit = () => {
             <div class="my-6">
               <label
                 for="imagen"
-                class="cursor-pointer inline-flex bg-verde text-crema py-2 px-4 rounded-suave hover:bg-verde-800 focus:ring-2 focus:ring-verde text-sm font-principal"
+                class="cursor-pointer inline-flex bg-verde text-crema py-2 px-4 rounded-sm hover:bg-verde-800 focus:ring-2 focus:ring-verde text-sm font-principal"
               >
                 Subir imagen
               </label>
@@ -66,7 +66,7 @@ const handleSubmit = () => {
               <img
                 :src="getImagen(ingrediente.imagen)"
                 alt="imagen actual"
-                class="w-40 rounded-suave"
+                class="w-40 rounded-sm"
               />
             </div>
 
@@ -75,19 +75,20 @@ const handleSubmit = () => {
               <textarea
                 id="descripcion"
                 v-model="form.descripcion"
-                class="mt-2 w-full min-h-28 p-2 bg-crema border border-papel focus:border-verde focus:ring-verde shadow-sm rounded-suave"
+                class="mt-2 w-full min-h-28 p-2 bg-crema border border-papel focus:border-verde focus:ring-verde shadow-sm rounded-sm"
               ></textarea>
               <InputError class="mt-2" :message="errors.descripcion?.[0]" />
             </div>
 
-            <PrimaryButton
-              class="w-full mt-4"
-              :class="{ 'opacity-25': processing }"
-              :disabled="processing"
-              >{{ textoBoton }}</PrimaryButton
-            >
+            <div class="mt-6 flex justify-end gap-3">
+              <GoBackButton>Atrás</GoBackButton>
+              <PrimaryButton
+                :class="{ 'opacity-25': processing }"
+                :disabled="processing"
+                >{{ textoBoton }}</PrimaryButton
+              >
+            </div>
           </form>
-          <GoBackButton class="w-full mt-2">Atrás</GoBackButton>
         </div>
       </div>
     </div>

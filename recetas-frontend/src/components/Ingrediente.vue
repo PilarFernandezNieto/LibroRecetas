@@ -27,7 +27,7 @@ const showAlert = (id) => {
     class="grid md:grid-cols-12 gap-1 lg:gap-4 items-center bg-crema p-5 border-b border-papel font-principal"
   >
     <div class="col-span-1">
-      <div class="w-12 h-12 rounded-suave overflow-hidden bg-papel">
+      <div class="w-12 h-12 rounded-sm overflow-hidden bg-papel">
         <img
           v-if="getImagen(ingrediente.imagen)"
           :src="getImagen(ingrediente.imagen)"
