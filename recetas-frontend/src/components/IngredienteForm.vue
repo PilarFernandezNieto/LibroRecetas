@@ -13,18 +13,14 @@ const props = defineProps({
   processing: { type: Boolean, default: false },
   textoBoton: { type: String, default: 'Guardar' },
 })
-
 const emit = defineEmits(['submit'])
-
 const { getImagen } = useImagen()
 
 const form = ref({
   nombre: props.ingrediente.nombre || '',
   descripcion: props.ingrediente.descripcion || '',
 })
-
 const nuevaImagen = ref(null)
-
 const handleImageChange = (e) => {
   nuevaImagen.value = e.target.files[0]
 }
@@ -33,18 +29,15 @@ const handleSubmit = () => {
   const formData = new FormData()
   formData.append('nombre', form.value.nombre)
   formData.append('descripcion', form.value.descripcion)
-  if (nuevaImagen.value) {
-    formData.append('imagen', nuevaImagen.value)
-  }
+  if (nuevaImagen.value) formData.append('imagen', nuevaImagen.value)
   emit('submit', formData)
 }
 </script>
-
 <template>
   <div class="py-12">
     <div class="w-[90%] lg:w-contenedor-sm max-w-7xl mx-auto sm:px-6 lg:px-8">
-      <div class="bg-amber-50 overflow-hidden shadow-xs sm:rounded-md py-4 px-4 md:px-8">
-        <div class="bg-white shadow-xs p-4 rounded-md">
+      <div class="bg-papel overflow-hidden shadow-sm rounded-sm py-4 px-4 md:px-8">
+        <div class="bg-crema border border-papel shadow-sm p-6 rounded-sm">
           <form @submit.prevent="handleSubmit">
             <div>
               <InputLabel for="nombre" value="Nombre" />
@@ -58,10 +51,10 @@ const handleSubmit = () => {
               <InputError class="mt-2" :message="errors.nombre?.[0]" />
             </div>
 
-            <div class="my-8">
+            <div class="my-6">
               <label
                 for="imagen"
-                class="cursor-pointer bg-green-800 text-white py-2 px-4 rounded-md hover:bg-green-900 focus:ring-2 focus:ring-green-800"
+                class="cursor-pointer inline-flex bg-verde text-crema py-2 px-4 rounded-suave hover:bg-verde-800 focus:ring-2 focus:ring-verde text-sm font-principal"
               >
                 Subir imagen
               </label>
@@ -70,7 +63,11 @@ const handleSubmit = () => {
             </div>
 
             <div v-if="getImagen(ingrediente.imagen)" class="mb-4">
-              <img :src="getImagen(ingrediente.imagen)" alt="imagen actual" class="w-40" />
+              <img
+                :src="getImagen(ingrediente.imagen)"
+                alt="imagen actual"
+                class="w-40 rounded-suave"
+              />
             </div>
 
             <div>
@@ -78,18 +75,17 @@ const handleSubmit = () => {
               <textarea
                 id="descripcion"
                 v-model="form.descripcion"
-                class="mt-2 w-full min-h-28 p-2 bg-white border border-gray-300 focus:border-green-800 focus:ring-green-800 shadow-xs rounded-md"
+                class="mt-2 w-full min-h-28 p-2 bg-crema border border-papel focus:border-verde focus:ring-verde shadow-sm rounded-suave"
               ></textarea>
               <InputError class="mt-2" :message="errors.descripcion?.[0]" />
             </div>
 
             <PrimaryButton
-              class="w-full mt-2"
+              class="w-full mt-4"
               :class="{ 'opacity-25': processing }"
               :disabled="processing"
+              >{{ textoBoton }}</PrimaryButton
             >
-              {{ textoBoton }}
-            </PrimaryButton>
           </form>
           <GoBackButton class="w-full mt-2">Atrás</GoBackButton>
         </div>

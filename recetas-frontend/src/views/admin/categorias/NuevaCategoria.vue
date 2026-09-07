@@ -9,30 +9,27 @@ import InputError from '../../../components/InputError.vue'
 import { useCategoriaStore } from '../../../stores/categoriaStore'
 const categoriaStore = useCategoriaStore()
 
-const categoria = ref({
-  nombre: '',
-})
-
+const categoria = ref({ nombre: '' })
 const processing = ref(false)
 const errors = ref({})
 
-const handleCategoria = async () => {
+const handleCategoria = async () =>
   await categoriaStore.nuevaCategoria(processing, errors, categoria.value)
-}
 </script>
 <template>
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="font-semibold text-3xl text-gray-700 leading-tight">Nueva Categoría</h2>
+      <h2 class="font-titulares text-3xl text-verde-900 leading-tight">Nueva categoría</h2>
     </template>
     <div class="py-12">
-      <div class="w-[90%] lg:w-full max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-amber-50 overflow-hidden shadow-xs sm:rounded-md py-4 px-4 md:px-8">
-          <div class="bg-white shadow-xs p-4 rounded-md w-full lg:w-2/6 mx-auto">
+      <div class="w-contenedor-sm mx-auto sm:px-6 lg:px-8">
+        <div class="bg-papel overflow-hidden shadow-sm rounded-sm py-4 px-4 md:px-8">
+          <div
+            class="bg-crema border border-papel shadow-sm p-6 rounded-sm w-full lg:w-2/6 mx-auto"
+          >
             <form @submit.prevent="handleCategoria()">
               <div>
                 <InputLabel for="nombre" value="Nombre" />
-
                 <TextInput
                   id="nombre"
                   type="text"
@@ -43,12 +40,11 @@ const handleCategoria = async () => {
                 <InputError class="mt-2" :message="errors.nombre?.[0]" />
               </div>
               <PrimaryButton
-                class="w-full mt-2"
+                class="w-full mt-4"
                 :class="{ 'opacity-25': processing }"
                 :disabled="processing"
+                >Nueva categoría</PrimaryButton
               >
-                Nueva Categoría
-              </PrimaryButton>
             </form>
             <GoBackButton class="w-full mt-2">Atrás</GoBackButton>
           </div>

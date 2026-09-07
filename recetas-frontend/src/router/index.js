@@ -27,7 +27,8 @@ const router = createRouter({
           path: 'dashboard',
           name: 'dashboard',
           meta: { title: 'Dashboard', middleware: ['auth', 'verified', 'is_admin'] },
-          component: () => import('../views/Dashboard.vue'),
+          // component: () => import('../views/Dashboard.vue'),
+          component: () => import('@/views/admin/recetas/Recetas.vue'),
         },
         {
           path: 'ingredientes',

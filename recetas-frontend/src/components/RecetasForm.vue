@@ -34,9 +34,7 @@ const form = ref({
   instrucciones: props.receta.instrucciones || '',
 })
 
-const ingredientesSeleccionados = ref(
-  (props.receta.ingredientes || []).map((ing) => ({ ...ing }))
-)
+const ingredientesSeleccionados = ref((props.receta.ingredientes || []).map((ing) => ({ ...ing })))
 const ingredienteSeleccionado = ref(null)
 const cantidadIngrediente = ref('')
 const unidadMedida = ref('')
@@ -61,9 +59,7 @@ const handleIngredientChange = (event) => {
   }
 }
 
-const eliminarIngrediente = (index) => {
-  ingredientesSeleccionados.value.splice(index, 1)
-}
+const eliminarIngrediente = (index) => ingredientesSeleccionados.value.splice(index, 1)
 
 const closeModal = () => {
   showModal.value = false
@@ -98,17 +94,12 @@ const handleSubmit = () => {
   formData.append('categoria_id', form.value.categoria_id)
   formData.append('intro', form.value.intro)
   formData.append('instrucciones', form.value.instrucciones)
-
   ingredientesSeleccionados.value.forEach((ing, index) => {
     formData.append(`ingredientes[${index}][ingrediente_id]`, ing.id)
     formData.append(`ingredientes[${index}][cantidad]`, ing.cantidad)
     formData.append(`ingredientes[${index}][unidad]`, ing.unidad)
   })
-
-  if (nuevaImagen.value) {
-    formData.append('imagen', nuevaImagen.value)
-  }
-
+  if (nuevaImagen.value) formData.append('imagen', nuevaImagen.value)
   emit('submit', formData)
 }
 </script>
@@ -116,8 +107,8 @@ const handleSubmit = () => {
 <template>
   <div class="py-12">
     <div class="w-[90%] lg:w-full max-w-7xl mx-auto sm:px-6 lg:px-8">
-      <div class="bg-amber-50 overflow-hidden shadow-xs sm:rounded-md py-4 px-4 md:px-8">
-        <div class="bg-white shadow-xs p-4 rounded-md">
+      <div class="bg-papel overflow-hidden shadow-sm rounded-sm py-4 px-4 md:px-8">
+        <div class="bg-crema border border-papel shadow-sm p-6 rounded-sm">
           <form @submit.prevent="handleSubmit">
             <div>
               <InputLabel for="nombre" value="Nombre" />
@@ -131,13 +122,13 @@ const handleSubmit = () => {
               <InputError class="mt-2" :message="errors.nombre?.[0]" />
             </div>
 
-            <div class="mt-2">
+            <div class="mt-4">
               <InputLabel for="intro" value="Introducción" />
               <TextInput id="intro" type="text" class="mt-2 block w-full" v-model="form.intro" />
               <InputError class="mt-2" :message="errors.intro?.[0]" />
             </div>
 
-            <div class="mt-2 md:grid grid-cols-3 gap-4">
+            <div class="mt-4 md:grid grid-cols-3 gap-4">
               <div>
                 <InputLabel for="origen" value="Origen" />
                 <TextInput
@@ -148,7 +139,7 @@ const handleSubmit = () => {
                 />
                 <InputError class="mt-2" :message="errors.origen?.[0]" />
               </div>
-              <div class="mt-2 md:mt-0">
+              <div class="mt-4 md:mt-0">
                 <InputLabel for="comensales" value="Comensales" />
                 <TextInput
                   id="comensales"
@@ -157,7 +148,7 @@ const handleSubmit = () => {
                   v-model="form.comensales"
                 />
               </div>
-              <div class="mt-2 md:mt-0">
+              <div class="mt-4 md:mt-0">
                 <InputLabel for="tiempo" value="Tiempo" />
                 <TextInput
                   id="tiempo"
@@ -169,31 +160,27 @@ const handleSubmit = () => {
               </div>
             </div>
 
-            <div class="mt-2 md:grid grid-cols-2 gap-4">
-              <div class="mt-2 md:mt-0">
+            <div class="mt-4 md:grid grid-cols-2 gap-4">
+              <div class="mt-4 md:mt-0">
                 <InputLabel for="categoria" value="Categoría" />
                 <select
                   v-model="form.categoria_id"
                   id="categoria"
-                  class="mt-2 w-full border-gray-300 focus:border-green-800 focus:ring-green-800 rounded-md shadow-xs"
+                  class="mt-2 w-full bg-crema border-papel focus:border-verde focus:ring-verde rounded-suave shadow-sm"
                 >
                   <option value="">-------------</option>
-                  <option
-                    v-for="categoria in categorias"
-                    :key="categoria.id"
-                    :value="categoria.id"
-                  >
+                  <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
                     {{ categoria.nombre }}
                   </option>
                 </select>
                 <InputError class="mt-2" :message="errors.categoria_id?.[0]" />
               </div>
-              <div class="mt-2 md:mt-0">
+              <div class="mt-4 md:mt-0">
                 <InputLabel for="dificultad" value="Dificultad" />
                 <select
                   v-model="form.dificultad_id"
                   id="dificultades"
-                  class="mt-2 w-full border-gray-300 focus:border-green-800 focus:ring-green-800 rounded-md shadow-xs"
+                  class="mt-2 w-full bg-crema border-papel focus:border-verde focus:ring-verde rounded-suave shadow-sm"
                 >
                   <option value="">-------------</option>
                   <option
@@ -211,7 +198,7 @@ const handleSubmit = () => {
             <div class="my-8">
               <label
                 for="imagen"
-                class="cursor-pointer bg-green-800 text-white py-2 px-4 rounded-md hover:bg-green-900 focus:ring-2 focus:ring-green-800"
+                class="cursor-pointer inline-flex bg-verde text-crema py-2 px-4 rounded-suave hover:bg-verde-800 focus:ring-2 focus:ring-verde text-sm font-principal"
               >
                 Subir imagen
               </label>
@@ -220,17 +207,16 @@ const handleSubmit = () => {
             </div>
 
             <div v-if="imagenActual" class="mb-4">
-              <img :src="imagenActual" alt="imagen actual" class="w-40" />
+              <img :src="imagenActual" alt="imagen actual" class="w-40 rounded-suave" />
             </div>
 
-            <!-- INGREDIENTES -->
-            <div class="mt-2 md:mt-0">
+            <div class="mt-4 md:mt-0">
               <InputLabel for="ingredientes" value="Ingredientes" />
               <select
                 ref="selectRef"
                 name="ingredientes"
                 id="ingredientes"
-                class="mt-2 w-full border-gray-300 focus:border-green-800 focus:ring-green-800 rounded-md shadow-xs"
+                class="mt-2 w-full bg-crema border-papel focus:border-verde focus:ring-verde rounded-suave shadow-sm"
                 @change="handleIngredientChange"
               >
                 <option selected>-------------</option>
@@ -245,19 +231,22 @@ const handleSubmit = () => {
               <InputError class="mt-2" :message="errors.ingredientes?.[0]" />
             </div>
 
-            <div class="mt-4 p-4 border border-green-800 rounded-md">
-              <InputLabel class="font-medium">Ingredientes Seleccionados:</InputLabel>
-              <ul class="list-disc marker:text-green-800 pl-0">
+            <div class="mt-4 p-4 border border-verde rounded-suave">
+              <InputLabel class="font-medium">Ingredientes seleccionados:</InputLabel>
+              <ul class="pl-0 space-y-2 mt-2">
                 <li
                   v-for="(ingrediente, index) in ingredientesSeleccionados"
                   :key="ingrediente.id"
-                  class="mt-2 bg-amber-50 p-2 rounded-md flex justify-between items-center"
+                  class="bg-papel p-2 rounded-suave flex justify-between items-center font-principal text-sm text-verde-900"
                 >
-                  <span>{{ ingrediente.nombre }} - {{ ingrediente.cantidad }} {{ ingrediente.unidad }}</span>
+                  <span
+                    >{{ ingrediente.nombre }} - {{ ingrediente.cantidad }}
+                    {{ ingrediente.unidad }}</span
+                  >
                   <button
                     type="button"
                     @click="eliminarIngrediente(index)"
-                    class="ml-4 bg-red-600 hover:bg-red-800 text-white rounded-md px-3 py-1 font-bold"
+                    class="ml-4 bg-red-600 hover:bg-red-700 text-white rounded-suave px-3 py-1 font-bold"
                   >
                     <i class="fa-solid fa-xmark text-white"></i>
                   </button>
@@ -272,12 +261,11 @@ const handleSubmit = () => {
             </div>
 
             <PrimaryButton
-              class="w-full mt-2"
+              class="w-full mt-4"
               :class="{ 'opacity-25': processing }"
               :disabled="processing"
+              >{{ textoBoton }}</PrimaryButton
             >
-              {{ textoBoton }}
-            </PrimaryButton>
           </form>
           <GoBackButton class="w-full mt-2">Atrás</GoBackButton>
         </div>
@@ -285,39 +273,35 @@ const handleSubmit = () => {
     </div>
   </div>
 
-  <div class="fixed inset-0 bg-black opacity-50" v-if="processing"></div>
+  <div class="fixed inset-0 bg-black/50" v-if="processing"></div>
 
   <Modal :show="showModal" @close="closeModal">
     <template #default>
-      <div class="p-4">
-        <h3 class="text-xl font-semibold text-center">
+      <div class="p-6 font-principal text-verde-900">
+        <h3 class="font-titulares text-xl text-center">
           Añade la cantidad de {{ ingredienteSeleccionado?.nombre }}
         </h3>
         <div class="mt-4 flex flex-col md:flex-row items-center md:justify-center gap-4">
-          <div>
-            <TextInput
-              ref="cantidadInputRef"
-              id="cantidad"
-              type="text"
-              v-model="cantidadIngrediente"
-              placeholder="Cantidad"
-              @keyup.enter="handleCantidadChange"
-            />
-          </div>
-          <div>
-            <TextInput
-              id="unidad"
-              type="text"
-              v-model="unidadMedida"
-              placeholder="Unidad de medida"
-              @keyup.enter="handleCantidadChange"
-            />
-          </div>
+          <TextInput
+            ref="cantidadInputRef"
+            id="cantidad"
+            type="text"
+            v-model="cantidadIngrediente"
+            placeholder="Cantidad"
+            @keyup.enter="handleCantidadChange"
+          />
+          <TextInput
+            id="unidad"
+            type="text"
+            v-model="unidadMedida"
+            placeholder="Unidad de medida"
+            @keyup.enter="handleCantidadChange"
+          />
         </div>
         <div class="mt-4 flex justify-center gap-3">
           <button
             type="button"
-            class="px-4 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100"
+            class="px-4 py-2 rounded-suave border border-papel text-verde-900/70 hover:bg-papel"
             @click="closeModal"
           >
             Cancelar

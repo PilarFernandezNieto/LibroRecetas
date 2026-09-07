@@ -11,9 +11,7 @@ const recetaStore = useRecetaStore()
 const buscar = ref('')
 const debounceTimer = ref(null)
 
-onMounted(() => {
-  recetaStore.fetchRecetas()
-})
+onMounted(() => recetaStore.fetchRecetas())
 
 const limpiarBusqueda = () => {
   buscar.value = ''
@@ -21,54 +19,54 @@ const limpiarBusqueda = () => {
 
 watch(buscar, (nuevoValor) => {
   clearTimeout(debounceTimer.value)
-  debounceTimer.value = setTimeout(() => {
-    recetaStore.fetchRecetas(1, nuevoValor.trim())
-  }, 500)
+  debounceTimer.value = setTimeout(() => recetaStore.fetchRecetas(1, nuevoValor.trim()), 500)
 })
 </script>
 
 <template>
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="font-semibold text-3xl text-gray-700 leading-tight">Listado de recetas</h2>
+      <h2 class="font-titulares text-3xl text-verde-900 leading-tight">Listado de recetas</h2>
     </template>
     <div class="py-12">
       <div class="w-[90%] lg:w-full max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-amber-50 overflow-hidden shadow-xs sm:rounded-md py-4 px-4 md:px-8">
+        <div class="bg-papel overflow-hidden shadow-sm rounded-sm py-4 px-4 md:px-8">
           <template v-if="recetaStore.loading">
-            <div class="flex justify-center mb-8">
-              <fwb-spinner size="10" color="green" />
-            </div>
+            <div class="flex justify-center mb-8"><fwb-spinner size="10" color="green" /></div>
           </template>
           <div class="flex flex-col gap-4 lg:flex-row mb-4 justify-end">
             <div class="flex items-center justify-center">
               <input
                 type="text"
-                class="w-full p-2 border border-green-800 rounded-l-md focus:outline-hidden focus:border-green-800 focus:ring-green-800 placeholder-gray-500"
+                class="w-full p-2 bg-crema border border-verde rounded-l-suave focus:outline-none focus:border-verde focus:ring-verde placeholder-verde-900/40"
                 placeholder="Buscar receta"
                 v-model="buscar"
               />
-              <!-- Icono "X" para limpiar el campo de búsqueda -->
               <i
                 v-if="buscar.trim() !== ''"
-                class="fa-solid fa-xmark cursor-pointer bg-green-500 hover:bg-green-600 text-white p-3 rounded-r-md border border-green-800"
+                class="fa-solid fa-xmark cursor-pointer bg-verde hover:bg-verde-800 text-crema p-3 rounded-r-suave border border-verde"
                 @click="limpiarBusqueda"
               ></i>
               <i
                 v-else
-                class="fa-solid fa-magnifying-glass bg-green-800 hover:bg-green-800 text-white p-3 rounded-r-md border border-green-800 focus:ring-green-800"
+                class="fa-solid fa-magnifying-glass bg-verde hover:bg-verde-800 text-crema p-3 rounded-r-suave border border-verde"
               ></i>
             </div>
-            <NewElementLink :to="{ name: 'nueva-receta' }">Nueva Receta</NewElementLink>
+            <NewElementLink :to="{ name: 'nueva-receta' }">Nueva receta</NewElementLink>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Receta v-for="receta in recetaStore.recetas.data" :key="receta.id" :receta="receta" />
+          <div
+            class="grid md:grid-cols-12 gap-1 lg:gap-4 px-2 pb-2 border-b border-papel text-xs uppercase tracking-wide text-verde-900/50 font-principal"
+          >
+            <span class="col-span-1"></span><span class="col-span-3">Receta</span
+            ><span class="col-span-2">Categoría</span><span class="col-span-2">Dificultad</span
+            ><span class="col-span-1">Tiempo</span><span class="col-span-3"></span>
           </div>
+          <Receta v-for="receta in recetaStore.recetas.data" :key="receta.id" :receta="receta" />
         </div>
         <div class="mt-10 flex justify-center">
           <TailwindPagination
             :data="recetaStore.recetas"
-            :active-classes="['border-green-900', 'text-green-900', 'hover:bg-amber-50']"
+            :active-classes="['border-verde-900', 'text-verde-900', 'hover:bg-papel']"
             @pagination-change-page="recetaStore.fetchRecetas"
           />
         </div>

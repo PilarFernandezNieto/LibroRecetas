@@ -15,11 +15,7 @@ const id = route.params.id
 onMounted(async () => {
   await ingredienteStore.fetchIngrediente(id)
   const i = ingredienteStore.ingrediente
-  ingrediente.value = {
-    nombre: i.nombre,
-    descripcion: i.descripcion,
-    imagen: i.imagen,
-  }
+  ingrediente.value = { nombre: i.nombre, descripcion: i.descripcion, imagen: i.imagen }
 })
 
 const handleSubmit = async (formData) => {
@@ -27,19 +23,11 @@ const handleSubmit = async (formData) => {
   await ingredienteStore.editarIngrediente(id, processing, errors, formData)
 }
 </script>
-
 <template>
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="font-semibold text-3xl text-gray-700 leading-tight">Editar Ingrediente</h2>
+      <h2 class="font-titulares text-3xl text-verde-900 leading-tight">Editar ingrediente</h2>
     </template>
-    <IngredienteForm
-      v-if="ingrediente"
-      :ingrediente="ingrediente"
-      :errors="errors"
-      :processing="processing"
-      textoBoton="Guardar Cambios"
-      @submit="handleSubmit"
-    />
+    <IngredienteForm v-if="ingrediente" :ingrediente="ingrediente" :errors="errors" :processing="processing" textoBoton="Guardar cambios" @submit="handleSubmit" />
   </AuthenticatedLayout>
 </template>

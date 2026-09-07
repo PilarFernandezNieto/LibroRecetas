@@ -13,16 +13,13 @@ const usuarioStore = useUsuarioStore()
 const route = useRoute()
 const id = route.params.id
 
-onMounted(async () => {
-  await usuarioStore.fetchUser(id)
-})
+onMounted(async () => await usuarioStore.fetchUser(id))
 
 const processing = ref(false)
 const errors = ref({})
 
-const handleUser = async () => {
+const handleUser = async () =>
   await usuarioStore.editarUser(id, processing, errors, usuarioStore.usuario)
-}
 
 const adminChecked = computed({
   get: () => !!usuarioStore.usuario.is_admin,
@@ -34,16 +31,15 @@ const adminChecked = computed({
 <template>
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="font-semibold text-3xl text-gray-700 leading-tight">Editar usuario</h2>
+      <h2 class="font-titulares text-3xl text-verde-900 leading-tight">Editar usuario</h2>
     </template>
     <div class="py-12">
       <div class="w-[90%] lg:w-contenedor-sm md:w-3/4 mx-auto sm:px-6 lg:px-8">
-        <div class="bg-amber-50 overflow-hidden shadow-xs sm:rounded-md py-4 px-4 md:px-8">
-          <div class="bg-white shadow-xs p-4 rounded-md">
+        <div class="bg-papel overflow-hidden shadow-sm rounded-sm py-4 px-4 md:px-8">
+          <div class="bg-crema border border-papel shadow-sm p-6 rounded-sm">
             <form @submit.prevent="handleUser">
               <div class="mb-4">
                 <InputLabel for="name" value="Nombre" />
-
                 <TextInput
                   id="name"
                   type="text"
@@ -60,32 +56,19 @@ const adminChecked = computed({
                   type="email"
                   class="mt-2 block w-full"
                   v-model="usuarioStore.usuario.email"
-                  autofocus
                 />
                 <InputError class="mt-2" :message="errors.email?.[0]" />
-              </div>
-              <div class="mb-4">
-                <TextInput
-                  id="password"
-                  type="hidden"
-                  class="mt-2 block w-full"
-                  v-model="usuarioStore.usuario.password"
-                  autofocus
-                />
-                <InputError class="mt-2" :message="errors.password?.[0]" />
               </div>
               <div class="mb-4">
                 <InputLabel for="is_admin" value="Admin" />
                 <Checkbox v-model:checked="adminChecked" />
               </div>
-
               <PrimaryButton
                 class="w-full mt-2"
                 :class="{ 'opacity-25': processing }"
                 :disabled="processing"
+                >Guardar cambios</PrimaryButton
               >
-                Guardar Cambios
-              </PrimaryButton>
             </form>
             <GoBackButton class="w-full mt-2">Atrás</GoBackButton>
           </div>

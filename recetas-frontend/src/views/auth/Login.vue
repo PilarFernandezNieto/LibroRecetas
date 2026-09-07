@@ -9,95 +9,55 @@ import { useAuthStore } from '../../stores/auth'
 import { ref, watchEffect } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 
-const form = ref({
-  email: '',
-  password: '',
-  remember: false,
-})
-
+const form = ref({ email: '', password: '', remember: false })
 const processing = ref(false)
 const errors = ref({})
 const status = ref(null)
-
 const route = useRoute()
 
 watchEffect(() => {
-  if (route.query.reset && route.query.reset?.length > 0) {
-    status.value = atob(route.query?.reset)
-  } else {
-    status.value = null
-  }
+  status.value = route.query.reset && route.query.reset?.length > 0 ? atob(route.query.reset) : null
 })
 
 const { login } = useAuthStore()
-
 const handleLogin = async () => await login(processing, errors, form.value)
 </script>
 
 <template>
   <AuthLayout>
-    <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-      {{ status }}
-    </div>
-    <h1 class="font-titulares text-base text-center p-4 uppercase font-medium">Inicia sesión</h1>
+    <div v-if="status" class="mb-4 font-principal text-sm text-verde-900">{{ status }}</div>
+    <h1 class="font-titulares text-2xl text-verde-900 text-center mb-6">Inicia sesión</h1>
     <form @submit.prevent="handleLogin()">
       <div>
         <InputLabel for="email" value="Email" />
-
-        <TextInput
-          id="email"
-          type="email"
-          class="mt-1 block w-full"
-          v-model="form.email"
-          autofocus
-          autocomplete="username"
-        />
-
+        <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" autofocus autocomplete="username" />
         <InputError class="mt-2" :message="errors.email?.[0]" />
       </div>
 
       <div class="mt-4">
         <InputLabel for="password" value="Contraseña" />
-
-        <TextInput
-          id="password"
-          type="password"
-          class="mt-1 block w-full"
-          v-model="form.password"
-          autocomplete="current-password"
-        />
-
+        <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" autocomplete="current-password" />
         <InputError class="mt-2" :message="errors.password?.[0]" />
       </div>
 
       <div class="block mt-4">
-        <label class="flex items-center">
+        <label class="flex items-center gap-2">
           <Checkbox name="remember" v-model:checked="form.remember" />
-          <span class="ml-2 text-sm text-gray-600">Recordarme</span>
+          <span class="text-sm font-principal text-verde-900/70">Recordarme</span>
         </label>
       </div>
 
-      <div class="flex flex-col md:flex-row md:justify-between items-center my-4">
-        <RouterLink
-          :to="{ name: 'forgot-password' }"
-          class="underline text-sm text-gray-600 hover:text-green-800 rounded-md focus:outline-hidden"
-        >
+      <div class="flex flex-col md:flex-row md:justify-between items-center gap-2 my-4">
+        <RouterLink :to="{ name: 'forgot-password' }" class="underline text-sm font-principal text-verde-900/70 hover:text-verde rounded-suave focus:outline-none">
           ¿Has olvidado tu contraseña?
         </RouterLink>
-        <RouterLink
-          :to="{ name: 'register' }"
-          class="underline text-sm text-gray-600 hover:text-green-800 rounded-md focus:outline-hidden"
-        >
+        <RouterLink :to="{ name: 'register' }" class="underline text-sm font-principal text-verde-900/70 hover:text-verde rounded-suave focus:outline-none">
           ¿Todavía no tienes cuenta?
         </RouterLink>
       </div>
 
-      <PrimaryButton class="w-full" :class="{ 'opacity-25': processing }" :disabled="processing">
-        Inicia sesión
-      </PrimaryButton>
+      <PrimaryButton class="w-full" :class="{ 'opacity-25': processing }" :disabled="processing">Inicia sesión</PrimaryButton>
     </form>
-    <RouterLink :to="{name: 'home'}" class="mt-4 flex justify-center hover:text-green-800">Volver</RouterLink>
+    <RouterLink :to="{ name: 'home' }" class="mt-4 flex justify-center text-sm font-principal text-verde-900/70 hover:text-verde">Volver</RouterLink>
   </AuthLayout>
 </template>
-
-<style scoped></style>

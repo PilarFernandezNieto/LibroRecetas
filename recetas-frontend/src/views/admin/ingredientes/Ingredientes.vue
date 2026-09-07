@@ -11,21 +11,15 @@ import { TailwindPagination } from 'laravel-vue-pagination'
 const ingredienteStore = useIngredienteStore()
 const { data: ingredientesTodos } = useIngredientesTodos()
 
-onMounted(() => {
-  ingredienteStore.fetchIngredientes()
-})
+onMounted(() => ingredienteStore.fetchIngredientes())
 
 const buscar = ref('')
 const limpiarBusqueda = () => {
   buscar.value = ''
 }
-
 const buscando = computed(() => buscar.value.trim() !== '')
-
 const ingredientesFiltrados = computed(() => {
-  if (!buscando.value) {
-    return ingredienteStore.ingredientes.data ?? []
-  }
+  if (!buscando.value) return ingredienteStore.ingredientes.data ?? []
   return (ingredientesTodos.value ?? []).filter((ingrediente) =>
     ingrediente.nombre.toLowerCase().includes(buscar.value.toLowerCase()),
   )
@@ -35,41 +29,46 @@ const ingredientesFiltrados = computed(() => {
 <template>
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="font-semibold text-3xl text-gray-700 leading-tight">Listado de ingredientes</h2>
+      <h2 class="font-titulares text-3xl text-verde-900 leading-tight">Listado de ingredientes</h2>
     </template>
 
     <div class="py-12">
       <div class="w-[90%] lg:w-full max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-amber-50 overflow-hidden shadow-xs sm:rounded-md py-4 px-4 md:px-8">
+        <div class="bg-papel overflow-hidden shadow-sm rounded-sm py-4 px-4 md:px-8">
           <template v-if="ingredienteStore.loading">
-            <div class="flex justify-center mb-8">
-              <fwb-spinner size="10" color="green" />
-            </div>
+            <div class="flex justify-center mb-8"><fwb-spinner size="10" color="green" /></div>
           </template>
-          <div class="flex flex-col gap-4 lg:flex-row mb-4 justify-end">
-            <div class="flex items-center justify-center">
-              <label for="buscar" class="sr-only">Buscar ingrediente</label>
-              <input
-                id="buscar"
-                type="text"
-                class="w-full p-2 border border-green-800 rounded-l-md focus:outline-hidden focus:border-green-800 focus:ring-green-800 placeholder-gray-400"
-                placeholder="Buscar ingrediente"
-                v-model="buscar"
-              />
-              <!-- Icono "X" para limpiar el campo de búsqueda -->
-              <i
-                v-if="buscar.trim() !== ''"
-                class="fa-solid fa-xmark cursor-pointer bg-green-800 hover:bg-green-600 text-white p-3 rounded-r-md border border-green-800"
-                @click="limpiarBusqueda"
-              ></i>
-              <i
-                v-else
-                class="fa-solid fa-magnifying-glass bg-green-800 hover:bg-green-800 text-white p-3 rounded-r-md border border-green-800 focus:ring-green-800"
-              ></i>
+
+          <div class="rounded-sm overflow-hidden border border-papel">
+            <div class="flex gap-4 lg:flex-row mb-4 justify-end">
+              <div class="flex items-center justify-center">
+                <label for="buscar" class="sr-only">Buscar ingrediente</label>
+                <input
+                  id="buscar"
+                  type="text"
+                  class="w-full p-2 bg-crema border border-verde rounded-l-sm focus:outline-none focus:border-verde focus:ring-verde placeholder-verde-900/40"
+                  placeholder="Buscar ingrediente"
+                  v-model="buscar"
+                />
+                <i
+                  v-if="buscar.trim() !== ''"
+                  class="fa-solid fa-xmark cursor-pointer bg-verde hover:bg-verde-800 text-crema p-3 rounded-r-sm border border-verde"
+                  @click="limpiarBusqueda"
+                ></i>
+                <i
+                  v-else
+                  class="fa-solid fa-magnifying-glass bg-verde hover:bg-verde-800 text-crema p-3 rounded-r-sm border border-verde"
+                ></i>
+              </div>
+              <NewElementLink :to="{ name: 'nuevo-ingrediente' }">Nuevo</NewElementLink>
             </div>
-            <NewElementLink :to="{ name: 'nuevo-ingrediente' }">Nuevo ingrediente</NewElementLink>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-2">
+
+            <div
+              class="grid md:grid-cols-12 gap-1 lg:gap-4 px-2 pb-2 border-b border-papel text-xs uppercase tracking-wide text-verde-900/50 font-principal"
+            >
+              <span class="col-span-1"></span><span class="col-span-3">Nombre</span
+              ><span class="col-span-5">Descripción</span><span class="col-span-3"></span>
+            </div>
             <Ingrediente
               v-for="ingrediente in ingredientesFiltrados"
               :key="ingrediente.id"
@@ -81,10 +80,13 @@ const ingredientesFiltrados = computed(() => {
           <TailwindPagination
             v-if="!buscando"
             :data="ingredienteStore.ingredientes"
-            :active-classes="['border-green-900', 'text-green-900', 'hover:bg-amber-50']"
+            :active-classes="['border-verde-900', 'text-verde-900', 'hover:bg-papel']"
             @pagination-change-page="ingredienteStore.fetchIngredientes"
           />
-          <div v-if="buscando && ingredientesFiltrados.length === 0" class="text-2xl">
+          <div
+            v-if="buscando && ingredientesFiltrados.length === 0"
+            class="text-xl font-principal text-verde-900/70"
+          >
             No hay resultados para "{{ buscar }}"
           </div>
         </div>
@@ -92,5 +94,3 @@ const ingredientesFiltrados = computed(() => {
     </div>
   </AuthenticatedLayout>
 </template>
-
-<style scoped></style>
