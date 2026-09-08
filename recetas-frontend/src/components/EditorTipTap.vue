@@ -269,7 +269,7 @@ watch(
 
     <EditorContent
       :editor="editor"
-      class="tiptap-editor px-4 py-3 min-h-48 font-principal text-sm text-verde-900"
+      class="tiptap-editor min-h-48 font-principal text-sm text-verde-900"
     />
   </div>
 </template>
@@ -278,6 +278,9 @@ watch(
 .tiptap-editor :deep(.tiptap) {
   outline: none;
   min-height: 12rem;
+  background-color: #fffffe;
+  padding: 1rem;
+  border-radius: 4px;
 }
 .tiptap-editor :deep(p) {
   margin-bottom: 0.5rem;
