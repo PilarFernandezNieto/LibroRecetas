@@ -50,8 +50,8 @@ const showAlert = (id) => {
       >
     </div>
     <p class="col-span-2 text-verde-900/80 truncate">{{ receta.categoria?.nombre }}</p>
-    <p class="col-span-2 text-verde-900/80 truncate">{{ receta.dificultad?.nombre }}</p>
-    <p class="col-span-1 text-verde-900/80 truncate">{{ receta.tiempo }}</p>
+    <p class="col-span-1 text-verde-900/80 truncate">{{ receta.dificultad?.nombre }}</p>
+    <p class="col-span-2 text-verde-900/80 truncate">{{ receta.tiempo }}</p>
     <div class="flex justify-center gap-2 col-span-2">
       <EditButton :to="{ name: 'editar-receta', params: { id: receta.id } }"></EditButton>
       <DeleteButton @click="showAlert(receta.id)"></DeleteButton>

@@ -60,8 +60,8 @@ watch(buscar, (nuevoValor) => {
             <span class="col-span-1"></span>
             <span class="col-span-4">Receta</span>
             <span class="col-span-2">Categoría</span>
-            <span class="col-span-2">Dificultad</span>
-            <span class="col-span-1">Tiempo</span>
+            <span class="col-span-">Dificultad</span>
+            <span class="col-span-2">Tiempo</span>
             <span class="col-span-2"></span>
           </div>
           <Receta v-for="receta in recetaStore.recetas.data" :key="receta.id" :receta="receta" />

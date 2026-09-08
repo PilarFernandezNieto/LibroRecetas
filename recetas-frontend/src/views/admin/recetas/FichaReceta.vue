@@ -35,7 +35,7 @@ const safeInstrucciones = computed(() => DOMPurify.sanitize(recetaStore.receta.i
         </template>
 
         <div v-else class="md:grid md:grid-cols-12 gap-10 my-8 items-start">
-          <div class="md:col-span-5 relative">
+          <div class="md:col-span-4 relative">
             <div
               v-if="getImagen(recetaStore.receta.imagen)"
               class="w-full aspect-4/5 overflow-hidden relative"
@@ -76,7 +76,7 @@ const safeInstrucciones = computed(() => DOMPurify.sanitize(recetaStore.receta.i
             </div>
           </div>
 
-          <div class="md:col-span-7">
+          <div class="md:col-span-8">
             <h1 class="font-titulares text-4xl md:text-5xl leading-tight text-verde-900 mt-3 mb-5">
               {{ recetaStore.receta.nombre }}
             </h1>
