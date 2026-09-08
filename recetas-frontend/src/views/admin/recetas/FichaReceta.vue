@@ -21,7 +21,9 @@ const filtrados = computed(() => {
     Object.entries(recetaStore.receta).filter(([clave]) => clavesPermitidas.includes(clave)),
   )
 })
-const safeInstrucciones = computed(() => DOMPurify.sanitize(recetaStore.receta.instrucciones ?? ''))
+const safeInstrucciones = computed(() =>
+  DOMPurify.sanitize(recetaStore.receta.instrucciones ?? '', { ADD_ATTR: ['target'] }),
+)
 </script>
 
 <template>

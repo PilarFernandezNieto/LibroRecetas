@@ -37,7 +37,9 @@ const filtrados = computed(() => {
     Object.entries(receta.value).filter(([clave]) => clavesPermitidas.includes(clave)),
   )
 })
-const safeInstrucciones = computed(() => DOMPurify.sanitize(receta.value.instrucciones ?? ''))
+const safeInstrucciones = computed(() =>
+  DOMPurify.sanitize(receta.value.instrucciones ?? '', { ADD_ATTR: ['target'] }),
+)
 
 const { getImagen } = useImagen()
 </script>
