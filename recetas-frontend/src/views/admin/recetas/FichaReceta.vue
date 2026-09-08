@@ -26,49 +26,19 @@ const safeInstrucciones = computed(() => DOMPurify.sanitize(recetaStore.receta.i
 
 <template>
   <AuthenticatedLayout>
-    <template #header>
-      <h1 class="font-titulares text-3xl text-verde-900 leading-tight">
-        {{ recetaStore.receta.nombre }}
-      </h1>
-    </template>
-    <div class="py-12">
-      <div class="w-[90%] lg:w-full max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-papel overflow-hidden shadow-sm rounded-sm px-4 py-4 md:px-8">
-          <template v-if="recetaStore.loading">
-            <div class="flex justify-center mb-8"><fwb-spinner size="10" color="green" /></div>
-          </template>
-          <div class="md:grid grid-cols-2 gap-6 my-4 font-principal text-verde-900">
-            <div>
-              <p class="text-lg text-verde-900/80">{{ recetaStore.receta.intro }}</p>
-              <ul class="mt-4 space-y-1">
-                <li v-for="(valor, clave) in filtrados" :key="clave">
-                  <span v-if="valor != ''" class="font-semibold capitalize">{{ clave }}: </span>
-                  <span v-if="valor > 0 || valor != ''">{{ valor }}</span>
-                </li>
-                <li>
-                  <span class="font-semibold capitalize">Dificultad: </span
-                  ><span>{{ recetaStore.receta.dificultad?.nombre }}</span>
-                </li>
-                <li>
-                  <span class="font-semibold capitalize">Categoría: </span
-                  ><span>{{ recetaStore.receta.categoria?.nombre }}</span>
-                </li>
-              </ul>
-              <div class="my-4">
-                <h3 class="uppercase text-sm font-semibold tracking-wide text-verde-900/70">
-                  Ingredientes
-                </h3>
-                <ul class="mt-1">
-                  <li v-for="ingrediente in recetaStore.receta.ingredientes" :key="ingrediente.id">
-                    {{ ingrediente.nombre }} - {{ ingrediente.pivot.cantidad }}
-                    {{ ingrediente?.pivot.unidad }}
-                  </li>
-                </ul>
-              </div>
-            </div>
+    <div class="w-[90%] lg:w-full max-w-7xl mx-auto sm:p-6 lg:p-8">
+      <div class="bg-papel overflow-hidden shadow-sm rounded-sm py-4 px-4 md:px-8">
+        <template v-if="loading">
+          <div class="flex justify-center my-16">
+            <fwb-spinner size="10" color="green" />
+          </div>
+        </template>
+
+        <div v-else class="md:grid md:grid-cols-12 gap-10 my-8 items-start">
+          <div class="md:col-span-5 relative">
             <div
               v-if="getImagen(recetaStore.receta.imagen)"
-              class="w-full aspect-[4/3] overflow-hidden rounded-sm"
+              class="w-full aspect-4/5 overflow-hidden relative"
             >
               <img
                 :src="getImagen(recetaStore.receta.imagen)"
@@ -76,19 +46,89 @@ const safeInstrucciones = computed(() => DOMPurify.sanitize(recetaStore.receta.i
                 class="w-full h-full object-cover"
                 fetchpriority="high"
               />
+              <div
+                class="absolute inset-0 pointer-events-none"
+                style="
+                  background: linear-gradient(
+                    to top,
+                    rgba(20, 18, 15, 0.75),
+                    rgba(20, 18, 15, 0) 45%
+                  );
+                "
+              ></div>
+            </div>
+            <div v-else class="w-full aspect-4/5 overflow-hidden bg-papel">
+              <img src="/img/no_img.png" class="w-full h-full object-cover" />
+            </div>
+            <div class="absolute left-6 bottom-6 flex gap-2 flex-wrap">
+              <span
+                v-if="recetaStore.receta.categoria?.nombre"
+                class="bg-crema text-antracita text-xs font-principal px-4 py-2 rounded-sm"
+              >
+                {{ recetaStore.receta.categoria.nombre }}
+              </span>
+              <span
+                v-if="recetaStore.receta.dificultad?.nombre"
+                class="bg-verde text-crema text-xs font-principal px-4 py-2 rounded-sm"
+              >
+                Dificultad: {{ recetaStore.receta.dificultad.nombre }}
+              </span>
             </div>
           </div>
 
-          <div>
-            <h3 class="uppercase text-sm font-semibold tracking-wide text-verde-900/70">
-              Instrucciones
-            </h3>
+          <div class="md:col-span-7">
+            <h1 class="font-titulares text-4xl md:text-5xl leading-tight text-verde-900 mt-3 mb-5">
+              {{ recetaStore.receta.nombre }}
+            </h1>
+            <p class="text-lg text-verde-900/80 font-principal mb-6 max-w-lg">
+              {{ recetaStore.receta.intro }}
+            </p>
+
             <div
-              class="my-4 text-lg bg-crema border border-papel p-4 rounded-sm instrucciones"
+              v-if="Object.keys(filtrados).length"
+              class="flex gap-8 flex-wrap mb-8 pb-6 border-b border-antracita/10"
+            >
+              <div v-for="(valor, clave) in filtrados" :key="clave">
+                <div
+                  v-if="valor != '' && (valor > 0 || valor != '')"
+                  class="text-xs uppercase tracking-wide text-verde-900/60 font-principal"
+                >
+                  {{ clave }}
+                </div>
+                <div
+                  v-if="valor != '' && (valor > 0 || valor != '')"
+                  class="text-base font-principal text-verde-900 mt-1"
+                >
+                  {{ valor }}
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-2 bg-marron-700 text-crema rounded-sm p-7 mb-10">
+              <h2 class="font-titulares text-xl mb-4">Ingredientes</h2>
+              <ul class="list-none pl-0 columns-1 sm:columns-2 gap-8 font-principal space-y-2">
+                <li
+                  v-for="ingrediente in recetaStore.receta.ingredientes"
+                  :key="ingrediente.id"
+                  class="relative pl-4 break-inside-avoid"
+                >
+                  <span
+                    class="absolute left-0 top-2.5 w-1.5 h-1.5 rounded-full bg-verde-200"
+                  ></span>
+                  {{ ingrediente.nombre }} — {{ ingrediente.pivot.cantidad }}
+                  {{ ingrediente.pivot.unidad }}
+                </li>
+              </ul>
+            </div>
+
+            <h2 class="font-titulares text-2xl text-verde-900 mb-4">Elaboración</h2>
+            <div
+              class="text-base font-principal instrucciones text-verde-900/90"
               v-html="safeInstrucciones"
             ></div>
+
+            <GoBackButton class="mt-8">Atrás</GoBackButton>
           </div>
-          <GoBackButton class="w-full mt-2">Atrás</GoBackButton>
         </div>
       </div>
     </div>
