@@ -5,7 +5,7 @@ import TextInput from './TextInput.vue'
 import PrimaryButton from './PrimaryButton.vue'
 import GoBackButton from './GoBackButton.vue'
 import InputError from './InputError.vue'
-import EditorTiny from './EditorTiny.vue'
+import EditorTipTap from './EditorTipTap.vue'
 import Modal from './Modal.vue'
 import { useIngredientesTodos, useCategorias, useDificultades } from '../composables/useQueries'
 
@@ -269,17 +269,15 @@ const handleSubmit = () => {
 
             <div class="mt-4">
               <InputLabel for="instrucciones" value="Instrucciones" />
-              <EditorTiny v-model="form.instrucciones"></EditorTiny>
+              <EditorTipTap v-model="form.instrucciones"></EditorTipTap>
               <InputError class="mt-2" :message="errors.instrucciones?.[0]" />
             </div>
 
             <div class="mt-6 flex justify-end gap-3">
               <GoBackButton>Atrás</GoBackButton>
-              <PrimaryButton
-                :class="{ 'opacity-25': processing }"
-                :disabled="processing"
-                >{{ textoBoton }}</PrimaryButton
-              >
+              <PrimaryButton :class="{ 'opacity-25': processing }" :disabled="processing">{{
+                textoBoton
+              }}</PrimaryButton>
             </div>
           </form>
         </div>
