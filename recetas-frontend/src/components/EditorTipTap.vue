@@ -278,7 +278,7 @@ watch(
 .tiptap-editor :deep(.tiptap) {
   outline: none;
   min-height: 12rem;
-  background-color: #fffffe;
+  background-color: #f8f8f0;
   padding: 1rem;
   border-radius: 4px;
 }
