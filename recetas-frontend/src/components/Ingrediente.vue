@@ -10,7 +10,7 @@ const swal = inject('$swal')
 const { getImagen } = useImagen()
 const props = defineProps({ ingrediente: { type: Object, required: true } })
 
-const showAlert = (id) => {
+const showAlert = (slug) => {
   swal({
     icon: 'warning',
     text: '¿Seguro que desea eliminar el ingrediente',
@@ -18,7 +18,7 @@ const showAlert = (id) => {
     confirmButtonText: 'Adelante',
     denyButtonText: 'No',
   }).then((result) => {
-    if (result.isConfirmed) ingredienteStore.eliminarIngrediente(id)
+    if (result.isConfirmed) ingredienteStore.eliminarIngrediente(slug)
   })
 }
 </script>
@@ -41,9 +41,9 @@ const showAlert = (id) => {
     <p class="text-base col-span-3 text-verde-900">{{ ingrediente.nombre }}</p>
     <p class="col-span-5 text-verde-900/80 truncate">{{ ingrediente.descripcion }}</p>
     <div class="flex justify-center gap-2 col-span-3">
-      <EditButton :to="{ name: 'editar-ingrediente', params: { id: ingrediente.id } }">
+      <EditButton :to="{ name: 'editar-ingrediente', params: { slug: ingrediente.slug } }">
       </EditButton>
-      <DeleteButton @click="showAlert(ingrediente.id)"></DeleteButton>
+      <DeleteButton @click="showAlert(ingrediente.slug)"></DeleteButton>
     </div>
   </div>
 </template>

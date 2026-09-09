@@ -21,7 +21,7 @@ const filtrados = computed(() => {
 
 <template>
   <RouterLink
-    :to="{ name: 'ver-receta', params: { id: receta.id } }"
+    :to="{ name: 'ver-receta', params: { slug: receta.slug } }"
     class="block relative rounded-sm overflow-hidden group"
     style="aspect-ratio: 4/5"
   >

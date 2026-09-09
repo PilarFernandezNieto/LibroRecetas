@@ -10,10 +10,10 @@ import { useImagen } from '@/composables/useImagen'
 
 const recetaStore = useRecetaStore()
 const route = useRoute()
-const id = route.params.id
+const slug = route.params.slug
 const { getImagen } = useImagen()
 
-onMounted(() => recetaStore.fetchReceta(id))
+onMounted(() => recetaStore.fetchReceta(slug))
 
 const filtrados = computed(() => {
   const clavesPermitidas = ['comensales', 'tiempo', 'origen']

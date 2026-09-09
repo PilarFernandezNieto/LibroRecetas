@@ -13,7 +13,7 @@ const router = createRouter({
       component: Home,
     },
     {
-      path: '/ver-receta/:id',
+      path: '/ver-receta/:slug',
       name: 'ver-receta',
       meta: { title: 'Receta', middleware: [] },
       component: () => import('../views/FichaRecetaPortada.vue'),
@@ -43,7 +43,7 @@ const router = createRouter({
           component: () => import('@/views/admin/ingredientes/NuevoIngrediente.vue'),
         },
         {
-          path: 'editar-ingrediente/:id',
+          path: 'editar-ingrediente/:slug',
           name: 'editar-ingrediente',
           meta: { title: 'Editar Ingrediente', middleware: ['auth', 'is_admin'] },
           component: () => import('@/views/admin/ingredientes/EditarIngrediente.vue'),
@@ -55,7 +55,7 @@ const router = createRouter({
           component: () => import('@/views/admin/recetas/Recetas.vue'),
         },
         {
-          path: 'receta/:id',
+          path: 'receta/:slug',
           name: 'receta',
           meta: { title: 'Receta', middleware: ['auth', 'is_admin'] },
           component: () => import('@/views/admin/recetas/FichaReceta.vue'),
@@ -67,7 +67,7 @@ const router = createRouter({
           component: () => import('@/views/admin/recetas/NuevaReceta.vue'),
         },
         {
-          path: 'editar-receta/:id',
+          path: 'editar-receta/:slug',
           name: 'editar-receta',
           meta: { title: 'Editar Receta', middleware: ['auth', 'is_admin'] },
           component: () => import('@/views/admin/recetas/EditarReceta.vue'),

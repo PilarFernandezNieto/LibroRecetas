@@ -11,17 +11,17 @@ import { FwbSpinner } from 'flowbite-vue'
 
 const route = useRoute()
 const toastStore = useToastStore()
-const id = route.params.id
+const slug = route.params.slug
 const receta = ref([])
 const loading = ref(true)
 
 onMounted(async () => {
-  await getRecetaPortada(id)
+  await getRecetaPortada(slug)
 })
 
 const getRecetaPortada = async () => {
   try {
-    const { data } = await axios.get(`/api/recetas/${id}`)
+    const { data } = await axios.get(`/api/recetas/${slug}`)
     receta.value = data
   } catch (error) {
     const msg = error?.response?.data?.message ?? 'Error inesperado'

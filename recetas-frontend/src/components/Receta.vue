@@ -12,7 +12,7 @@ const { getImagen } = useImagen()
 
 const props = defineProps({ receta: { type: Object, required: true } })
 
-const showAlert = (id) => {
+const showAlert = (slug) => {
   swal({
     icon: 'warning',
     text: '¿Seguro que desea eliminar esta receta?',
@@ -20,7 +20,7 @@ const showAlert = (id) => {
     confirmButtonText: 'Adelante',
     denyButtonText: 'No',
   }).then((result) => {
-    if (result.isConfirmed) recetaStore.eliminarReceta(id)
+    if (result.isConfirmed) recetaStore.eliminarReceta(slug)
   })
 }
 </script>
@@ -43,7 +43,7 @@ const showAlert = (id) => {
     </div>
     <div class="col-span-4 min-w-0">
       <RouterLink
-        :to="{ name: 'receta', params: { id: receta.id } }"
+        :to="{ name: 'receta', params: { slug: receta.slug } }"
         class="font-titulares text-base text-verde-900 hover:text-verde block"
         title="Ver receta"
         >{{ receta.nombre }}</RouterLink
@@ -53,8 +53,8 @@ const showAlert = (id) => {
     <p class="col-span-1 text-verde-900/80 truncate">{{ receta.dificultad?.nombre }}</p>
     <p class="col-span-2 text-verde-900/80 truncate">{{ receta.tiempo }}</p>
     <div class="flex justify-center gap-2 col-span-2">
-      <EditButton :to="{ name: 'editar-receta', params: { id: receta.id } }"></EditButton>
-      <DeleteButton @click="showAlert(receta.id)"></DeleteButton>
+      <EditButton :to="{ name: 'editar-receta', params: { slug: receta.slug } }"></EditButton>
+      <DeleteButton @click="showAlert(receta.slug)"></DeleteButton>
     </div>
   </div>
 </template>

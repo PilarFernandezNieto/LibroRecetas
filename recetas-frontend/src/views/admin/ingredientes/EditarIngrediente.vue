@@ -10,17 +10,17 @@ const ingredienteStore = useIngredienteStore()
 const ingrediente = ref(null)
 const processing = ref(false)
 const errors = ref({})
-const id = route.params.id
+const slug = route.params.slug
 
 onMounted(async () => {
-  await ingredienteStore.fetchIngrediente(id)
+  await ingredienteStore.fetchIngrediente(slug)
   const i = ingredienteStore.ingrediente
   ingrediente.value = { nombre: i.nombre, descripcion: i.descripcion, imagen: i.imagen }
 })
 
 const handleSubmit = async (formData) => {
   formData.append('_method', 'PUT')
-  await ingredienteStore.editarIngrediente(id, processing, errors, formData)
+  await ingredienteStore.editarIngrediente(slug, processing, errors, formData)
 }
 </script>
 <template>

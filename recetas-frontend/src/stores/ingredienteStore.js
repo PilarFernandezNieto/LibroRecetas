@@ -13,7 +13,7 @@ export const useIngredienteStore = defineStore('ingredientes', () => {
   const loading = ref(true)
   const toastStore = useToastStore()
   const router = useRouter()
-  let eliminandoId = null
+  let eliminandoSlug = null
 
   const fetchIngredientes = async (page = 1) => {
     try {
@@ -41,10 +41,10 @@ export const useIngredienteStore = defineStore('ingredientes', () => {
       loading.value = false
     }
   }
-  const fetchIngrediente = async (id) => {
+  const fetchIngrediente = async (slug) => {
     try {
       loading.value = true
-      const { data } = await axios.get(`/api/admin/ingredientes/${id}`)
+      const { data } = await axios.get(`/api/admin/ingredientes/${slug}`)
 
       ingrediente.value = data
     } catch (error) {
@@ -78,11 +78,11 @@ export const useIngredienteStore = defineStore('ingredientes', () => {
       processing.value = false
     }
   }
-  const editarIngrediente = async (id, processing, errors, formData) => {
+  const editarIngrediente = async (slug, processing, errors, formData) => {
     processing.value = true
     errors.value = {}
     try {
-      const { data } = await axios.post(`/api/admin/ingredientes/${id}`, formData, {
+      const { data } = await axios.post(`/api/admin/ingredientes/${slug}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -102,18 +102,20 @@ export const useIngredienteStore = defineStore('ingredientes', () => {
     }
   }
 
-  const eliminarIngrediente = async (id) => {
-    if (eliminandoId === id) return // sale de aquí si ya se está eliminando este ingrediente
-    eliminandoId = id // Evita múltiples clics
+  const eliminarIngrediente = async (slug) => {
+    if (eliminandoSlug === slug) return // sale de aquí si ya se está eliminando este ingrediente
+    eliminandoSlug = slug // Evita múltiples clics
     try {
-      const { data } = await axios.delete(`/api/admin/ingredientes/${id}`)
+      const { data } = await axios.delete(`/api/admin/ingredientes/${slug}`)
 
       if (data.type === 'success') {
         queryClient.invalidateQueries({ queryKey: queryKeys.ingredientesTodos })
         toastStore.mostrarExito(data.message)
         ingredientes.value = {
           ...ingredientes.value,
-          data: ingredientes.value.data.filter((ingredienteStore) => ingredienteStore.id !== id),
+          data: ingredientes.value.data.filter(
+            (ingredienteStore) => ingredienteStore.slug !== slug,
+          ),
         }
       }
     } catch (error) {
@@ -123,7 +125,7 @@ export const useIngredienteStore = defineStore('ingredientes', () => {
         toastStore.mostrarError('Error al eliminar el ingrediente')
       }
     } finally {
-      eliminandoId = null // Resetea el ID al finalizar
+      eliminandoSlug = null // Resetea el slug al finalizar
     }
   }
 

@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Model;
 
 class Receta extends Model
 {
+    use HasSlug;
 
     protected $fillable = ['nombre', 'origen', 'tiempo', 'imagen', 'intro', 'instrucciones', 'comensales', 'categoria_id', 'dificultad_id'];
 

@@ -22,10 +22,10 @@ export const useRecetaStore = defineStore('recetas', () => {
       loading.value = false
     }
   }
-  const fetchReceta = async (id) => {
+  const fetchReceta = async (slug) => {
     try {
       loading.value = true
-      const { data } = await axios.get(`/api/admin/recetas/${id}`)
+      const { data } = await axios.get(`/api/admin/recetas/${slug}`)
       receta.value = data
     } catch (error) {
       const msg = error?.response?.data?.message ?? 'Error inesperado'
@@ -59,18 +59,18 @@ export const useRecetaStore = defineStore('recetas', () => {
     }
   }
 
-  const editarReceta = async (id, processing, errors, formData) => {
+  const editarReceta = async (slug, processing, errors, formData) => {
     processing.value = true
     errors.value = {}
     try {
-      const { data } = await axios.post(`/api/admin/recetas/${id}`, formData, {
+      const { data } = await axios.post(`/api/admin/recetas/${slug}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       })
 
       if (data.type === 'success') {
-        await fetchReceta(id)
+        await fetchReceta(slug)
         toastStore.mostrarExito(data.message)
         router.push({ name: 'recetas' })
       }
@@ -82,15 +82,15 @@ export const useRecetaStore = defineStore('recetas', () => {
       processing.value = false
     }
   }
-  const eliminarReceta = async (id) => {
+  const eliminarReceta = async (slug) => {
     try {
-      const { data } = await axios.delete(`/api/admin/recetas/${id}`)
+      const { data } = await axios.delete(`/api/admin/recetas/${slug}`)
       if (data.type === 'success') {
         toastStore.mostrarExito(data.message)
 
         recetas.value = {
           ...recetas.value,
-          data: recetas.value.data.filter((receta) => receta.id !== id),
+          data: recetas.value.data.filter((receta) => receta.slug !== slug),
         }
       }
     } catch (error) {

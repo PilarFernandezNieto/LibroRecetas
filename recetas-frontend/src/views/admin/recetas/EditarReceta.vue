@@ -10,10 +10,10 @@ const recetaStore = useRecetaStore()
 const receta = ref(null)
 const processing = ref(false)
 const errors = ref({})
-const id = route.params.id
+const slug = route.params.slug
 
 onMounted(async () => {
-  await recetaStore.fetchReceta(id)
+  await recetaStore.fetchReceta(slug)
   const r = recetaStore.receta
   receta.value = {
     nombre: r.nombre, origen: r.origen, tiempo: r.tiempo, comensales: r.comensales,
@@ -32,7 +32,7 @@ const getImagen = (imagen) => {
 
 const handleSubmit = async (formData) => {
   formData.append('_method', 'PUT')
-  await recetaStore.editarReceta(id, processing, errors, formData)
+  await recetaStore.editarReceta(slug, processing, errors, formData)
 }
 </script>
 <template>
