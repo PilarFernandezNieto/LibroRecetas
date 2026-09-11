@@ -88,7 +88,7 @@ const safeInstrucciones = computed(() =>
 
             <div
               v-if="Object.keys(filtrados).length"
-              class="flex gap-8 flex-wrap mb-8 pb-6 border-b border-antracita/10"
+              class="flex gap-8 justify-between flex-wrap mb-8 pb-6 border-b border-antracita/10"
             >
               <div v-for="(valor, clave) in filtrados" :key="clave">
                 <div
