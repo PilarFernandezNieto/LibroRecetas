@@ -18,6 +18,7 @@ class IngredienteResource extends JsonResource
             'id' => $this->id,
             'nombre' => $this->nombre,
             'imagen' => $this->imagen,
+            'slug' => $this->slug,
             'descripcion' => $this->descripcion,
         ];
     }
