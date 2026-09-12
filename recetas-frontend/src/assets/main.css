@@ -23,17 +23,10 @@ layer(base);
   --color-terracota: #b4514b;
   --color-terracota-oscuro: #8a3934;
   --color-terracota-claro: #d98f82;
-  --color-verde-700: #3d5542;
+
   --color-verde-800: #354a3a;
-  --color-antracita: #293a2e;
-  --color-marron: #8a5a34;
-  /* --color-marron-600: #795038;
-  --color-marron-700: #5c3d24; */
 
   --width-contenedor-sm: 50%;
-
-  --background-image-fondo-fruta: url('/img/fondo_fruta_vegetales.jpg');
-  --background-image-banner-principal: url('/img/banner.png');
 }
 
 /*
