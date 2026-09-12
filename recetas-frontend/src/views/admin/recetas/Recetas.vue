@@ -38,18 +38,18 @@ watch(buscar, (nuevoValor) => {
             <div class="flex items-center justify-center">
               <input
                 type="text"
-                class="w-full p-2 bg-crema border border-verde rounded-l-sm focus:outline-none focus:border-verde focus:ring-verde placeholder-verde-900/40"
+                class="w-full p-2 bg-papel border border-terracota rounded-l-sm focus:outline-none focus:border-verde focus:ring-verde placeholder-verde-900/40"
                 placeholder="Buscar receta"
                 v-model="buscar"
               />
               <i
                 v-if="buscar.trim() !== ''"
-                class="fa-solid fa-xmark cursor-pointer bg-verde hover:bg-verde-800 text-crema p-3 rounded-r-sm border border-verde"
+                class="fa-solid fa-xmark cursor-pointer bg-terracota hover:bg-terracota-oscuro text-papel p-3 rounded-r-sm border border-terracota"
                 @click="limpiarBusqueda"
               ></i>
               <i
                 v-else
-                class="fa-solid fa-magnifying-glass bg-verde hover:bg-verde-800 text-crema p-3 rounded-r-sm border border-verde"
+                class="fa-solid fa-magnifying-glass bg-terracota hover:bg-terracota-oscuro text-papel p-3 rounded-r-sm border border-terracota"
               ></i>
             </div>
             <NewElementLink :to="{ name: 'nueva-receta' }">Nueva receta</NewElementLink>

@@ -9,7 +9,7 @@ import ApplicationLogo from '../components/ApplicationLogo.vue'
       </RouterLink>
     </div>
     <div
-      class="w-[90%] lg:w-[25%] mt-6 shadow-sm border border-papel overflow-hidden rounded-sm bg-crema p-6"
+      class="w-[90%] lg:w-[25%] mt-6 shadow-sm border border-crema overflow-hidden rounded-sm bg-papel p-6"
     >
       <slot />
     </div>

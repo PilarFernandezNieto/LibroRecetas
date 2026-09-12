@@ -8,6 +8,7 @@ import TextInput from '../../components/TextInput.vue'
 import { useAuthStore } from '../../stores/auth'
 import { ref, watchEffect } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
+import GoBackButton from '../../components/GoBackButton.vue'
 
 const form = ref({ email: '', password: '', remember: false })
 const processing = ref(false)
@@ -25,8 +26,8 @@ const handleLogin = async () => await login(processing, errors, form.value)
 
 <template>
   <AuthLayout>
-    <div v-if="status" class="mb-4 font-principal text-sm text-verde-900">{{ status }}</div>
-    <h1 class="font-titulares text-2xl text-verde-900 text-center mb-6">Inicia sesión</h1>
+    <div v-if="status" class="mb-4 font-principal text-sm text-antracita">{{ status }}</div>
+    <h1 class="font-titulares text-2xl text-antracita text-center mb-6">Inicia sesión</h1>
     <form @submit.prevent="handleLogin()">
       <div>
         <InputLabel for="email" value="Email" />
@@ -56,33 +57,31 @@ const handleLogin = async () => await login(processing, errors, form.value)
       <div class="block mt-4">
         <label class="flex items-center gap-2">
           <Checkbox name="remember" v-model:checked="form.remember" />
-          <span class="text-sm font-principal text-verde-900/70">Recordarme</span>
+          <span class="text-sm font-principal text-antracita/70">Recordarme</span>
         </label>
       </div>
 
       <div class="flex flex-col md:flex-row md:justify-between items-center gap-2 my-4">
         <RouterLink
           :to="{ name: 'forgot-password' }"
-          class="underline text-sm font-principal text-verde-900/70 hover:text-verde rounded-sm focus:outline-none"
+          class="underline text-xs font-principal text-antracita/70 hover:text-verde rounded-sm focus:outline-none"
         >
           ¿Has olvidado tu contraseña?
         </RouterLink>
         <RouterLink
           :to="{ name: 'register' }"
-          class="underline text-sm font-principal text-verde-900/70 hover:text-verde rounded-sm focus:outline-none"
+          class="underline text-xs font-principal text-antracita/70 hover:text-verde rounded-sm focus:outline-none"
         >
           ¿Todavía no tienes cuenta?
         </RouterLink>
       </div>
 
-      <PrimaryButton class="w-full" :class="{ 'opacity-25': processing }" :disabled="processing"
-        >Inicia sesión</PrimaryButton
-      >
+      <div class="flex flex-col gap-5">
+        <PrimaryButton class="w-full" :class="{ 'opacity-25': processing }" :disabled="processing"
+          >Inicia sesión</PrimaryButton
+        >
+        <GoBackButton :to="{ name: 'home' }">Volver</GoBackButton>
+      </div>
     </form>
-    <RouterLink
-      :to="{ name: 'home' }"
-      class="mt-4 flex justify-center text-sm font-principal text-verde-900/70 hover:text-verde"
-      >Volver</RouterLink
-    >
   </AuthLayout>
 </template>

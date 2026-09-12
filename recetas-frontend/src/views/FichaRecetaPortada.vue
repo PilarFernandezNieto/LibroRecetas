@@ -126,7 +126,7 @@ const { getImagen } = useImagen()
                 :key="ingrediente.id"
                 class="relative pl-4 break-inside-avoid"
               >
-                <span class="absolute left-0 top-2.5 w-1.5 h-1.5 rounded-full bg-verde-200"></span>
+                <span class="absolute left-0 top-2.5 w-1.5 h-1.5 rounded-full bg-papel"></span>
                 {{ ingrediente.nombre }} — {{ ingrediente.pivot.cantidad }}
                 {{ ingrediente.pivot.unidad }}
               </li>

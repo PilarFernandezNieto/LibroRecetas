@@ -29,7 +29,7 @@ const handleCategoria = async () =>
       <div class="w-contenedor-sm mx-auto sm:px-6 lg:px-8">
         <div class="bg-papel overflow-hidden shadow-sm rounded-sm py-4 px-4 md:px-8">
           <div
-            class="bg-crema border border-papel shadow-sm p-6 rounded-sm w-full lg:w-2/6 mx-auto"
+            class="bg-papel border border-crema shadow-sm p-6 rounded-sm w-full lg:w-2/6 mx-auto"
           >
             <form @submit.prevent="handleCategoria">
               <div>

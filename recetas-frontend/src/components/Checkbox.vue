@@ -6,8 +6,12 @@ const props = defineProps({
   value: { default: null },
 })
 const proxyChecked = computed({
-  get() { return props.checked },
-  set(val) { emit('update:checked', val) },
+  get() {
+    return props.checked
+  },
+  set(val) {
+    emit('update:checked', val)
+  },
 })
 </script>
 <template>
@@ -15,6 +19,6 @@ const proxyChecked = computed({
     type="checkbox"
     :value="value"
     v-model="proxyChecked"
-    class="rounded border-papel text-verde shadow-sm focus:ring-verde"
+    class="rounded border-papel text-terracota shadow-sm focus:ring-terracota"
   />
 </template>

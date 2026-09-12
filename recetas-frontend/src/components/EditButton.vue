@@ -14,7 +14,7 @@ const props = defineProps({
       fill="none"
       viewBox="0 0 24 24"
       stroke-width="2"
-      class="w-10 h-10 stroke-verde"
+      class="w-10 h-10 stroke-verde-800/80"
     >
       <path
         stroke-linecap="round"

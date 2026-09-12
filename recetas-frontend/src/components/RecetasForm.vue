@@ -118,7 +118,7 @@ const handleSubmit = () => {
   <div class="py-12">
     <div class="w-[90%] lg:w-full max-w-7xl mx-auto sm:px-6 lg:px-8">
       <div class="bg-papel overflow-hidden shadow-sm rounded-sm py-4 px-4 md:px-8">
-        <div class="bg-crema border border-papel shadow-sm p-6 rounded-sm">
+        <div class="border border-crema shadow-sm p-6 rounded-sm">
           <form @submit.prevent="handleSubmit">
             <div>
               <InputLabel for="nombre" value="Nombre" />
@@ -176,7 +176,7 @@ const handleSubmit = () => {
                 <select
                   v-model="form.categoria_id"
                   id="categoria"
-                  class="mt-2 w-full bg-crema border-papel focus:border-verde focus:ring-verde rounded-sm shadow-sm"
+                  class="mt-2 w-full bg-papel border-terracota-oscuro focus:border-terracota-oscuro focus:ring-terrborder-terracota-oscuro rounded-sm shadow-sm"
                 >
                   <option value="">-------------</option>
                   <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
@@ -190,7 +190,7 @@ const handleSubmit = () => {
                 <select
                   v-model="form.dificultad_id"
                   id="dificultades"
-                  class="mt-2 w-full bg-crema border-papel focus:border-verde focus:ring-verde rounded-sm shadow-sm"
+                  class="mt-2 w-full bg-papel border-terracota-oscuro focus:border-terracota-oscuro focus:ring-terrborder-terracota-oscuro rounded-sm shadow-sm"
                 >
                   <option value="">-------------</option>
                   <option
@@ -208,7 +208,7 @@ const handleSubmit = () => {
             <div class="my-8">
               <label
                 for="imagen"
-                class="cursor-pointer inline-flex bg-verde text-crema py-2 px-4 rounded-sm hover:bg-verde-800 focus:ring-2 focus:ring-verde text-sm font-principal"
+                class="cursor-pointer inline-flex bg-terracota text-papel py-2 px-4 rounded-sm hover:bg-terracota-oscuro focus:ring-2 focus:ring-terracota-oscuro text-sm font-principal"
               >
                 Subir imagen
               </label>
@@ -226,7 +226,7 @@ const handleSubmit = () => {
                 v-model="ingredienteIdElegido"
                 name="ingredientes"
                 id="ingredientes"
-                class="mt-2 w-full bg-crema border-papel focus:border-verde focus:ring-verde rounded-sm shadow-sm"
+                class="mt-2 w-full bg-papel border-terracota-oscuro focus:border-terracota-oscuro focus:ring-terracota-oscuro rounded-sm shadow-sm"
                 @change="handleIngredientChange"
               >
                 <option value="">-------------</option>
@@ -244,13 +244,13 @@ const handleSubmit = () => {
               />
             </div>
 
-            <div class="mt-4 p-4 border border-verde rounded-sm">
+            <div class="mt-4 p-4 border border-terracota-oscuro rounded-sm">
               <InputLabel class="font-medium">Ingredientes seleccionados:</InputLabel>
               <ul class="pl-0 space-y-2 mt-2">
                 <li
                   v-for="(ingrediente, index) in ingredientesSeleccionados"
                   :key="ingrediente.id"
-                  class="bg-papel p-2 rounded-sm flex justify-between items-center font-principal text-sm text-verde-900"
+                  class="bg-crema p-2 rounded-sm flex justify-between items-center font-principal text-sm text-antracita"
                 >
                   <span
                     >{{ ingrediente.nombre }} - {{ ingrediente.cantidad }}

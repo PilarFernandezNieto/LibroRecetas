@@ -37,7 +37,7 @@ const handleSubmit = () => {
   <div class="py-12">
     <div class="w-[90%] lg:w-contenedor-sm max-w-7xl mx-auto sm:px-6 lg:px-8">
       <div class="bg-papel overflow-hidden shadow-sm rounded-sm py-4 px-4 md:px-8">
-        <div class="bg-crema border border-papel shadow-sm p-6 rounded-sm">
+        <div class="border border-crema shadow-sm p-6 rounded-sm">
           <form @submit.prevent="handleSubmit">
             <div>
               <InputLabel for="nombre" value="Nombre" />
@@ -54,7 +54,7 @@ const handleSubmit = () => {
             <div class="my-6">
               <label
                 for="imagen"
-                class="cursor-pointer inline-flex bg-verde text-crema py-2 px-4 rounded-sm hover:bg-verde-800 focus:ring-2 focus:ring-verde text-sm font-principal"
+                class="cursor-pointer inline-flex bg-terracota text-papel py-2 px-4 rounded-sm hover:bg-terracota-oscuro focus:ring-2 focus:ring-terracota-oscuro text-sm font-principal"
               >
                 Subir imagen
               </label>
@@ -75,18 +75,16 @@ const handleSubmit = () => {
               <textarea
                 id="descripcion"
                 v-model="form.descripcion"
-                class="mt-2 w-full min-h-28 p-2 bg-crema border border-papel focus:border-verde focus:ring-verde shadow-sm rounded-sm"
+                class="mt-2 w-full min-h-28 p-2 bg-papel border border-crema focus:border-crema focus:ring-crema shadow-sm rounded-sm"
               ></textarea>
               <InputError class="mt-2" :message="errors.descripcion?.[0]" />
             </div>
 
             <div class="mt-6 flex justify-end gap-3">
               <GoBackButton>Atrás</GoBackButton>
-              <PrimaryButton
-                :class="{ 'opacity-25': processing }"
-                :disabled="processing"
-                >{{ textoBoton }}</PrimaryButton
-              >
+              <PrimaryButton :class="{ 'opacity-25': processing }" :disabled="processing">{{
+                textoBoton
+              }}</PrimaryButton>
             </div>
           </form>
         </div>

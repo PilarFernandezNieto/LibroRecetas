@@ -36,7 +36,7 @@ const adminChecked = computed({
     <div class="py-12">
       <div class="w-[90%] lg:w-contenedor-sm md:w-3/4 mx-auto sm:px-6 lg:px-8">
         <div class="bg-papel overflow-hidden shadow-sm rounded-sm py-4 px-4 md:px-8">
-          <div class="bg-crema border border-papel shadow-sm p-6 rounded-sm">
+          <div class="bg-papel border border-crema shadow-sm p-6 rounded-sm">
             <form @submit.prevent="handleUser">
               <div class="mb-4">
                 <InputLabel for="name" value="Nombre" />

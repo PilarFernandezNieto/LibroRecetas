@@ -47,7 +47,7 @@ const showingNavigationDropdown = ref(false)
                   <span class="inline-flex rounded-sm">
                     <button
                       type="button"
-                      class="inline-flex items-center px-3 py-2 border border-transparent text-base leading-4 font-medium rounded-sm text-verde-900/70 bg-crema hover:text-verde focus:outline-none transition ease-in-out duration-150"
+                      class="inline-flex items-center px-3 py-2 border border-transparent text-base leading-4 font-medium rounded-sm text-antracita/70 bg-papel hover:text-terracota focus:outline-none transition ease-in-out duration-150"
                     >
                       {{ user?.name }}
                       <svg
