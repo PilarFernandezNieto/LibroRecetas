@@ -79,13 +79,13 @@ const { getImagen } = useImagen()
           <div class="absolute left-6 bottom-6 flex gap-2 flex-wrap">
             <span
               v-if="receta.categoria?.nombre"
-              class="bg-crema text-antracita text-xs font-principal px-4 py-2 rounded-sm"
+              class="bg-papel text-antracita text-xs font-principal px-4 py-2 rounded-sm"
             >
               {{ receta.categoria.nombre }}
             </span>
             <span
               v-if="receta.dificultad?.nombre"
-              class="bg-verde text-crema text-xs font-principal px-4 py-2 rounded-sm"
+              class="bg-terracota-claro text-papel text-xs font-principal px-4 py-2 rounded-sm"
             >
               Dificultad: {{ receta.dificultad.nombre }}
             </span>
@@ -93,10 +93,10 @@ const { getImagen } = useImagen()
         </div>
 
         <div class="md:col-span-7">
-          <h1 class="font-titulares text-4xl md:text-5xl leading-tight text-verde-900 mt-3 mb-5">
+          <h1 class="font-titulares text-4xl md:text-5xl leading-tight text-antracita mt-3 mb-5">
             {{ receta.nombre }}
           </h1>
-          <p class="text-lg text-verde-900/80 font-principal mb-6 max-w-lg">{{ receta.intro }}</p>
+          <p class="text-lg text-antracita/80 font-principal mb-6 max-w-lg">{{ receta.intro }}</p>
 
           <div
             v-if="Object.keys(filtrados).length"
@@ -105,20 +105,20 @@ const { getImagen } = useImagen()
             <div v-for="(valor, clave) in filtrados" :key="clave">
               <div
                 v-if="valor != '' && (valor > 0 || valor != '')"
-                class="text-xs uppercase tracking-wide text-verde-900/60 font-principal"
+                class="text-xs uppercase tracking-wide text-antracita/80 font-principal"
               >
                 {{ clave }}
               </div>
               <div
                 v-if="valor != '' && (valor > 0 || valor != '')"
-                class="text-base font-principal text-verde-900 mt-1"
+                class="text-base font-principal text-antracita mt-1"
               >
                 {{ valor }}
               </div>
             </div>
           </div>
 
-          <div class="mt-2 bg-marron-700 text-crema rounded-sm p-7 mb-10">
+          <div class="mt-2 bg-terracota text-papel rounded-sm p-7 mb-10">
             <h2 class="font-titulares text-xl mb-4">Ingredientes</h2>
             <ul class="list-none pl-0 columns-1 sm:columns-2 gap-8 font-principal space-y-2">
               <li
@@ -133,9 +133,9 @@ const { getImagen } = useImagen()
             </ul>
           </div>
 
-          <h2 class="font-titulares text-2xl text-verde-900 mb-4">Elaboración</h2>
+          <h2 class="font-titulares text-2xl text-terracota-oscuro mb-4">Elaboración</h2>
           <div
-            class="text-base font-principal instrucciones text-verde-900/90"
+            class="text-base font-principal instrucciones text-antracita/90"
             v-html="safeInstrucciones"
           ></div>
 

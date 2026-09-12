@@ -26,7 +26,7 @@ const onInput = (event) => {
     />
     <button
       type="submit"
-      class="bg-verde-900 text-crema border border-transparent rounded-tr-sm rounded-br-sm px-6 py-2.5 text-sm font-principal font-semibold cursor-pointer shrink-0 hover:text-verde-900 hover:bg-transparent hover:border-l-verde-900 transition-all ease-in duration-300"
+      class="bg-terracota-oscuro text-papel border border-transparent rounded-tr-sm rounded-br-sm px-6 py-2.5 text-sm font-principal font-semibold cursor-pointer shrink-0 hover:text-antracita hover:bg-crema hover:border-l-terracota-oscuro transition-all ease-in duration-300"
     >
       Buscar
     </button>

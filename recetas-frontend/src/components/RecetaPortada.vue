@@ -45,7 +45,7 @@ const filtrados = computed(() => {
       <span class="text-[#c9d6b8] text-xs tracking-wider uppercase font-principal">
         {{ receta.categoria?.nombre }} · {{ receta.dificultad?.nombre }}
       </span>
-      <h3 class="font-titulares text-crema text-2xl mt-2 leading-tight">
+      <h3 class="font-titulares text-papel text-2xl mt-2 leading-tight">
         {{ receta.nombre }}
       </h3>
     </div>

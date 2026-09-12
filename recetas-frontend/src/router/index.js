@@ -146,7 +146,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  document.title = import.meta.env.VITE_APP_NAME + ' | ' + to.meta.title
+  document.title = import.meta.env.VITE_APP_NAME + ' | ' + (to.meta.title ?? '')
 
   const auth = useAuthStore()
 
@@ -154,15 +154,13 @@ router.beforeEach(async (to, from, next) => {
     await auth.fetchUser()
   }
 
-  if (to.meta.middleware.includes('guest') && auth.isLoggedIn) next({ name: 'dashboard' })
-  else if (
-    to.meta.middleware.includes('verified') &&
-    auth.isLoggedIn &&
-    !auth.user.email_verified_at
-  )
+  const middleware = to.meta.middleware ?? []
+
+  if (middleware.includes('guest') && auth.isLoggedIn) next({ name: 'dashboard' })
+  else if (middleware.includes('verified') && auth.isLoggedIn && !auth.user.email_verified_at)
     next({ name: 'verify-email' })
-  else if (to.meta.middleware.includes('auth') && !auth.isLoggedIn) next({ name: 'login' })
-  else if (to.meta.middleware.includes('is_admin') && !auth.isAdmin) next({ name: 'home' })
+  else if (middleware.includes('auth') && !auth.isLoggedIn) next({ name: 'login' })
+  else if (middleware.includes('is_admin') && !auth.isAdmin) next({ name: 'home' })
   else next()
 })
 

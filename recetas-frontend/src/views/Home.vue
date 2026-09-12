@@ -46,7 +46,7 @@ const getRecetasIndex = async (page = 1, search = '') => {
 <template>
   <GuestLayout>
     <div
-      class="relative flex flex-col min-h-screen bg-crema selection:bg-verde-200 selection:text-antracita"
+      class="relative flex flex-col min-h-screen bg-papel selection:bg-crema selection:text-antracita"
     >
       <!-- HERO -->
       <section class="w-full -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-12 md:py-16">
@@ -102,7 +102,7 @@ const getRecetasIndex = async (page = 1, search = '') => {
         <div class="mt-10 flex justify-center">
           <TailwindPagination
             :data="recetas"
-            :active-classes="['border-verde-900', 'text-verde-900', 'hover:bg-papel']"
+            :active-classes="['border-terracota-osucro', 'text-terrcaota-oscuro', 'hover:bg-crema']"
             @pagination-change-page="(page) => getRecetasIndex(page, buscar.value)"
           />
         </div>

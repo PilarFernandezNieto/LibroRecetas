@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import { RouterLink, useRoute } from 'vue-router'
 import ApplicationLogo from '../components/ApplicationLogo.vue'
 import DropdownLink from '../components/DropdownLink.vue'
@@ -13,20 +14,22 @@ import { useAuthStore } from '../stores/auth'
 
 const route = useRoute()
 
-const { user, logout, isLoggedIn, isAdmin } = useAuthStore()
+const authStore = useAuthStore()
+const { user, isLoggedIn, isAdmin } = storeToRefs(authStore)
+const { logout } = authStore
 
 const showingNavigationDropdown = ref(false)
 </script>
 
 <!-- PARA TODAS LA VISTAS QUE NO NECESITAN LOGIN -->
 <template>
-  <div class="min-h-screen sm:pt-0 bg-crema selection:bg-verde-200 selection:text-antracita">
+  <div class="min-h-screen sm:pt-0 bg-papel selection:bg-crema selection:text-antracita">
     <!-- Navegación principal -->
-    <nav class="bg-papel border-b border-antracita/10">
+    <nav class="bg-crema border-b border-antracita/10">
       <div class="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8">
         <!-- Hamburger -->
 
-        <div v-if="isLoggedIn" class="-mr-2 flex items-center justify-end sm:hidden">
+        <div v-if="isLoggedIn" class="mr-2 flex items-center justify-end sm:hidden">
           <button
             @click="showingNavigationDropdown = !showingNavigationDropdown"
             class="inline-flex items-center justify-center p-2 rounded-sm text-verde-900/60 hover:text-verde hover:bg-papel focus:outline-none focus:bg-papel focus:text-verde transition duration-150 ease-in-out"
@@ -79,7 +82,7 @@ const showingNavigationDropdown = ref(false)
                   <span class="inline-flex rounded-sm">
                     <button
                       type="button"
-                      class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-principal font-medium rounded-sm text-verde-900 bg-crema hover:bg-verde hover:text-crema focus:outline-none transition ease-in-out duration-150"
+                      class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-principal font-medium rounded-sm text-verde-900 bg-papel hover:bg-terracota-claro hover:text-papel focus:outline-none transition ease-in-out duration-150"
                     >
                       {{ user?.name }}
 
@@ -165,7 +168,7 @@ const showingNavigationDropdown = ref(false)
     </nav>
 
     <main>
-      <header v-if="$slots.header" class="font-titulares text-verde-900 bg-crema">
+      <header v-if="$slots.header" class="font-titulares text-verde-900 bg-papel">
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <slot name="header" />
         </div>
@@ -176,7 +179,7 @@ const showingNavigationDropdown = ref(false)
         <slot />
       </div>
     </main>
-    <div class="w-full py-10 sm:px-6 lg:px-8 overflow-hidden bg-papel border-t border-antracita/10">
+    <div class="w-full py-10 sm:px-6 lg:px-8 overflow-hidden bg-crema border-t border-antracita/10">
       <Footer />
     </div>
   </div>
