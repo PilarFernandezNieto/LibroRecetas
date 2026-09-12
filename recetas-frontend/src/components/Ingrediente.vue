@@ -38,8 +38,8 @@ const showAlert = (slug) => {
         <img v-else src="/img/no_img.png" class="w-full h-full object-cover" />
       </div>
     </div>
-    <p class="text-base col-span-3 text-verde-900">{{ ingrediente.nombre }}</p>
-    <p class="col-span-5 text-verde-900/80 truncate">{{ ingrediente.descripcion }}</p>
+    <p class="text-base col-span-3 text-antracita">{{ ingrediente.nombre }}</p>
+    <p class="col-span-5 text-antracita/80 truncate">{{ ingrediente.descripcion }}</p>
     <div class="flex justify-center gap-2 col-span-3">
       <EditButton :to="{ name: 'editar-ingrediente', params: { slug: ingrediente.slug } }">
       </EditButton>

@@ -9,8 +9,15 @@ const processing = ref(false)
 const errors = ref({})
 
 const recetaInicial = {
-  nombre: '', origen: '', tiempo: '', comensales: '', dificultad_id: 0, categoria_id: 0,
-  intro: '', instrucciones: '', ingredientes: [],
+  nombre: '',
+  origen: '',
+  tiempo: '',
+  comensales: '',
+  dificultad_id: 0,
+  categoria_id: 0,
+  intro: '',
+  instrucciones: '',
+  ingredientes: [],
 }
 
 const handleSubmit = async (formData) => await recetaStore.nuevaReceta(processing, errors, formData)
@@ -18,8 +25,14 @@ const handleSubmit = async (formData) => await recetaStore.nuevaReceta(processin
 <template>
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="font-titulares text-3xl text-verde-900 leading-tight">Nueva receta</h2>
+      <h2 class="font-titulares text-3xl text-antracita leading-tight">Nueva receta</h2>
     </template>
-    <RecetasForm :receta="recetaInicial" :errors="errors" :processing="processing" textoBoton="Nueva receta" @submit="handleSubmit" />
+    <RecetasForm
+      :receta="recetaInicial"
+      :errors="errors"
+      :processing="processing"
+      textoBoton="Nueva receta"
+      @submit="handleSubmit"
+    />
   </AuthenticatedLayout>
 </template>

@@ -93,13 +93,15 @@ watch(
 
 <template>
   <div
-    class="border border-papel bg-crema rounded-sm shadow-sm overflow-hidden focus-within:border-verde focus-within:ring-1 focus-within:ring-verde transition-colors"
+    class="border border-papel bg-crema rounded-sm shadow-sm overflow-hidden focus-within:border-terracota focus-within:ring-1 focus-within:ring-terracota transition-colors"
   >
     <div class="flex flex-wrap gap-1 border-b border-papel bg-papel/40 px-3 py-2">
       <button
         type="button"
         @click="editor.chain().focus().toggleBold().run()"
-        :class="editor?.isActive('bold') ? 'bg-verde text-crema' : 'text-verde-900 hover:bg-papel'"
+        :class="
+          editor?.isActive('bold') ? 'bg-terracota text-crema' : 'text-antracita hover:bg-papel'
+        "
         class="w-8 h-8 shrink-0 flex items-center justify-center text-sm font-bold rounded-sm transition-colors"
         title="Negrita"
       >
@@ -110,7 +112,7 @@ watch(
         type="button"
         @click="editor.chain().focus().toggleItalic().run()"
         :class="
-          editor?.isActive('italic') ? 'bg-verde text-crema' : 'text-verde-900 hover:bg-papel'
+          editor?.isActive('italic') ? 'bg-terracota text-crema' : 'text-antracita hover:bg-papel'
         "
         class="w-8 h-8 shrink-0 flex items-center justify-center text-sm italic rounded-sm transition-colors"
         title="Cursiva"
@@ -125,8 +127,8 @@ watch(
         @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
         :class="
           editor?.isActive('heading', { level: 2 })
-            ? 'bg-verde text-crema'
-            : 'text-verde-900 hover:bg-papel'
+            ? 'bg-terracota text-crema'
+            : 'text-antracita hover:bg-papel'
         "
         class="w-8 h-8 shrink-0 flex items-center justify-center text-xs font-bold rounded-sm transition-colors"
         title="Encabezado"
@@ -139,8 +141,8 @@ watch(
         @click="editor.chain().focus().toggleHeading({ level: 3 }).run()"
         :class="
           editor?.isActive('heading', { level: 3 })
-            ? 'bg-verde text-crema'
-            : 'text-verde-900 hover:bg-papel'
+            ? 'bg-terracota text-crema'
+            : 'text-antracita hover:bg-papel'
         "
         class="w-8 h-8 shrink-0 flex items-center justify-center text-xs font-bold rounded-sm transition-colors"
         title="Subencabezado"
@@ -154,7 +156,9 @@ watch(
         type="button"
         @click="editor.chain().focus().toggleBulletList().run()"
         :class="
-          editor?.isActive('bulletList') ? 'bg-verde text-crema' : 'text-verde-900 hover:bg-papel'
+          editor?.isActive('bulletList')
+            ? 'bg-terracota text-crema'
+            : 'text-antracita hover:bg-papel'
         "
         class="w-8 h-8 shrink-0 flex items-center justify-center text-sm rounded-sm transition-colors"
         title="Lista"
@@ -166,7 +170,9 @@ watch(
         type="button"
         @click="editor.chain().focus().toggleOrderedList().run()"
         :class="
-          editor?.isActive('orderedList') ? 'bg-verde text-crema' : 'text-verde-900 hover:bg-papel'
+          editor?.isActive('orderedList')
+            ? 'bg-terracota text-crema'
+            : 'text-antracita hover:bg-papel'
         "
         class="w-8 h-8 shrink-0 flex items-center justify-center text-xs rounded-sm transition-colors"
         title="Lista numerada"
@@ -179,7 +185,9 @@ watch(
       <button
         type="button"
         @click="setEnlace"
-        :class="editor?.isActive('link') ? 'bg-verde text-crema' : 'text-verde-900 hover:bg-papel'"
+        :class="
+          editor?.isActive('link') ? 'bg-terracota text-crema' : 'text-antracita hover:bg-papel'
+        "
         class="w-8 h-8 shrink-0 flex items-center justify-center text-sm rounded-sm transition-colors"
         title="Enlace"
       >
@@ -193,8 +201,8 @@ watch(
         @click="editor.chain().focus().setTextAlign('left').run()"
         :class="
           editor?.isActive({ textAlign: 'left' })
-            ? 'bg-verde text-crema'
-            : 'text-verde-900 hover:bg-papel'
+            ? 'bg-terracota text-crema'
+            : 'text-antracita hover:bg-papel'
         "
         class="w-8 h-8 shrink-0 flex items-center justify-center text-sm rounded-sm transition-colors"
         title="Alinear a la izquierda"
@@ -207,8 +215,8 @@ watch(
         @click="editor.chain().focus().setTextAlign('center').run()"
         :class="
           editor?.isActive({ textAlign: 'center' })
-            ? 'bg-verde text-crema'
-            : 'text-verde-900 hover:bg-papel'
+            ? 'bg-terracota text-crema'
+            : 'text-antracita hover:bg-papel'
         "
         class="w-8 h-8 shrink-0 flex items-center justify-center text-sm rounded-sm transition-colors"
         title="Centrar"
@@ -221,8 +229,8 @@ watch(
         @click="editor.chain().focus().setTextAlign('right').run()"
         :class="
           editor?.isActive({ textAlign: 'right' })
-            ? 'bg-verde text-crema'
-            : 'text-verde-900 hover:bg-papel'
+            ? 'bg-terracota text-crema'
+            : 'text-antracita hover:bg-papel'
         "
         class="w-8 h-8 shrink-0 flex items-center justify-center text-sm rounded-sm transition-colors"
         title="Alinear a la derecha"
@@ -235,8 +243,8 @@ watch(
         @click="editor.chain().focus().setTextAlign('justify').run()"
         :class="
           editor?.isActive({ textAlign: 'justify' })
-            ? 'bg-verde text-crema'
-            : 'text-verde-900 hover:bg-papel'
+            ? 'bg-terracota text-crema'
+            : 'text-antracita hover:bg-papel'
         "
         class="w-8 h-8 shrink-0 flex items-center justify-center text-sm rounded-sm transition-colors"
         title="Justificar"
@@ -250,7 +258,7 @@ watch(
         type="button"
         @click="editor.chain().focus().undo().run()"
         :disabled="!editor?.can().undo()"
-        class="w-8 h-8 shrink-0 flex items-center justify-center text-sm text-verde-900 hover:bg-papel disabled:opacity-30 rounded-sm transition-colors"
+        class="w-8 h-8 shrink-0 flex items-center justify-center text-sm text-antracita hover:bg-papel disabled:opacity-30 rounded-sm transition-colors"
         title="Deshacer"
       >
         ↩
@@ -260,7 +268,7 @@ watch(
         type="button"
         @click="editor.chain().focus().redo().run()"
         :disabled="!editor?.can().redo()"
-        class="w-8 h-8 shrink-0 flex items-center justify-center text-sm text-verde-900 hover:bg-papel disabled:opacity-30 rounded-sm transition-colors"
+        class="w-8 h-8 shrink-0 flex items-center justify-center text-sm text-antracita hover:bg-papel disabled:opacity-30 rounded-sm transition-colors"
         title="Rehacer"
       >
         ↪
@@ -269,7 +277,7 @@ watch(
 
     <EditorContent
       :editor="editor"
-      class="tiptap-editor min-h-48 font-principal text-sm text-verde-900"
+      class="tiptap-editor min-h-48 font-principal text-sm text-antracita"
     />
   </div>
 </template>
@@ -292,14 +300,14 @@ watch(
 .tiptap-editor :deep(h2) {
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--color-verde-900);
+  color: var(--color-antracita);
   margin-top: 1rem;
   margin-bottom: 0.5rem;
 }
 .tiptap-editor :deep(h3) {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--color-verde-900);
+  color: var(--color-antracita);
   margin-top: 0.75rem;
   margin-bottom: 0.25rem;
 }
@@ -326,13 +334,13 @@ watch(
   font-style: italic;
 }
 .tiptap-editor :deep(a) {
-  color: var(--color-verde);
+  color: var(--color-terracota);
   text-decoration: underline;
   text-underline-offset: 2px;
   cursor: pointer;
 }
 .tiptap-editor :deep(a:hover) {
-  color: var(--color-verde-900);
+  color: var(--color-antracita);
 }
 :global(.swal2-input) {
   width: 100%;

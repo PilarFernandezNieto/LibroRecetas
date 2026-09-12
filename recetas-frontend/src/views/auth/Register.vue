@@ -16,7 +16,7 @@ const handleRegister = async () => await register(processing, errors, form.value
 
 <template>
   <AuthLayout>
-    <h1 class="font-titulares text-2xl text-verde-900 text-center mb-6">Registro</h1>
+    <h1 class="font-titulares text-2xl text-antracita text-center mb-6">Registro</h1>
     <form @submit.prevent="handleRegister()">
       <div>
         <InputLabel for="name" value="Nombre" />
@@ -70,7 +70,7 @@ const handleRegister = async () => await register(processing, errors, form.value
       <div class="flex items-center justify-center my-4">
         <RouterLink
           :to="{ name: 'login' }"
-          class="underline text-sm font-principal text-verde-900/70 hover:text-verde rounded-sm focus:outline-none"
+          class="underline text-sm font-principal text-antracita/70 hover:text-terracota rounded-sm focus:outline-none"
         >
           ¿Ya tienes cuenta? Inicia sesión
         </RouterLink>
@@ -81,7 +81,7 @@ const handleRegister = async () => await register(processing, errors, form.value
     </form>
     <RouterLink
       :to="{ name: 'home' }"
-      class="mt-4 flex justify-center text-sm font-principal text-verde-900/70 hover:text-verde"
+      class="mt-4 flex justify-center text-sm font-principal text-antracita/70 hover:text-terracota"
       >Atrás</RouterLink
     >
   </AuthLayout>

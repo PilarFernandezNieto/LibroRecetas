@@ -25,9 +25,9 @@ const is_admin = computed(() => (props.usuario.is_admin ? 'Admin' : 'User'))
   <div
     class="grid md:grid-cols-12 gap-1 lg:gap-4 items-center bg-crema p-5 border-b border-papel font-principal"
   >
-    <p class="text-base col-span-2 text-verde-900">{{ usuario.name }}</p>
-    <p class="text-base col-span-4 text-verde-900/80">{{ usuario.email }}</p>
-    <p class="col-span-3 uppercase text-xs tracking-wide text-verde-900/60">{{ is_admin }}</p>
+    <p class="text-base col-span-2 text-antracita">{{ usuario.name }}</p>
+    <p class="text-base col-span-4 text-antracita/80">{{ usuario.email }}</p>
+    <p class="col-span-3 uppercase text-xs tracking-wide text-antracita/60">{{ is_admin }}</p>
     <div class="flex justify-center gap-2 col-span-3">
       <EditButton :to="{ name: 'editar-usuario', params: { id: usuario.id } }"> </EditButton>
       <DeleteButton @click="showAlert(usuario.id)"> </DeleteButton>

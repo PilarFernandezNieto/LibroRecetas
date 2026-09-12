@@ -64,13 +64,13 @@ const handleLogin = async () => await login(processing, errors, form.value)
       <div class="flex flex-col md:flex-row md:justify-between items-center gap-2 my-4">
         <RouterLink
           :to="{ name: 'forgot-password' }"
-          class="underline text-xs font-principal text-antracita/70 hover:text-verde rounded-sm focus:outline-none"
+          class="underline text-xs font-principal text-antracita/70 hover:text-terracota rounded-sm focus:outline-none"
         >
           ¿Has olvidado tu contraseña?
         </RouterLink>
         <RouterLink
           :to="{ name: 'register' }"
-          class="underline text-xs font-principal text-antracita/70 hover:text-verde rounded-sm focus:outline-none"
+          class="underline text-xs font-principal text-antracita/70 hover:text-terracota rounded-sm focus:outline-none"
         >
           ¿Todavía no tienes cuenta?
         </RouterLink>

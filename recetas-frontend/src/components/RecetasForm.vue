@@ -289,7 +289,7 @@ const handleSubmit = () => {
 
   <Modal :show="showModal" @close="closeModal">
     <template #default>
-      <div class="p-6 font-principal text-verde-900">
+      <div class="p-6 font-principal text-antracita">
         <h3 class="font-titulares text-xl text-center">
           Añade la cantidad de {{ ingredienteSeleccionado?.nombre }}
         </h3>
@@ -313,7 +313,7 @@ const handleSubmit = () => {
         <div class="mt-4 flex justify-center gap-3">
           <button
             type="button"
-            class="px-4 py-2 rounded-sm border border-papel text-verde-900/70 hover:bg-papel"
+            class="px-4 py-2 rounded-sm border border-papel text-antracita/70 hover:bg-papel"
             @click="closeModal"
           >
             Cancelar

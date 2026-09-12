@@ -19,7 +19,7 @@ const handleCategoria = async () =>
 <template>
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="font-titulares text-3xl text-verde-900 leading-tight">Nueva categoría</h2>
+      <h2 class="font-titulares text-3xl text-antracita leading-tight">Nueva categoría</h2>
     </template>
     <div class="py-12">
       <div class="w-contenedor-sm mx-auto sm:px-6 lg:px-8">

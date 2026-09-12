@@ -71,13 +71,13 @@ const getRecetasIndex = async (page = 1, search = '') => {
           </div>
           <div class="flex-1 min-w-70 max-w-xl">
             <span
-              class="inline-block text-verde font-principal font-semibold text-sm tracking-widest uppercase mb-4"
+              class="inline-block text-terracota font-principal font-semibold text-sm tracking-widest uppercase mb-4"
               >Recetario</span
             >
-            <h1 class="font-titulares text-4xl md:text-5xl leading-tight text-verde-900 mb-5">
+            <h1 class="font-titulares text-4xl md:text-5xl leading-tight text-antracita mb-5">
               Recetas para compartir
             </h1>
-            <p class="text-verde-900/80 font-principal text-lg mb-8 max-w-md">
+            <p class="text-antracita/80 font-principal text-lg mb-8 max-w-md">
               Una colección de platos con ingredientes honestos, pasos claros y fotografías que
               huelen a casa.
             </p>
@@ -88,7 +88,7 @@ const getRecetasIndex = async (page = 1, search = '') => {
 
       <!-- RECETAS -->
       <section class="w-full max-w-7xl mx-auto pb-16">
-        <h2 class="font-titulares text-2xl md:text-3xl text-verde-900 mb-6">Recetas destacadas</h2>
+        <h2 class="font-titulares text-2xl md:text-3xl text-antracita mb-6">Recetas destacadas</h2>
 
         <template v-if="loading">
           <div class="flex justify-center mb-8">

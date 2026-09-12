@@ -26,8 +26,15 @@ const handleSubmit = async (formData) => {
 <template>
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="font-titulares text-3xl text-verde-900 leading-tight">Editar ingrediente</h2>
+      <h2 class="font-titulares text-3xl text-antracita leading-tight">Editar ingrediente</h2>
     </template>
-    <IngredienteForm v-if="ingrediente" :ingrediente="ingrediente" :errors="errors" :processing="processing" textoBoton="Guardar cambios" @submit="handleSubmit" />
+    <IngredienteForm
+      v-if="ingrediente"
+      :ingrediente="ingrediente"
+      :errors="errors"
+      :processing="processing"
+      textoBoton="Guardar cambios"
+      @submit="handleSubmit"
+    />
   </AuthenticatedLayout>
 </template>

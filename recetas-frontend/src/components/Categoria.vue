@@ -22,7 +22,7 @@ const showAlert = (id) => {
 </script>
 <template>
   <div class="flex bg-crema justify-between items-center p-4 border-b border-papel font-principal">
-    <h4 class="font-principal text-xl text-verde-900">{{ categoria.nombre }}</h4>
+    <h4 class="font-principal text-xl text-antracita">{{ categoria.nombre }}</h4>
     <div class="flex justify-center gap-2">
       <EditButton :to="{ name: 'editar-categoria', params: { id: categoria.id } }"> </EditButton>
       <DeleteButton @click="showAlert(categoria.id)"> </DeleteButton>

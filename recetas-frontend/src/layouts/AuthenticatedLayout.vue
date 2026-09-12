@@ -75,7 +75,7 @@ const showingNavigationDropdown = ref(false)
           <div class="-mr-2 flex items-center sm:hidden">
             <button
               @click="showingNavigationDropdown = !showingNavigationDropdown"
-              class="inline-flex items-center justify-center p-2 rounded-sm text-verde-900/50 hover:text-verde hover:bg-papel focus:outline-none focus:bg-papel focus:text-verde transition duration-150 ease-in-out"
+              class="inline-flex items-center justify-center p-2 rounded-sm text-antracita/50 hover:text-terracota hover:bg-papel focus:outline-none focus:bg-papel focus:text-terracota transition duration-150 ease-in-out"
             >
               <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                 <path
@@ -123,8 +123,8 @@ const showingNavigationDropdown = ref(false)
         </div>
         <div class="pt-4 pb-1 border-t border-papel">
           <div class="px-4">
-            <div class="font-medium text-base text-verde-900">{{ user?.name }}</div>
-            <div class="font-medium text-base text-verde-900/60">{{ user?.email }}</div>
+            <div class="font-medium text-base text-antracita">{{ user?.name }}</div>
+            <div class="font-medium text-base text-antracita/60">{{ user?.email }}</div>
           </div>
           <div class="mt-3 space-y-1">
             <ResponsiveNavButton @click="logout()">Cierra sesión</ResponsiveNavButton>

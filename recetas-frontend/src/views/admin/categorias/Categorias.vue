@@ -13,7 +13,7 @@ onMounted(() => categoriaStore.fetchCategorias())
 <template>
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="font-titulares text-3xl text-verde-900 leading-tight">Listado de categorías</h2>
+      <h2 class="font-titulares text-3xl text-antracita leading-tight">Listado de categorías</h2>
     </template>
     <div class="py-12">
       <div class="w-[90%] lg:w-full max-w-7xl mx-auto sm:px-6 lg:px-8">

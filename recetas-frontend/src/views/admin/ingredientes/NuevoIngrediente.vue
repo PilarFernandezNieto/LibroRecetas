@@ -8,13 +8,20 @@ const ingredienteStore = useIngredienteStore()
 const processing = ref(false)
 const errors = ref({})
 const ingredienteInicial = { nombre: '', descripcion: '', imagen: null }
-const handleSubmit = async (formData) => await ingredienteStore.nuevoIngrediente(processing, errors, formData)
+const handleSubmit = async (formData) =>
+  await ingredienteStore.nuevoIngrediente(processing, errors, formData)
 </script>
 <template>
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="font-titulares text-3xl text-verde-900 leading-tight">Nuevo ingrediente</h2>
+      <h2 class="font-titulares text-3xl text-antracita leading-tight">Nuevo ingrediente</h2>
     </template>
-    <IngredienteForm :ingrediente="ingredienteInicial" :errors="errors" :processing="processing" textoBoton="Nuevo ingrediente" @submit="handleSubmit" />
+    <IngredienteForm
+      :ingrediente="ingredienteInicial"
+      :errors="errors"
+      :processing="processing"
+      textoBoton="Nuevo ingrediente"
+      @submit="handleSubmit"
+    />
   </AuthenticatedLayout>
 </template>

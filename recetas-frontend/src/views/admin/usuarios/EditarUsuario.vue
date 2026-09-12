@@ -31,7 +31,7 @@ const adminChecked = computed({
 <template>
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="font-titulares text-3xl text-verde-900 leading-tight">Editar usuario</h2>
+      <h2 class="font-titulares text-3xl text-antracita leading-tight">Editar usuario</h2>
     </template>
     <div class="py-12">
       <div class="w-[90%] lg:w-contenedor-sm md:w-3/4 mx-auto sm:px-6 lg:px-8">
