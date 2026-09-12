@@ -55,7 +55,7 @@ watch(buscar, (nuevoValor) => {
             <NewElementLink :to="{ name: 'nueva-receta' }">Nueva receta</NewElementLink>
           </div>
           <div
-            class="grid md:grid-cols-12 gap-1 lg:gap-4 px-2 pb-2 border-b border-papel text-xs uppercase tracking-wide text-antracita/50 font-principal"
+            class="grid md:grid-cols-12 gap-1 lg:gap-4 px-2 pb-2 border-b border-papel text-xs uppercase tracking-wide text-antracita/80 font-principal"
           >
             <span class="col-span-1"></span>
             <span class="col-span-4">Receta</span>

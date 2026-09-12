@@ -24,7 +24,7 @@ onMounted(() => usuarioStore.fetchUsers())
           </template>
           <div class="rounded-sm overflow-hidden border border-papel">
             <div
-              class="grid md:grid-cols-12 gap-1 lg:gap-4 px-2 pb-2 border-b border-papel text-xs uppercase tracking-wide text-antracita/50 font-principal"
+              class="grid md:grid-cols-12 gap-1 lg:gap-4 px-2 pb-2 border-b border-papel text-xs uppercase tracking-wide text-antracita/80 font-principal"
             >
               <span class="col-span-2">Nombre</span><span class="col-span-4">Email</span
               ><span class="col-span-3">Rol</span><span class="col-span-3"></span>

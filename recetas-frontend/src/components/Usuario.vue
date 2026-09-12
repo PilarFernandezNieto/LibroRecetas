@@ -25,7 +25,7 @@ const is_admin = computed(() => (props.usuario.is_admin ? 'Admin' : 'User'))
   <div
     class="grid md:grid-cols-12 gap-1 lg:gap-4 items-center bg-crema p-5 border-b border-papel font-principal"
   >
-    <p class="text-base col-span-2 text-antracita">{{ usuario.name }}</p>
+    <p class="text-xl col-span-2 text-antracita">{{ usuario.name }}</p>
     <p class="text-base col-span-4 text-antracita/80">{{ usuario.email }}</p>
     <p class="col-span-3 uppercase text-xs tracking-wide text-antracita/60">{{ is_admin }}</p>
     <div class="flex justify-center gap-2 col-span-3">

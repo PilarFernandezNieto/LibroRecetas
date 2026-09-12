@@ -44,14 +44,14 @@ const showAlert = (slug) => {
     <div class="col-span-4 min-w-0">
       <RouterLink
         :to="{ name: 'receta', params: { slug: receta.slug } }"
-        class="font-titulares text-base text-terracota-oscuro hover:text-terracota block"
+        class="text-xl text-antracita hover:text-antracita/80 block"
         title="Ver receta"
         >{{ receta.nombre }}</RouterLink
       >
     </div>
-    <p class="col-span-2 text-terracota-oscuro/80 truncate">{{ receta.categoria?.nombre }}</p>
-    <p class="col-span-1 text-terracota-oscuro/80 truncate">{{ receta.dificultad?.nombre }}</p>
-    <p class="col-span-2 text-terracota-oscuro/80 truncate">{{ receta.tiempo }}</p>
+    <p class="col-span-2 text-antracita/80 truncate">{{ receta.categoria?.nombre }}</p>
+    <p class="col-span-1 text-antracita/80 truncate">{{ receta.dificultad?.nombre }}</p>
+    <p class="col-span-2 text-antracita/80 truncate">{{ receta.tiempo }}</p>
     <div class="flex justify-center gap-2 col-span-2">
       <EditButton :to="{ name: 'editar-receta', params: { slug: receta.slug } }"></EditButton>
       <DeleteButton @click="showAlert(receta.slug)"></DeleteButton>
