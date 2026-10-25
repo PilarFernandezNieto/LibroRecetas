@@ -31,13 +31,12 @@ La API queda disponible en **http://localhost:8000**.
 | -------------------------- | ------------------------------------------------ | ----------------------- |
 | `APP_URL`                  | URL del propio backend                           | `http://localhost:8000` |
 | `DB_CONNECTION`            | Motor de base de datos                           | `sqlite` / `mysql`      |
-| `FRONTEND_URL`             | URL del frontend Vue (para CORS)                 | `http://localhost:3000` |
-| `SANCTUM_STATEFUL_DOMAINS` | Dominios con acceso a sesión (sin protocolo)     | `localhost:3000`        |
-| `SESSION_DOMAIN`           | Dominio de la cookie de sesión                   | `localhost`             |
+| `FRONTEND_URL`             | URL del frontend Vue (enlaces de los correos)    | `http://localhost:3000` |
+| `CORS_ALLOWED_ORIGINS`     | Orígenes CORS permitidos (separados por comas)   | `http://localhost:3000` |
 | `MAIL_*`                   | Configuración de correo (recuperación contraseña)| —                       |
 | `FILESYSTEM_DISK`          | Disco de almacenamiento de imágenes              | `public`                |
 
-> **En producción** configura `SESSION_SECURE_COOKIE=true`, `SESSION_SAME_SITE=none` (si frontend y backend están en dominios distintos) y un driver de caché real (`CACHE_DRIVER=redis` o `database`).
+> **En producción** define `CORS_ALLOWED_ORIGINS` con la URL exacta del frontend (por ejemplo la de Vercel, sin barra final), `FRONTEND_URL` con esa misma URL, y usa un driver de caché real (`CACHE_DRIVER=redis` o `database`). Si `CORS_ALLOWED_ORIGINS` está vacío, el navegador bloqueará todas las peticiones del frontend.
 
 ---
 
@@ -168,15 +167,17 @@ Protegidas por `auth:sanctum + verified + is_admin`.
 
 ---
 
-## Autenticación — Sanctum SPA
+## Autenticación — Sanctum con tokens Bearer
 
-Este backend usa autenticación basada en **cookies de sesión**, no en tokens Bearer. El flujo desde el frontend es:
+Este backend usa **tokens Bearer** (Sanctum personal access tokens), sin cookies de sesión ni CSRF, de modo que el frontend puede estar en otro dominio. El flujo desde el frontend es:
 
-1. `GET /sanctum/csrf-cookie` — obtiene la cookie CSRF antes del primer login.
-2. `POST /login` — establece la cookie de sesión `HttpOnly`.
-3. Todas las peticiones incluyen `withCredentials: true` para enviar las cookies automáticamente.
+1. `POST /api/login` (o `POST /api/register`) devuelve `{ token, user }`.
+2. El frontend guarda el token en `localStorage` y lo envía en cada petición con la cabecera `Authorization: Bearer <token>`.
+3. `POST /api/logout` revoca el token con el que se hizo la petición.
 
-Para que funcione en desarrollo, `SANCTUM_STATEFUL_DOMAINS` y `SESSION_DOMAIN` deben coincidir con el dominio del frontend (sin protocolo ni barra final).
+Las rutas protegidas usan el middleware `auth:sanctum`. La única ruta que se usa sin Bearer es `GET /api/verify-email/{id}/{hash}`: el enlace del correo lo abre directamente el navegador, así que se protege con una URL firmada (`signed`) y con la comprobación del `hash`.
+
+Para que el navegador permita las peticiones desde otro dominio, `CORS_ALLOWED_ORIGINS` debe contener la URL del frontend (sin barra final).
 
 ---
 
@@ -218,22 +219,9 @@ php artisan tinker                 # Consola interactiva de Laravel
 
 ## Despliegue en producción
 
-Desplegado en un VPS (Ubuntu + Apache), sirviendo **frontend y backend desde el mismo dominio** (el `dist/` de Vite se copia dentro de `public/`, junto al `index.php` de Laravel). Al ir en el mismo origen, no hace falta CORS entre ambos.
+La API está desplegada en un VPS (Ubuntu + Apache). El **frontend se despliega aparte en Vercel**, en otro dominio, por lo que se usan tokens Bearer y CORS. En el `.env` del servidor deben estar `CORS_ALLOWED_ORIGINS` y `FRONTEND_URL` con la URL exacta del frontend en Vercel (sin barra final); sin ellas el navegador bloquea las peticiones. Ver [recetas-frontend/README.md](../recetas-frontend/README.md#build-y-despliegue-en-producción) para el despliegue del frontend.
 
 La subida de archivos se hace manualmente por SFTP (no hay git en el servidor); los comandos de mantenimiento se ejecutan por SSH usando el script [`deploy.sh`](deploy.sh) incluido en la raíz del proyecto. Los datos concretos del servidor (dominio, rutas, proveedor) están documentados aparte en notas privadas, no en este repo público.
-
-### Flujo — solo cambios de frontend
-
-```bash
-# 1. En el servidor, por SSH, dentro de la carpeta de la app: vacía los assets del build anterior
-./deploy.sh pre
-
-# 2. En local: build de producción (ver recetas-frontend/README.md)
-# 3. Sube por SFTP index.html y la carpeta assets/ a la carpeta public/ del servidor
-
-# 4. En el servidor: limpia y recachea Laravel
-./deploy.sh post
-```
 
 ### Flujo — con cambios de backend
 
@@ -245,7 +233,7 @@ La subida de archivos se hace manualmente por SFTP (no hay git en el servidor); 
 
 `--composer` reinstala dependencias (`composer install --no-dev --optimize-autoloader`); `--migrate` corre `php artisan migrate --force`. Omite el flag correspondiente si no aplica.
 
-⚠️ No subir nunca `.env` por SFTP desde local — el del servidor tiene sus propios valores de producción (`APP_ENV=production`, `SESSION_DOMAIN`, etc.) y sobrescribirlo rompería la sesión/CORS.
+⚠️ No subir nunca `.env` por SFTP desde local — el del servidor tiene sus propios valores de producción (`APP_ENV=production`, `CORS_ALLOWED_ORIGINS`, `FRONTEND_URL`, etc.) y sobrescribirlo rompería el CORS y los enlaces de los correos.
 
 ---
 

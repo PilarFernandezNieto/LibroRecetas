@@ -31,13 +31,12 @@ La API queda disponible en **http://localhost:8000**.
 | -------------------------- | ------------------------------------------------ | ----------------------- |
 | `APP_URL`                  | URL del propio backend                           | `http://localhost:8000` |
 | `DB_CONNECTION`            | Motor de base de datos                           | `sqlite` / `mysql`      |
-| `FRONTEND_URL`             | URL del frontend Vue (para CORS)                 | `http://localhost:3000` |
-| `SANCTUM_STATEFUL_DOMAINS` | Dominios con acceso a sesión (sin protocolo)     | `localhost:3000`        |
-| `SESSION_DOMAIN`           | Dominio de la cookie de sesión                   | `localhost`             |
+| `FRONTEND_URL`             | URL del frontend Vue (enlaces de los correos)    | `http://localhost:3000` |
+| `CORS_ALLOWED_ORIGINS`     | Orígenes CORS permitidos (separados por comas)   | `http://localhost:3000` |
 | `MAIL_*`                   | Configuración de correo (recuperación contraseña)| —                       |
 | `FILESYSTEM_DISK`          | Disco de almacenamiento de imágenes              | `public`                |
 
-> **En producción** configura `SESSION_SECURE_COOKIE=true`, `SESSION_SAME_SITE=none` (si frontend y backend están en dominios distintos) y un driver de caché real (`CACHE_DRIVER=redis` o `database`).
+> **En producción** define `CORS_ALLOWED_ORIGINS` con la URL exacta del frontend (por ejemplo la de Vercel, sin barra final), `FRONTEND_URL` con esa misma URL, y usa un driver de caché real (`CACHE_DRIVER=redis` o `database`). Si `CORS_ALLOWED_ORIGINS` está vacío, el navegador bloqueará todas las peticiones del frontend.
 
 ---
 
@@ -168,15 +167,17 @@ Protegidas por `auth:sanctum + verified + is_admin`.
 
 ---
 
-## Autenticación — Sanctum SPA
+## Autenticación — Sanctum con tokens Bearer
 
-Este backend usa autenticación basada en **cookies de sesión**, no en tokens Bearer. El flujo desde el frontend es:
+Este backend usa **tokens Bearer** (Sanctum personal access tokens), sin cookies de sesión ni CSRF, de modo que el frontend puede estar en otro dominio. El flujo desde el frontend es:
 
-1. `GET /sanctum/csrf-cookie` — obtiene la cookie CSRF antes del primer login.
-2. `POST /login` — establece la cookie de sesión `HttpOnly`.
-3. Todas las peticiones incluyen `withCredentials: true` para enviar las cookies automáticamente.
+1. `POST /api/login` (o `POST /api/register`) devuelve `{ token, user }`.
+2. El frontend guarda el token en `localStorage` y lo envía en cada petición con la cabecera `Authorization: Bearer <token>`.
+3. `POST /api/logout` revoca el token con el que se hizo la petición.
 
-Para que funcione en desarrollo, `SANCTUM_STATEFUL_DOMAINS` y `SESSION_DOMAIN` deben coincidir con el dominio del frontend (sin protocolo ni barra final).
+Las rutas protegidas usan el middleware `auth:sanctum`. La única ruta que se usa sin Bearer es `GET /api/verify-email/{id}/{hash}`: el enlace del correo lo abre directamente el navegador, así que se protege con una URL firmada (`signed`) y con la comprobación del `hash`.
+
+Para que el navegador permita las peticiones desde otro dominio, `CORS_ALLOWED_ORIGINS` debe contener la URL del frontend (sin barra final).
 
 ---
 
@@ -301,7 +302,7 @@ src/
 │   └── useImagen.js         # getImagen(): construye la URL pública de una imagen
 │
 ├── utils/
-│   └── axios.js             # Instancia Axios configurada (baseURL, withCredentials, timeout)
+│   └── axios.js             # Instancia Axios configurada (baseURL, token Bearer, timeout)
 │
 ├── components/              # Componentes reutilizables
 │   ├── Receta.vue           # Tarjeta de receta (panel admin)
@@ -369,15 +370,17 @@ src/
 
 ## Arquitectura y decisiones de diseño
 
-### Autenticación (Sanctum SPA)
+### Autenticación (Sanctum con tokens Bearer)
 
-La autenticación usa **cookies de sesión**, no tokens Bearer. El flujo es:
+La autenticación usa **tokens Bearer**, no cookies de sesión. El flujo es:
 
-1. Antes de hacer login, el frontend llama a `/sanctum/csrf-cookie` para obtener la cookie CSRF.
-2. Las peticiones posteriores incluyen automáticamente `withCredentials: true` gracias a la configuración global de Axios.
-3. El router verifica el estado de autenticación en cada navegación (`router.beforeEach`) llamando a `auth.fetchUser()` una sola vez por sesión.
+1. `login` y `register` (en `src/stores/auth.js`) reciben `{ token, user }` de la API y guardan el token en `localStorage` (clave `auth_token`).
+2. Un interceptor de petición de Axios (`src/utils/axios.js`) añade `Authorization: Bearer <token>` a cada petición si hay token.
+3. El router verifica el estado de autenticación en cada navegación (`router.beforeEach`) llamando a `auth.fetchUser()` si aún no hay usuario cargado; sin token no se llama a la API.
+4. Si la API responde 401, el interceptor de respuesta borra el token y el guard del router redirige al login.
+5. `logout` revoca el token en el servidor y lo borra de `localStorage`.
 
-La cookie de sesión es `HttpOnly`, por lo que el frontend nunca tiene acceso directo al token.
+Al estar en `localStorage`, el token es accesible desde JavaScript: hay que evitar cualquier vulnerabilidad XSS (de ahí el uso de DOMPurify para el contenido enriquecido).
 
 ### Guards de navegación
 
@@ -415,7 +418,7 @@ La instancia compartida de `QueryClient` está en `src/queryClient.js`. Los stor
 
 `src/utils/axios.js` configura una instancia global con:
 - `baseURL`: leída de `VITE_APP_BACKEND_URL`
-- `withCredentials: true`: necesario para enviar cookies Sanctum
+- Interceptor de petición: añade la cabecera `Authorization: Bearer <token>` leyendo el token de `localStorage`
 - `timeout: 15000 ms`: evita estados de carga permanentes ante peticiones colgadas
 - Interceptor de respuesta: captura errores `ECONNABORTED` (timeout) y `ERR_NETWORK` para mostrar un toast en lugar de fallar silenciosamente
 
