@@ -17,31 +17,24 @@ return [
 
     //'paths' => ['*'],
     'paths' => [
-        'api/*',
-        'sanctum/csrf-cookie',
-        'login',
-        'logout',
-        'register',
-        'forgot-password',
-        'reset-password',
-        'email/*'
+        'api/*'
     ],
 
     'allowed_methods' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
 
     //'allowed_origins' => [env('FRONTEND_URL', 'https://recetas-frontend-one.vercel.app')],
-    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000')],
+    'allowed_origins' => array_filter(explode(',', env('CORS_ALLOWED_ORIGINS', ''))),
 
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['Content-Type', 'X-Requested-With', 'X-XSRF-TOKEN', 'Accept'],
+    'allowed_headers' => ['Content-Type', 'X-Requested-With', 'Accept', 'Authorization'],
 
 
     'exposed_headers' => [],
 
     'max_age' => 0,
 
-    'supports_credentials' => true,
+    'supports_credentials' => false,
 
 ];

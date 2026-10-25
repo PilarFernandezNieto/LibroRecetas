@@ -6,7 +6,7 @@ API REST desarrollada con **Laravel 11 + Sanctum** que gestiona recetas, ingredi
 
 ## Requisitos previos
 
-- PHP >= 8.2
+- PHP >= 8.3
 - Composer
 - SQLite (por defecto) o MySQL/PostgreSQL
 
@@ -256,4 +256,4 @@ La subida de archivos se hace manualmente por SFTP (no hay git en el servidor); 
 | Laravel         | ^11.31  |
 | Laravel Sanctum | ^4.0    |
 | Laravel Breeze  | ^2.3    |
-| PHP             | ^8.2    |
+| PHP             | ^8.3    |
