@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Receta;
 use App\Traits\ImageHandler;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\RecetaIngrediente;
 use App\Http\Requests\RecetaRequest;
 use Illuminate\Database\Eloquent\Builder;
@@ -55,40 +56,42 @@ class RecetaController extends Controller
         }
 
 
-        $receta->nombre = $datos['nombre'];
-        $receta->origen = $datos['origen'];
-        $receta->tiempo = $datos['tiempo'];
-        $receta->comensales = $datos['comensales'];
-        $receta->dificultad_id = $datos['dificultad_id'];
-        $receta->categoria_id = $datos['categoria_id'];
-        $receta->intro = $datos['intro'];
-        $receta->instrucciones = $datos['instrucciones'];
-        $receta->imagen = $datos['imagen'];
+        try {
+            DB::transaction(function () use ($receta, $datos) {
+                $receta->nombre = $datos['nombre'];
+                $receta->origen = $datos['origen'];
+                $receta->tiempo = $datos['tiempo'];
+                $receta->comensales = $datos['comensales'];
+                $receta->dificultad_id = $datos['dificultad_id'];
+                $receta->categoria_id = $datos['categoria_id'];
+                $receta->intro = $datos['intro'];
+                $receta->instrucciones = $datos['instrucciones'];
+                $receta->imagen = $datos['imagen'];
 
+                $receta->save();
 
-        $receta->save();
-
-
-        // Obtener el id de la receta
-        $id = $receta->id;
-
-        // Obtener los ingredientes
-        $ingredientes = $datos['ingredientes'];
-
-        // Formatear los ingredientes
-        $receta_ingrediente = [];
-        foreach ($ingredientes as $ingrediente) {
-            $receta_ingrediente[] = [
-                'receta_id' => $id,
-                'ingrediente_id' => $ingrediente['ingrediente_id'],
-                'cantidad' => $ingrediente['cantidad'],
-                'unidad' => $ingrediente['unidad'],
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ];
+                // Formatear los ingredientes
+                $receta_ingrediente = [];
+                foreach ($datos['ingredientes'] as $ingrediente) {
+                    $receta_ingrediente[] = [
+                        'receta_id' => $receta->id,
+                        'ingrediente_id' => $ingrediente['ingrediente_id'],
+                        'cantidad' => $ingrediente['cantidad'],
+                        'unidad' => $ingrediente['unidad'],
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
+                    ];
+                }
+                // Almacena los ingredientes en la tabla pivote
+                RecetaIngrediente::insert($receta_ingrediente);
+            });
+        } catch (\Throwable $e) {
+            // La BD ya se ha revertido; evitamos dejar la imagen huérfana
+            if ($datos['imagen']) {
+                $this->borraImagen($datos['imagen']);
+            }
+            throw $e;
         }
-        // Almacena los ingredientes en la tabla pivote
-        RecetaIngrediente::insert($receta_ingrediente);
 
         return [
             "type" => "success",
@@ -113,44 +116,63 @@ class RecetaController extends Controller
     {
         $datos = $request->validated();
 
-        if ($request->hasFile('imagen')) {
-            $this->borraImagen($receta->imagen);
+        $imagenAnterior = $receta->imagen;
+        $imagenNueva = $request->hasFile('imagen');
+
+        if ($imagenNueva) {
             $imagen = $this->guardarImagen($request->imagen);
             $datos['imagen'] = $this->convertToWebp($imagen);
         } else {
-            $datos['imagen'] = $receta->imagen;
+            $datos['imagen'] = $imagenAnterior;
         }
-        $receta->update([
-            'nombre' => $datos['nombre'],
-            'origen' => $datos['origen'],
-            'tiempo' => $datos['tiempo'],
-            'comensales' => $datos['comensales'],
-            'dificultad_id' => $datos['dificultad_id'],
-            'categoria_id' => $datos['categoria_id'],
-            'intro' => $datos['intro'],
-            'instrucciones' => $datos['instrucciones'],
-            'imagen' => $datos['imagen']
-        ]);
 
-        // Actualizar ingredientes
-        if (isset($datos['ingredientes'])) {
-            // Eliminar ingredientes existentes para evitar duplicados
-            RecetaIngrediente::where('receta_id', $receta->id)->delete();
+        try {
+            DB::transaction(function () use ($receta, $datos) {
+                $receta->update([
+                    'nombre' => $datos['nombre'],
+                    'origen' => $datos['origen'],
+                    'tiempo' => $datos['tiempo'],
+                    'comensales' => $datos['comensales'],
+                    'dificultad_id' => $datos['dificultad_id'],
+                    'categoria_id' => $datos['categoria_id'],
+                    'intro' => $datos['intro'],
+                    'instrucciones' => $datos['instrucciones'],
+                    'imagen' => $datos['imagen']
+                ]);
 
-            $receta_ingrediente = [];
-            foreach ($datos['ingredientes'] as $ingrediente) {
-                $receta_ingrediente[] = [
-                    'receta_id' => $receta->id,
-                    'ingrediente_id' => $ingrediente['ingrediente_id'],
-                    'cantidad' => $ingrediente['cantidad'],
-                    'unidad' => $ingrediente['unidad'],
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now()
-                ];
+                // Actualizar ingredientes
+                if (isset($datos['ingredientes'])) {
+                    // Eliminar ingredientes existentes para evitar duplicados
+                    RecetaIngrediente::where('receta_id', $receta->id)->delete();
+
+                    $receta_ingrediente = [];
+                    foreach ($datos['ingredientes'] as $ingrediente) {
+                        $receta_ingrediente[] = [
+                            'receta_id' => $receta->id,
+                            'ingrediente_id' => $ingrediente['ingrediente_id'],
+                            'cantidad' => $ingrediente['cantidad'],
+                            'unidad' => $ingrediente['unidad'],
+                            'created_at' => Carbon::now(),
+                            'updated_at' => Carbon::now()
+                        ];
+                    }
+
+                    RecetaIngrediente::insert($receta_ingrediente);
+                }
+            });
+        } catch (\Throwable $e) {
+            // La BD ya se ha revertido; descartamos solo la imagen recién subida
+            if ($imagenNueva) {
+                $this->borraImagen($datos['imagen']);
             }
-
-            RecetaIngrediente::insert($receta_ingrediente);
+            throw $e;
         }
+
+        // Con la transacción confirmada, ya es seguro borrar la imagen anterior
+        if ($imagenNueva && $imagenAnterior) {
+            $this->borraImagen($imagenAnterior);
+        }
+
         return [
             "type" => "success",
             "message" => "Receta actualizada correctamente",
