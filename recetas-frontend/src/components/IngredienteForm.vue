@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import InputLabel from './InputLabel.vue'
 import TextInput from './TextInput.vue'
 import PrimaryButton from './PrimaryButton.vue'
@@ -24,6 +24,8 @@ const nuevaImagen = ref(null)
 const handleImageChange = (e) => {
   nuevaImagen.value = e.target.files[0]
 }
+// Recetas que usan este ingrediente (solo vienen al editar, desde el show del backend)
+const recetas = computed(() => props.ingrediente.recetas ?? [])
 
 const handleSubmit = () => {
   const formData = new FormData()
@@ -78,6 +80,25 @@ const handleSubmit = () => {
                 class="mt-2 w-full min-h-28 p-2 bg-papel border border-crema focus:border-crema focus:ring-crema shadow-sm rounded-sm"
               ></textarea>
               <InputError class="mt-2" :message="errors.descripcion?.[0]" />
+            </div>
+            <div v-if="recetas.length" class="mt-6">
+              <InputLabel value="Recetas con este ingrediente" />
+              <ul class="mt-2 flex flex-wrap gap-2">
+                <li v-for="receta in recetas" :key="receta.id">
+                  <RouterLink
+                    :to="{ name: 'receta', params: { slug: receta.slug } }"
+                    class="inline-flex items-center gap-2 border border-crema rounded-sm py-1 px-3 text-sm hover:bg-crema"
+                  >
+                    <img
+                      v-if="getImagen(receta.imagen)"
+                      :src="getImagen(receta.imagen)"
+                      :alt="receta.nombre"
+                      class="w-8 h-8 object-cover rounded-sm"
+                    />
+                    {{ receta.nombre }}
+                  </RouterLink>
+                </li>
+              </ul>
             </div>
 
             <div class="mt-6 flex justify-end gap-3">

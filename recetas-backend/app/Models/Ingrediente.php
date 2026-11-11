@@ -10,4 +10,9 @@ class Ingrediente extends Model
     use HasSlug;
 
     protected $fillable = ['nombre', 'imagen', 'descripcion'];
+
+    public function recetas()
+    {
+        return $this->belongsToMany(Receta::class, 'receta_ingredientes');
+    }
 }
