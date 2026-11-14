@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnotacionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecetaController;
@@ -27,3 +28,10 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'verified', 'is_admin'])->gr
 
 Route::get('/recetas', [RecetaController::class, 'index']);
 Route::get('/recetas/{receta}', [RecetaController::class, 'show']);
+Route::get('/recetas/{receta}/anotaciones', [AnotacionController::class, 'index']);
+
+Route::middleware(['auth:sanctum', 'verified', 'throttle:10,1'])->group(function () {
+    Route::post('/recetas/{receta}/anotaciones', [AnotacionController::class, 'store']);
+    Route::put('/anotaciones/{anotacion}', [AnotacionController::class, 'update']);
+    Route::delete('/anotaciones/{anotacion}', [AnotacionController::class, 'destroy']);
+});

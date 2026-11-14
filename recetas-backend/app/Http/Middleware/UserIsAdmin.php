@@ -15,9 +15,9 @@ class UserIsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-         $user = $request->user();
+        $user = $request->user();
 
-        if($user && $user->is_admin !== 1){
+        if (!$user?->is_admin) {
             return response()->json([
                 'error' => 'Acceso denegado.',
             ], 403);

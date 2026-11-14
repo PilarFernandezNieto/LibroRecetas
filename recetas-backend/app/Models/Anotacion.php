@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Anotaciones extends Model
+class Anotacion extends Model
 {
     protected $table = 'anotaciones';
     protected $fillable = ['texto', 'valoracion', 'fecha_prueba'];

@@ -46,6 +46,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean'
         ];
     }
 
@@ -56,6 +57,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function anotaciones()
     {
-        return $this->hasMany(Anotaciones::class);
+        return $this->hasMany(Anotacion::class);
     }
 }

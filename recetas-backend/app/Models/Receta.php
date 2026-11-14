@@ -25,6 +25,6 @@ class Receta extends Model
     }
     public function anotaciones()
     {
-        return $this->hasMany(Anotaciones::class);
+        return $this->hasMany(Anotacion::class);
     }
 }
