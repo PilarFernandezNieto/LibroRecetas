@@ -27,7 +27,8 @@ class RecetaController extends Controller
         $query = Receta::with(['dificultad', 'categoria', 'ingredientes'])
             ->orderBy('recetas.nombre', 'ASC')
             ->join('categorias', 'categorias.id', '=', 'recetas.categoria_id') // JOIN categoras ON categorias.id = recetas.categoria_id (para buscar por nombre de categoría)
-            ->select('recetas.*');
+            ->select('recetas.*')
+            ->loadAvg('anotaciones', 'valoracion')->loadCount('anotaciones');
         // Si hay término de búsqueda, aplicar filtro por nombre o categoría
         if ($buscar) {
             $query->where(function (Builder $q) use ($buscar) {
@@ -56,12 +57,12 @@ class RecetaController extends Controller
 
 
         $receta->nombre = $datos['nombre'];
-        $receta->origen = $datos['origen'];
-        $receta->tiempo = $datos['tiempo'];
-        $receta->comensales = $datos['comensales'];
+        $receta->origen = $datos['origen'] ?? null;
+        $receta->tiempo = $datos['tiempo'] ?? null;
+        $receta->comensales = $datos['comensales'] ?? null;
         $receta->dificultad_id = $datos['dificultad_id'];
         $receta->categoria_id = $datos['categoria_id'];
-        $receta->intro = $datos['intro'];
+        $receta->intro = $datos['intro'] ?? null;
         $receta->instrucciones = $datos['instrucciones'];
         $receta->imagen = $datos['imagen'];
 
@@ -81,8 +82,8 @@ class RecetaController extends Controller
             $receta_ingrediente[] = [
                 'receta_id' => $id,
                 'ingrediente_id' => $ingrediente['ingrediente_id'],
-                'cantidad' => $ingrediente['cantidad'],
-                'unidad' => $ingrediente['unidad'],
+                'cantidad' => $ingrediente['cantidad'] ?? null,
+                'unidad' => $ingrediente['unidad'] ?? null,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ];
@@ -102,7 +103,7 @@ class RecetaController extends Controller
     public function show(Receta $receta)
     {
         // Carga un ingrediente con los datos de las tablas relacionadas (dificultades - ingredientes)
-        return $receta->load(['dificultad', 'ingredientes', 'categoria']);
+        return $receta->load(['dificultad', 'ingredientes', 'categoria'])->loadAvg('anotaciones', 'valoracion')->loadCount('anotaciones');
     }
 
 
