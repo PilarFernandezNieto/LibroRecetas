@@ -1,8 +1,8 @@
 {
   "info": {
     "_postman_id": "fd1089d9-6ed9-4bcf-87eb-f0c169a63699",
-    "name": "Recetas API (Laravel + Sanctum SPA)",
-    "description": "Autenticación por cookie de sesión (Sanctum stateful). Ejecuta primero 'Auth > 1. CSRF cookie' y luego 'Auth > 2. Login'. Las rutas /admin requieren usuario admin con email verificado.",
+    "name": "Recetas API (Laravel + Sanctum Bearer)",
+    "description": "Autenticación por token Bearer (Sanctum personal access tokens). Ejecuta primero 'Auth > Login' (usuario o admin): el token se guarda en la variable de entorno 'token' y se envía en la cabecera Authorization de todas las peticiones. Las rutas /admin requieren usuario admin con email verificado.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "event": [
@@ -11,28 +11,10 @@
       "script": {
         "type": "text/javascript",
         "exec": [
-          "// Sanctum SPA: cookie de sesion + cabecera X-XSRF-TOKEN. Origin/Referer deben estar en SANCTUM_STATEFUL_DOMAINS.",
-          "let xsrf = pm.cookies.get('XSRF-TOKEN');",
-          "if (xsrf) xsrf = decodeURIComponent(xsrf); else xsrf = pm.environment.get('xsrf_token');",
-          "if (xsrf) pm.request.headers.upsert({ key: 'X-XSRF-TOKEN', value: xsrf });",
-          "else console.warn('Sin XSRF-TOKEN: ejecuta antes Auth > 1. CSRF cookie');",
+          "// Sanctum Bearer: sin cookies ni CSRF.",
           "pm.request.headers.upsert({ key: 'Accept', value: 'application/json' });",
-          "pm.request.headers.upsert({ key: 'Origin', value: pm.environment.get('frontend_url') });",
-          "pm.request.headers.upsert({ key: 'Referer', value: pm.environment.get('frontend_url') + '/' });"
-        ]
-      }
-    },
-    {
-      "listen": "test",
-      "script": {
-        "type": "text/javascript",
-        "exec": [
-          "// Guarda el XSRF-TOKEN de cualquier Set-Cookie (Laravel lo renueva tras login/logout).",
-          "pm.response.headers.each(h => {",
-          "  if (h.key.toLowerCase() !== 'set-cookie') return;",
-          "  const m = /^XSRF-TOKEN=([^;]+)/.exec(h.value);",
-          "  if (m) pm.environment.set('xsrf_token', decodeURIComponent(m[1]));",
-          "});"
+          "const token = pm.environment.get('token');",
+          "if (token) pm.request.headers.upsert({ key: 'Authorization', value: 'Bearer ' + token });"
         ]
       }
     }
@@ -42,35 +24,7 @@
       "name": "Auth",
       "item": [
         {
-          "name": "1. CSRF cookie",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/sanctum/csrf-cookie",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "sanctum",
-                "csrf-cookie"
-              ]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "2. Login (usuario normal)",
+          "name": "Login (usuario normal)",
           "request": {
             "method": "POST",
             "header": [
@@ -80,11 +34,12 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/login",
+              "raw": "{{base_url}}/api/login",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
+                "api",
                 "login"
               ]
             },
@@ -104,14 +59,17 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "pm.test('Devuelve token', () => pm.expect(json.token).to.be.a('string'));",
+                  "pm.environment.set('token', json.token);"
                 ]
               }
             }
           ]
         },
         {
-          "name": "2b. Login (admin)",
+          "name": "Login (admin)",
           "request": {
             "method": "POST",
             "header": [
@@ -121,11 +79,12 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/login",
+              "raw": "{{base_url}}/api/login",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
+                "api",
                 "login"
               ]
             },
@@ -145,7 +104,10 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "pm.test('Devuelve token', () => pm.expect(json.token).to.be.a('string'));",
+                  "pm.environment.set('token', json.token);"
                 ]
               }
             }
@@ -190,11 +152,12 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/register",
+              "raw": "{{base_url}}/api/register",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
+                "api",
                 "register"
               ]
             },
@@ -226,11 +189,12 @@
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/email/verification-notification",
+              "raw": "{{base_url}}/api/email/verification-notification",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
+                "api",
                 "email",
                 "verification-notification"
               ]
@@ -248,11 +212,12 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/forgot-password",
+              "raw": "{{base_url}}/api/forgot-password",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
+                "api",
                 "forgot-password"
               ]
             },
@@ -273,11 +238,12 @@
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/logout",
+              "raw": "{{base_url}}/api/logout",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
+                "api",
                 "logout"
               ]
             }
@@ -288,7 +254,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));",
+                  "pm.environment.unset('token');"
                 ]
               }
             }
