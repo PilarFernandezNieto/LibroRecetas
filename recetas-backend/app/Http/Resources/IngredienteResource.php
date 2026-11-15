@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,6 +21,7 @@ class IngredienteResource extends JsonResource
             'imagen' => $this->imagen,
             'slug' => $this->slug,
             'descripcion' => $this->descripcion,
+            'recetas' => $this->whenLoaded('recetas'),
         ];
     }
 }

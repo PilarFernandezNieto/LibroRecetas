@@ -6,7 +6,7 @@ use App\Models\Ingrediente;
 use App\Traits\ImageHandler;
 use App\Http\Requests\IngredienteRequest;
 use App\Http\Resources\IngredienteCollection;
-
+use App\Http\Resources\IngredienteResource;
 
 class IngredienteController extends Controller
 {
@@ -58,7 +58,8 @@ class IngredienteController extends Controller
      */
     public function show(Ingrediente $ingrediente)
     {
-        return $ingrediente;
+        $ingrediente->load('recetas:id,nombre,slug,imagen');
+        return new IngredienteResource($ingrediente);
     }
 
     /**

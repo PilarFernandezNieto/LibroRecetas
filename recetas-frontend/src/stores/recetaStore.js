@@ -70,7 +70,6 @@ export const useRecetaStore = defineStore('recetas', () => {
       })
 
       if (data.type === 'success') {
-        await fetchReceta(slug)
         toastStore.mostrarExito(data.message)
         router.push({ name: 'recetas' })
       }

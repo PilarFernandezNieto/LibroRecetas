@@ -46,7 +46,7 @@ El frontend queda disponible en **http://localhost:3000**.
 
 ## Build y despliegue en producción
 
-El backend está desplegado en un VPS y **sirve también el frontend**: el `dist/` generado por Vite se copia dentro de `public/` del Laravel, junto al `index.php` del backend. Al compartir dominio, no hace falta configurar CORS entre ambos. (Los datos concretos del servidor de producción están en notas privadas, no en este repo).
+El frontend se despliega en **Vercel**, en un dominio distinto al de la API (que está en un VPS). Por eso la API usa tokens Bearer y necesita CORS: el `.env` del backend debe tener `CORS_ALLOWED_ORIGINS` y `FRONTEND_URL` con la URL de Vercel. (Los datos concretos del servidor de producción están en notas privadas, no en este repo).
 
 Vite carga las variables de entorno con esta prioridad (mayor a menor): `.env.[modo].local` > `.env.local` > `.env.[modo]` > `.env`. Por eso, si `.env.local` tiene un valor puesto, **gana sobre `.env.production`** aunque hagas build de producción — hay que tenerlo en cuenta antes de compilar para desplegar.
 
@@ -56,19 +56,15 @@ npm run build
 
 Genera `dist/index.html` + `dist/assets/*.js|css` (nombres con hash, cambian en cada build).
 
-### Subir el build al servidor
+### Desplegar en Vercel
 
-1. En el servidor, por SSH, dentro de la carpeta de la app: vacía los assets del build anterior (evita acumular basura):
-   ```bash
-   ./deploy.sh pre
-   ```
-2. Por SFTP, sube el contenido de `dist/` (`index.html` + carpeta `assets/`) a la carpeta `public/` del backend en el servidor. **No** subas ni sobrescribas `index.php`, `.htaccess`, `storage` ni `img/` — son del backend.
-3. En el servidor, limpia y recachea Laravel:
-   ```bash
-   ./deploy.sh post
-   ```
+1. En el proyecto de Vercel, define las variables de entorno (las `VITE_*` se incrustan en el build):
+   - `VITE_APP_BACKEND_URL`: URL de la API, sin barra final.
+   - `VITE_APP_NAME` y `VITE_TINYMCE_API_KEY`.
+2. Vercel hace el build (`npm run build`, carpeta de salida `dist`) en cada push a la rama configurada.
+3. El router usa `createWebHistory`, así que Vercel necesita reescribir todas las rutas a `index.html` (un `vercel.json` con una regla de `rewrites`); si no, recargar en una ruta como `/auth/login` da 404.
 
-Ver [recetas-backend/README.md](../recetas-backend/README.md#despliegue-en-producción) para el flujo completo (incluye el caso de cambios en el backend).
+Ver [recetas-backend/README.md](../recetas-backend/README.md#despliegue-en-producción) para el despliegue de la API.
 
 ---
 
@@ -101,7 +97,7 @@ src/
 │   └── useImagen.js         # getImagen(): construye la URL pública de una imagen
 │
 ├── utils/
-│   └── axios.js             # Instancia Axios configurada (baseURL, withCredentials, timeout)
+│   └── axios.js             # Instancia Axios configurada (baseURL, token Bearer, timeout)
 │
 ├── components/              # Componentes reutilizables
 │   ├── Receta.vue           # Tarjeta de receta (panel admin)
@@ -169,15 +165,17 @@ src/
 
 ## Arquitectura y decisiones de diseño
 
-### Autenticación (Sanctum SPA)
+### Autenticación (Sanctum con tokens Bearer)
 
-La autenticación usa **cookies de sesión**, no tokens Bearer. El flujo es:
+La autenticación usa **tokens Bearer**, no cookies de sesión. El flujo es:
 
-1. Antes de hacer login, el frontend llama a `/sanctum/csrf-cookie` para obtener la cookie CSRF.
-2. Las peticiones posteriores incluyen automáticamente `withCredentials: true` gracias a la configuración global de Axios.
-3. El router verifica el estado de autenticación en cada navegación (`router.beforeEach`) llamando a `auth.fetchUser()` una sola vez por sesión.
+1. `login` y `register` (en `src/stores/auth.js`) reciben `{ token, user }` de la API y guardan el token en `localStorage` (clave `auth_token`).
+2. Un interceptor de petición de Axios (`src/utils/axios.js`) añade `Authorization: Bearer <token>` a cada petición si hay token.
+3. El router verifica el estado de autenticación en cada navegación (`router.beforeEach`) llamando a `auth.fetchUser()` si aún no hay usuario cargado; sin token no se llama a la API.
+4. Si la API responde 401, el interceptor de respuesta borra el token y el guard del router redirige al login.
+5. `logout` revoca el token en el servidor y lo borra de `localStorage`.
 
-La cookie de sesión es `HttpOnly`, por lo que el frontend nunca tiene acceso directo al token.
+Al estar en `localStorage`, el token es accesible desde JavaScript: hay que evitar cualquier vulnerabilidad XSS (de ahí el uso de DOMPurify para el contenido enriquecido).
 
 ### Guards de navegación
 
@@ -215,7 +213,7 @@ La instancia compartida de `QueryClient` está en `src/queryClient.js`. Los stor
 
 `src/utils/axios.js` configura una instancia global con:
 - `baseURL`: leída de `VITE_APP_BACKEND_URL`
-- `withCredentials: true`: necesario para enviar cookies Sanctum
+- Interceptor de petición: añade la cabecera `Authorization: Bearer <token>` leyendo el token de `localStorage`
 - `timeout: 15000 ms`: evita estados de carga permanentes ante peticiones colgadas
 - Interceptor de respuesta: captura errores `ECONNABORTED` (timeout) y `ERR_NETWORK` para mostrar un toast en lugar de fallar silenciosamente
 

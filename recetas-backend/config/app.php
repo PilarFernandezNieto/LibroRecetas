@@ -17,6 +17,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Frontend URL
+    |--------------------------------------------------------------------------
+    |
+    | URL base de la SPA. Se usa para construir los enlaces de los correos
+    | (restablecer contraseña) y las redirecciones tras verificar el email.
+    |
+    */
+
+    'frontend_url' => rtrim(env('FRONTEND_URL', 'http://localhost:3000'), '/'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |

@@ -1,7 +1,8 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
-import axios from '../utils/axios'
+import axios, { TOKEN_KEY } from '../utils/axios'
+import { useToastStore } from './toastStore'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref(null)
@@ -9,36 +10,41 @@ export const useAuthStore = defineStore('auth', () => {
   const isAdmin = computed(() => user.value?.is_admin)
 
   const router = useRouter()
+  const toastStore = useToastStore()
+
+  const setToken = (token) => localStorage.setItem(TOKEN_KEY, token)
+  const clearSession = () => {
+    localStorage.removeItem(TOKEN_KEY)
+    user.value = null
+  }
 
   const fetchUser = async () => {
+    if (!localStorage.getItem(TOKEN_KEY)) return
+
     try {
       const { data } = await axios.get('/api/user')
-
       user.value = data
     } catch (error) {
-      if (error.response.status === 409) {
+      if (error.response?.status === 409) {
         router.push({ name: 'verify-email' })
+      } else if (error.response?.status === 401) {
+        clearSession()
       }
     }
   }
-
-  const csrf = () => axios.get('/sanctum/csrf-cookie')
 
   const login = async (processing, errors, { ...data }) => {
     processing.value = true
     errors.value = {}
 
     try {
-      await csrf()
-
-      await axios.post('/login', data)
-
-      await fetchUser()
-
+      const { data: res } = await axios.post('/api/login', data)
+      setToken(res.token)
+      user.value = res.user
       router.push({ name: 'dashboard' })
     } catch (error) {
-      if (error.response.status === 422) {
-        errors.value = error.response.data.errors
+      if (error.response?.status === 422) {
+        errors.value = error.response?.data.errors
       }
     } finally {
       processing.value = false
@@ -50,19 +56,19 @@ export const useAuthStore = defineStore('auth', () => {
     errors.value = {}
 
     try {
-      await csrf()
+      const { data: res } = await axios.post('/api/register', data)
 
-      await axios.post('/register', data)
-
-      await fetchUser()
+      setToken(res.token)
+      user.value = res.user
       if (!user.value.email_verified_at) {
         router.push({ name: 'verify-email' })
       } else {
         router.push({ name: 'dashboard' })
       }
     } catch (error) {
-      if (error.response.status === 422) {
-        errors.value = error.response.data.errors
+      console.log(error)
+      if (error.response?.status === 422) {
+        errors.value = error.response?.data.errors
       }
     } finally {
       processing.value = false
@@ -75,12 +81,11 @@ export const useAuthStore = defineStore('auth', () => {
     status.value = null
 
     try {
-      await csrf()
-
-      const { data } = await axios.post('/forgot-password', { email })
+      const { data } = await axios.post('/api/forgot-password', { email })
 
       status.value = data.status
     } catch (error) {
+      console.log(error)
       if (error.response.status === 422) {
         errors.value = error.response.data.errors
       }
@@ -95,15 +100,14 @@ export const useAuthStore = defineStore('auth', () => {
     status.value = null
 
     try {
-      await csrf()
-
-      const response = await axios.post('/reset-password', data)
+      const response = await axios.post('/api/reset-password', data)
 
       router.push({
         name: 'login',
         query: { reset: btoa(response.data?.status) },
       })
     } catch (error) {
+      console.log(error)
       if (error.response.status === 422) {
         errors.value = error.response.data.errors
       }
@@ -116,22 +120,24 @@ export const useAuthStore = defineStore('auth', () => {
     processing.value = true
     status.value = null
     try {
-      const { data } = await axios.post('/email/verification-notification')
+      const { data } = await axios.post('/api/email/verification-notification')
       status.value = data.status
     } catch (error) {
+      console.log(error)
       const msg = error?.response?.data?.message ?? 'Error inesperado'
-      toastStore.addToast({ type: 'error', message: msg })
+      toastStore.mostrarError({ type: 'error', message: msg })
     } finally {
       processing.value = false
     }
   }
 
   const logout = async () => {
-    await axios.post('/logout')
-
-    user.value = null
-
-    router.push({ name: 'login' })
+    try {
+      await axios.post('/api/logout')
+    } finally {
+      clearSession()
+      router.push({ name: 'login' })
+    }
   }
 
   return {

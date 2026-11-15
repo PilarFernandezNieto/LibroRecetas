@@ -21,7 +21,10 @@ export const useIngredienteStore = defineStore('ingredientes', () => {
       const { data } = await axios.get(`/api/admin/ingredientes?page=${page}`)
       ingredientes.value = data
     } catch (error) {
-      toastStore.addToast({ type: 'error', message: error?.response?.data?.message ?? 'Error al cargar los ingredientes' })
+      toastStore.addToast({
+        type: 'error',
+        message: error?.response?.data?.message ?? 'Error al cargar los ingredientes',
+      })
     } finally {
       loading.value = false
     }
@@ -46,7 +49,8 @@ export const useIngredienteStore = defineStore('ingredientes', () => {
       loading.value = true
       const { data } = await axios.get(`/api/admin/ingredientes/${slug}`)
 
-      ingrediente.value = data
+      ingrediente.value = data.data
+      console.log(ingrediente.value)
     } catch (error) {
       const msg = error?.response?.data?.message ?? 'Error inesperado'
       toastStore.addToast({ type: 'error', message: msg })

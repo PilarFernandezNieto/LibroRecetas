@@ -15,7 +15,12 @@ const slug = route.params.slug
 onMounted(async () => {
   await ingredienteStore.fetchIngrediente(slug)
   const i = ingredienteStore.ingrediente
-  ingrediente.value = { nombre: i.nombre, descripcion: i.descripcion, imagen: i.imagen }
+  ingrediente.value = {
+    nombre: i.nombre,
+    descripcion: i.descripcion,
+    imagen: i.imagen,
+    recetas: i.recetas ?? [],
+  }
 })
 
 const handleSubmit = async (formData) => {
