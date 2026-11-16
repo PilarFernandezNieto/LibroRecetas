@@ -25,11 +25,11 @@ class RecetaController extends Controller
         $buscar = $request->query('buscar', '');
 
         // Construir la consulta base con relaciones y orden
-        $query = Receta::with(['dificultad', 'categoria', 'ingredientes'])
+        $query = Receta::with(['dificultad', 'categoria'])
             ->orderBy('recetas.nombre', 'ASC')
             ->join('categorias', 'categorias.id', '=', 'recetas.categoria_id') // JOIN categoras ON categorias.id = recetas.categoria_id (para buscar por nombre de categoría)
             ->select('recetas.*')
-            ->loadAvg('anotaciones', 'valoracion')->loadCount('anotaciones');
+            ->withAvg('anotaciones', 'valoracion')->withCount('anotaciones');
         // Si hay término de búsqueda, aplicar filtro por nombre o categoría
         if ($buscar) {
             $query->where(function (Builder $q) use ($buscar) {
@@ -106,7 +106,13 @@ class RecetaController extends Controller
     public function show(Receta $receta)
     {
         // Carga un ingrediente con los datos de las tablas relacionadas (dificultades - ingredientes)
-        return $receta->load(['dificultad', 'ingredientes', 'categoria'])->loadAvg('anotaciones', 'valoracion')->loadCount('anotaciones');
+        // Anotaciones con su autor (solo id y name, para no exponer email) en una consulta cada una: sin N+1.
+        return $receta->load([
+            'dificultad',
+            'ingredientes',
+            'categoria',
+            'anotaciones' => fn($q) => $q->with('user:id,name')->latest(),
+        ])->loadAvg('anotaciones', 'valoracion')->loadCount('anotaciones');
     }
 
 
