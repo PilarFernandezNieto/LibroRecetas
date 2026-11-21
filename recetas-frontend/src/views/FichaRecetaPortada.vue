@@ -8,6 +8,7 @@ import { useImagen } from '../composables/useImagen'
 import GuestLayout from '../layouts/GuestLayout.vue'
 import GoBackButton from '../components/GoBackButton.vue'
 import { FwbSpinner } from 'flowbite-vue'
+import AnotacionesSeccion from '../components/AnotacionesSeccion.vue'
 
 const route = useRoute()
 const toastStore = useToastStore()
@@ -138,6 +139,7 @@ const { getImagen } = useImagen()
             class="text-base font-principal instrucciones text-antracita/90"
             v-html="safeInstrucciones"
           ></div>
+          <AnotacionesSeccion :slug="slug" />
 
           <GoBackButton class="mt-8">Atrás</GoBackButton>
         </div>

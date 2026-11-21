@@ -5,6 +5,9 @@ export const queryKeys = {
   ingredientesTodos: ['ingredientes', 'todos'],
   categorias: ['categorias'],
   dificultades: ['dificultades'],
+  anotaciones: (slug) => ['anotaciones', slug],
+  recetaPublica: (slug) => ['recetas', 'publica', slug],
+  recetasPublicas: (page, buscar) => ['recetas', 'publicas', { page, buscar }],
 }
 
 export const useIngredientesTodos = () =>

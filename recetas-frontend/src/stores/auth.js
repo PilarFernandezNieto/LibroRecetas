@@ -33,6 +33,14 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  // Devuelve la ruta solo si pertence a la app, si no, null
+  const destinoSeguro = (redirect) => {
+    if (typeof redirect !== 'string') return null
+    if (!redirect.startsWith('/')) return null
+    if (redirect.startsWith('//') || redirect.startsWith('/\\')) return null
+    return redirect
+  }
+
   const login = async (processing, errors, { ...data }) => {
     processing.value = true
     errors.value = {}
@@ -41,7 +49,13 @@ export const useAuthStore = defineStore('auth', () => {
       const { data: res } = await axios.post('/api/login', data)
       setToken(res.token)
       user.value = res.user
-      router.push({ name: 'dashboard' })
+      const redirect = destinoSeguro(router.currentRoute.value.query.redirect)
+      console.log(router.currentRoute.value)
+      if (redirect) {
+        router.push(redirect)
+      } else {
+        router.push({ name: user.value.is_admin ? 'dashboard' : 'home' })
+      }
     } catch (error) {
       if (error.response?.status === 422) {
         errors.value = error.response?.data.errors

@@ -61,19 +61,20 @@ const showingNavigationDropdown = ref(false)
         <!-- Navigation Links -->
         <div class="flex justify-end">
           <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-            <!-- <template v-if="!isLoggedIn">
-                <NavLink
-                  :to="{ name: 'login' }"
-                  class="font-semibold text-gray-600 hover:text-gray-900"
-                  >Inicia sesión</NavLink
-                >
-                <NavLink
+            <template v-if="!isLoggedIn">
+              <NavLink
+                :to="{ name: 'login' }"
+                class="font-semibold text-gray-600 hover:text-gray-900"
+                >Inicia sesión</NavLink
+              >
+              <!-- <NavLink
                   :to="{ name: 'register' }"
                   class="ml-4 font-semibold text-gray-600 hover:text-gray-900"
                   >Registro</NavLink
-                >
-              </template> -->
+                > -->
+            </template>
           </div>
+          <!-- MENÚ ESCRITORIO -->
           <div class="hidden sm:flex sm:items-center sm:ml-6">
             <!-- Settings Dropdown User-->
             <div v-if="isLoggedIn" class="ml-3 relative">
@@ -111,6 +112,7 @@ const showingNavigationDropdown = ref(false)
               </Dropdown>
             </div>
           </div>
+          <!-- FIN MENÚ ESCRITORIO -->
         </div>
 
         <!-- Logo -->
@@ -129,39 +131,42 @@ const showingNavigationDropdown = ref(false)
         }"
         class="sm:hidden"
       >
-        <!-- <template v-if="!isLoggedIn">
+        <template v-if="!isLoggedIn">
           <ResponsiveNavLink
             :to="{ name: 'login' }"
             class="font-semibold text-gray-600 hover:text-gray-900"
             >Inicia sesión</ResponsiveNavLink
           >
 
-          <ResponsiveNavLink
+          <!-- <ResponsiveNavLink
             :to="{ name: 'register' }"
             class="font-semibold text-gray-600 hover:text-gray-900"
             >Registro</ResponsiveNavLink
+          > -->
+        </template>
+
+        <div class="pt-2 pb-3 space-y-1">
+          <ResponsiveNavLink :to="{ name: 'home' }"> Inicio </ResponsiveNavLink>
+          <ResponsiveNavLink
+            v-if="isAdmin"
+            :to="{ name: 'dashboard' }"
+            :active="route.name == 'dashboard'"
           >
-        </template> -->
-        <div v-if="isLoggedIn">
-          <div class="pt-2 pb-3 space-y-1">
-            <ResponsiveNavLink :to="{ name: 'home' }"> Inicio </ResponsiveNavLink>
-            <ResponsiveNavLink :to="{ name: 'dashboard' }" :active="route.name == 'dashboard'">
-              Panel de administración
-            </ResponsiveNavLink>
+            Panel de administración
+          </ResponsiveNavLink>
+        </div>
+        <!-- Responsive Settings Options -->
+        <div class="pt-4 pb-1 border-t border-gray-200">
+          <div class="px-4">
+            <div class="font-medium text-base text-gray-800">
+              {{ user?.name }}
+            </div>
+            <div class="font-medium text-sm text-gray-500">
+              {{ user?.email }}
+            </div>
           </div>
-          <!-- Responsive Settings Options -->
-          <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="px-4">
-              <div class="font-medium text-base text-gray-800">
-                {{ user?.name }}
-              </div>
-              <div class="font-medium text-sm text-gray-500">
-                {{ user?.email }}
-              </div>
-            </div>
-            <div class="mt-3 space-y-1">
-              <ResponsiveNavButton @click="logout()">Cierra sesión</ResponsiveNavButton>
-            </div>
+          <div class="mt-3 space-y-1">
+            <ResponsiveNavButton @click="logout()">Cierra sesión</ResponsiveNavButton>
           </div>
         </div>
       </div>

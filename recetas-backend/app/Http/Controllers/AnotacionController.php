@@ -17,6 +17,7 @@ class AnotacionController extends Controller
     {
         return AnotacionResource::collection(
             $receta->anotaciones()->with('user:id,name')->latest()->get()
+
         );
     }
 
