@@ -123,7 +123,7 @@ const safeInstrucciones = computed(() =>
 
             <h2 class="font-titulares text-2xl text-antracita mb-4">Elaboración</h2>
             <div
-              class="text-base font-principal instrucciones text-antracita/90"
+              class="text-base font-principal instrucciones text-antracita/90 marker:text-terracota-claro marker:text-2xl"
               v-html="safeInstrucciones"
             ></div>
 
