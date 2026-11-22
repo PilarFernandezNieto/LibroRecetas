@@ -94,7 +94,9 @@ const { getImagen } = useImagen()
         </div>
 
         <div class="md:col-span-7">
-          <h1 class="font-titulares text-4xl md:text-5xl leading-tight text-antracita mt-3 mb-5">
+          <h1
+            class="font-titulares text-4xl md:text-5xl leading-tight text-terracota-oscuro mt-3 mb-5"
+          >
             {{ receta.nombre }}
           </h1>
           <p class="text-lg text-antracita/80 font-principal mb-6 max-w-lg">{{ receta.intro }}</p>
@@ -136,14 +138,15 @@ const { getImagen } = useImagen()
 
           <h2 class="font-titulares text-2xl text-terracota-oscuro mb-4">Elaboración</h2>
           <div
-            class="text-base font-principal instrucciones text-antracita/90"
+            class="text-base font-principal instrucciones text-antracita/90 mb-8"
             v-html="safeInstrucciones"
           ></div>
-          <AnotacionesSeccion :slug="slug" />
-
-          <GoBackButton class="mt-8">Atrás</GoBackButton>
         </div>
       </div>
+      <AnotacionesSeccion :slug="slug" />
+    </div>
+    <div class="flex justify-end">
+      <GoBackButton class="my-8">Atrás</GoBackButton>
     </div>
   </GuestLayout>
 </template>
