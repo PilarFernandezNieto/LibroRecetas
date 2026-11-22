@@ -7,6 +7,7 @@ import { useToastStore } from './toastStore'
 export const useAuthStore = defineStore('auth', () => {
   const user = ref(null)
   const isLoggedIn = computed(() => !!user.value)
+
   const isAdmin = computed(() => user.value?.is_admin)
 
   const router = useRouter()
@@ -50,7 +51,7 @@ export const useAuthStore = defineStore('auth', () => {
       setToken(res.token)
       user.value = res.user
       const redirect = destinoSeguro(router.currentRoute.value.query.redirect)
-      console.log(router.currentRoute.value)
+
       if (redirect) {
         router.push(redirect)
       } else {
