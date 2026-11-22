@@ -4,6 +4,7 @@ import { useAnotaciones } from '../composables/useAnotaciones'
 import { useAuthStore } from '../stores/auth.js'
 import AnotacionForm from './AnotacionForm.vue'
 import AnotacionItem from './AnotacionItem.vue'
+
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 
@@ -51,7 +52,7 @@ const estadoUsuario = computed(() => {
     <p v-else-if="!anotaciones.length">Todavía no hay notas</p>
 
     <ul v-else>
-      <AnotacionItem v-for="a in anotaciones" :key="a.id" :anotacion="a" />
+      <AnotacionItem v-for="a in anotaciones" :key="a.id" :anotacion="a" :slug="slug" />
     </ul>
   </div>
 </template>
