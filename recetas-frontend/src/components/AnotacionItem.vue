@@ -5,7 +5,7 @@ import { useAuthStore } from '../stores/auth'
 import { useEliminarAnotacion } from '../composables/useAnotaciones'
 import AnotacionForm from './AnotacionForm.vue'
 import SecondaryButton from './SecondaryButton.vue'
-import EditButton from './EditButton.vue'
+import StarRating from './StarRating.vue'
 
 const props = defineProps({
   anotacion: {
@@ -45,7 +45,7 @@ const confirmarBorrado = () => {
 }
 </script>
 <template>
-  <li class="py-3 border-b border-antracita/10 las:border-b-0">
+  <li class="py-3 border-b border-antracita/10 last:border-b-0">
     <AnotacionForm
       v-if="editando"
       :slug="slug"
@@ -57,7 +57,7 @@ const confirmarBorrado = () => {
         <span class="font-semibold">{{ anotacion.autor?.name }}</span>
         <span>Probada el {{ fechaPrueba }}</span>
       </div>
-      <p class="mt-1 text-sm">Valoración: {{ anotacion.valoracion }}/5</p>
+      <StarRating class="mt-1" :model-value="anotacion.valoracion" />
       <p class="mt-2 whitespace-pre-line">{{ anotacion.texto }}</p>
       <div v-if="puedesGestionar" class="mt-4 flex gap-3">
         <SecondaryButton @click="editando = true">Editar</SecondaryButton>

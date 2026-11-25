@@ -3,6 +3,7 @@ import InputLabel from './InputLabel.vue'
 import TextInput from './TextInput.vue'
 import PrimaryButton from './PrimaryButton.vue'
 import SecondaryButton from './SecondaryButton.vue'
+import StarRating from './StarRating.vue'
 import { computed, ref } from 'vue'
 import { useActualizarAnotacion, useCrearAnotacion } from '../composables/useAnotaciones.js'
 import InputError from './InputError.vue'
@@ -80,15 +81,8 @@ const guardar = () => {
       </div>
 
       <div class="mt-4">
-        <InputLabel for="valoracion" value="Valoración" />
-        <select
-          v-model.number="form.valoracion"
-          id="valoracion"
-          class="mt-1 block w-full border-terracota-oscuro bg-papel focus:border-terracota-oscuro rounded-sm shadow-sm"
-        >
-          <option value="" disabled>Elige una puntuación</option>
-          <option v-for="n in 5" :key="n" :value="n">{{ n }}</option>
-        </select>
+        <InputLabel value="Valoración" />
+        <StarRating v-model="form.valoracion" editable />
         <InputError class="mt-2" :message="errores.valoracion?.[0]" />
       </div>
       <InputError class="mt-2" :message="errores.receta?.[0]" />
