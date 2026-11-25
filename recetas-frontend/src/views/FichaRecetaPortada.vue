@@ -138,7 +138,7 @@ const { getImagen } = useImagen()
 
           <h2 class="font-titulares text-2xl text-terracota-oscuro mb-4">Elaboración</h2>
           <div
-            class="text-base font-principal instrucciones text-antracita/90 mb-8"
+            class="text-base font-principal instrucciones text-antracita/90 marker:text-terracota-claro marker:text-2xl"
             v-html="safeInstrucciones"
           ></div>
         </div>
