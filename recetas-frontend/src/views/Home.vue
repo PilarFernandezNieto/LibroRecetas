@@ -8,24 +8,26 @@ import { TailwindPagination } from 'laravel-vue-pagination'
 import Buscador from '../components/Buscador.vue'
 import { FwbSpinner } from 'flowbite-vue'
 import axios from '../utils/axios'
+import { useRecetasPublicas } from '../composables/useQueries.js'
 
-const { isLoggedIn } = useAuthStore()
-const toastStore = useToastStore()
-const recetas = ref([])
-const loading = ref(true)
 const buscar = ref('')
-const debounceTimer = ref(null)
+const buscarDebounced = ref('')
+const page = ref(1)
+let debounceTimer = null
 
-onMounted(async () => {
-  await getRecetasIndex()
-})
+const { data: recetas, isFetching, isError } = useRecetasPublicas(page, buscarDebounced)
 
 watch(buscar, (nuevoValor) => {
-  clearTimeout(debounceTimer.value)
-  debounceTimer.value = setTimeout(() => {
-    getRecetasIndex(1, nuevoValor.trim())
+  clearTimeout(debounceTimer)
+  debounceTimer = setTimeout(() => {
+    buscarDebounced.value = nuevoValor.trim()
+    page.value = 1 //una búsqueda nueva empieza en la primera página
   }, 500)
 })
+
+const cambiarPagina = (nueva) => {
+  page.value = nueva
+}
 
 const getRecetasIndex = async (page = 1, search = '') => {
   loading.value = true
@@ -90,20 +92,24 @@ const getRecetasIndex = async (page = 1, search = '') => {
       <section class="w-full max-w-7xl mx-auto pb-16">
         <h2 class="font-titulares text-2xl md:text-3xl text-antracita mb-6">Recetas destacadas</h2>
 
-        <template v-if="loading">
+        <template v-if="isFetching">
           <div class="flex justify-center mb-8">
             <fwb-spinner size="10" color="green" />
           </div>
         </template>
+        <p v-if="isError" class="text-center font-principal mb-8">
+          No se han podido cargar las recetas.
+        </p>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
-          <RecetaPortada v-for="receta in recetas.data" :key="receta.id" :receta="receta" />
+          <RecetaPortada v-for="receta in recetas?.data" :key="receta.id" :receta="receta" />
         </div>
         <div class="mt-10 flex justify-center">
           <TailwindPagination
+            v-if="recetas"
             :data="recetas"
-            :active-classes="['border-terracota-osucro', 'text-terrcaota-oscuro', 'hover:bg-crema']"
-            @pagination-change-page="(page) => getRecetasIndex(page, buscar.value)"
+            :active-classes="['border-terracota-oscuro', 'text-terracota-oscuro', 'hover:bg-crema']"
+            @pagination-change-page="cambiarPagina"
           />
         </div>
       </section>

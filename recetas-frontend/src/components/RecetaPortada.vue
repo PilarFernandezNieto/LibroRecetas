@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import NewElementLink from './NewElementLink.vue'
 import { useImagen } from '../composables/useImagen'
+import StarRating from './StarRating.vue'
 
 const { getImagen } = useImagen()
 
@@ -48,6 +49,10 @@ const filtrados = computed(() => {
       <h3 class="font-titulares text-papel text-2xl mt-2 leading-tight">
         {{ receta.nombre }}
       </h3>
+      <div v-if="receta.anotaciones_count > 0" class="flex items-center gap-2 mt-2">
+        <StarRating :model-value="receta.anotaciones_avg_valoracion" />
+        <span class="text-xs text-papel/80 font-principal">({{ receta.anotaciones_count }})</span>
+      </div>
     </div>
   </RouterLink>
 </template>

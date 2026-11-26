@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/vue-query'
+import { keepPreviousData, useQuery } from '@tanstack/vue-query'
 import axios from '../utils/axios'
 import { computed, toValue } from 'vue'
 
@@ -51,4 +51,17 @@ export const useRecetaPublica = (slug) =>
       return data
     },
     staleTime: 30 * 1000, // 30 segundos: volver a la receta enseguida no repite la petición
+  })
+
+export const useRecetasPublicas = (page, buscar) =>
+  useQuery({
+    queryKey: computed(() => queryKeys.recetasPublicas(toValue(page), toValue(buscar))),
+    queryFn: async () => {
+      const { data } = await axios.get('/api/recetas', {
+        params: { page: toValue(page), buscar: toValue(buscar) },
+      })
+      return data
+    },
+    placeholderData: keepPreviousData, //mantiene la página anterior mientras llega la nueva
+    staleTime: 30 * 1000,
   })
