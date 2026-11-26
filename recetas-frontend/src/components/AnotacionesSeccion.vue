@@ -6,7 +6,8 @@ import AnotacionForm from './AnotacionForm.vue'
 import AnotacionItem from './AnotacionItem.vue'
 
 import { useRoute } from 'vue-router'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import SecondaryButton from './SecondaryButton.vue'
 
 const { isLoggedIn, user } = storeToRefs(useAuthStore())
 const route = useRoute()
@@ -17,6 +18,7 @@ const props = defineProps({
   },
 })
 const { data: anotaciones, isLoading, isError } = useAnotaciones(props.slug)
+const mostrarFormulario = ref(false)
 
 // La nota del usuario actual en este receta (undefined si no ha escrito ninguna)
 const miAnotacion = computed(() => anotaciones.value?.find((a) => a.autor?.id === user.value?.id))
@@ -33,6 +35,7 @@ const estadoUsuario = computed(() => {
   <h2 class="font-titulares text-2xl text-terracota-oscuro mb-4">Notas</h2>
   <div class="p-4 border border-terracota-oscuro rounded fondo-base">
     <p v-if="estadoUsuario === 'invitado'" class="mb-4">
+      ¿Quieres comentar algo?
       <RouterLink :to="{ name: 'login', query: { redirect: route.fullPath } }" class="underline"
         >Inicia Sesión</RouterLink
       >
@@ -46,7 +49,12 @@ const estadoUsuario = computed(() => {
       Ya has dejado tu nota en esta receta.
     </p>
 
-    <AnotacionForm v-else-if="estadoUsuario === 'puede-anotar'" :slug="slug" />
+    <template v-else-if="estadoUsuario === 'puede-anotar'">
+      <AnotacionForm v-if="mostrarFormulario" :slug="slug" @terminado="mostrarFormulario = false" />
+      <SecondaryButton v-else class="mb-4" @click="mostrarFormulario = true"
+        >¿Quieres comentar algo?</SecondaryButton
+      >
+    </template>
     <p v-if="isLoading">Cargando...</p>
     <p v-else-if="isError">Ha ocurrido un error</p>
     <p v-else-if="!anotaciones.length">Todavía no hay notas</p>

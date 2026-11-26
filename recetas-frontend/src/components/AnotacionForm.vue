@@ -34,7 +34,7 @@ const actualizar = useActualizarAnotacion(props.slug)
 const editando = props.anotacion !== null
 const mutacion = editando ? actualizar : crear
 const isPending = mutacion.isPending
-const errores = computed(() => mutacion.error.value?.response.data?.errors ?? {})
+const errores = computed(() => mutacion.error.value?.response?.data?.errors ?? {})
 
 const guardar = () => {
   if (editando) {
@@ -45,7 +45,7 @@ const guardar = () => {
   } else {
     crear.mutate(form.value, {
       onSuccess: () => {
-        form.value = { texto: '', valoracion: '', fecha_prueba: hoy }
+        emit('terminado')
       },
     })
   }
@@ -90,7 +90,7 @@ const guardar = () => {
         <PrimaryButton class="mt-4" :class="{ 'opacity-25': isPending }" :disabled="isPending">{{
           editando ? 'Guardar Cambios' : 'Guardar Nota'
         }}</PrimaryButton>
-        <SecondaryButton v-if="editando" @click="emit('terminado')">Cancelar</SecondaryButton>
+        <SecondaryButton class="mt-4" @click="emit('terminado')">Cancelar</SecondaryButton>
       </div>
     </form>
   </div>

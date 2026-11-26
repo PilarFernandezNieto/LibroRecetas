@@ -9,38 +9,30 @@ import GuestLayout from '../layouts/GuestLayout.vue'
 import GoBackButton from '../components/GoBackButton.vue'
 import { FwbSpinner } from 'flowbite-vue'
 import AnotacionesSeccion from '../components/AnotacionesSeccion.vue'
+import { useRecetaPublica } from '../composables/useQueries.js'
+import StarRating from '../components/StarRating.vue'
 
 const route = useRoute()
-const toastStore = useToastStore()
 const slug = route.params.slug
-const receta = ref([])
-const loading = ref(true)
 
-onMounted(async () => {
-  await getRecetaPortada(slug)
-})
-
-const getRecetaPortada = async () => {
-  try {
-    const { data } = await axios.get(`/api/recetas/${slug}`)
-    receta.value = data
-  } catch (error) {
-    const msg = error?.response?.data?.message ?? 'Error inesperado'
-    toastStore.addToast({ type: 'error', message: msg })
-  } finally {
-    loading.value = false
-  }
-}
+const { data: receta, isLoading, isError } = useRecetaPublica(slug)
 
 const filtrados = computed(() => {
   const clavesPermitidas = ['comensales', 'tiempo', 'origen']
   return Object.fromEntries(
-    Object.entries(receta.value).filter(([clave]) => clavesPermitidas.includes(clave)),
+    Object.entries(receta.value ?? {}).filter(([clave]) => clavesPermitidas.includes(clave)),
   )
 })
 const safeInstrucciones = computed(() =>
-  DOMPurify.sanitize(receta.value.instrucciones ?? '', { ADD_ATTR: ['target'] }),
+  DOMPurify.sanitize(receta.value?.instrucciones ?? '', { ADD_ATTR: ['target'] }),
 )
+
+const media = computed(() => {
+  Number(receta.value?.anotaciones_avg_valoracion ?? 0).toLocaleString('es-ES', {
+    maximumFractionDigits: 1,
+  })
+})
+console.log(media.value)
 
 const { getImagen } = useImagen()
 </script>
@@ -48,11 +40,14 @@ const { getImagen } = useImagen()
 <template>
   <GuestLayout>
     <div class="w-full mb-4">
-      <template v-if="loading">
+      <template v-if="isLoading">
         <div class="flex justify-center my-16">
           <fwb-spinner size="10" color="green" />
         </div>
       </template>
+      <p v-else-if="isError" class="text-center my-16 font-principal">
+        No se ha podido cargar la receta.
+      </p>
 
       <div v-else class="md:grid md:grid-cols-12 gap-10 my-8 items-start">
         <div class="md:col-span-5 relative">
@@ -99,6 +94,16 @@ const { getImagen } = useImagen()
           >
             {{ receta.nombre }}
           </h1>
+          <div
+            v-if="receta.anotaciones_count > 0"
+            class="flex items-center gap-2 mb-6 font-principal text-antracita/80"
+          >
+            <StarRating :model-value="receta.anotaciones_avg_valoracion" />
+            <span class="text-sm"
+              >{{ media }} - {{ receta.anotaciones_count }}
+              {{ receta.anotaciones_count === 1 ? 'nota' : 'notas' }}</span
+            >
+          </div>
           <p class="text-lg text-antracita/80 font-principal mb-6 max-w-lg">{{ receta.intro }}</p>
 
           <div
@@ -143,7 +148,7 @@ const { getImagen } = useImagen()
           ></div>
         </div>
       </div>
-      <AnotacionesSeccion :slug="slug" />
+      <AnotacionesSeccion v-if="receta" :slug="slug" />
     </div>
     <div class="flex justify-end">
       <GoBackButton class="my-8">Atrás</GoBackButton>

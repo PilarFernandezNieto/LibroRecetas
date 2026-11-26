@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/vue-query'
 import axios from '../utils/axios'
+import { computed, toValue } from 'vue'
 
 export const queryKeys = {
   ingredientesTodos: ['ingredientes', 'todos'],
@@ -39,4 +40,15 @@ export const useDificultades = () =>
       return data.data ?? []
     },
     staleTime: Infinity, // datos estáticos, no refrescar nunca
+  })
+
+export const useRecetaPublica = (slug) =>
+  useQuery({
+    queryKey: computed(() => queryKeys.recetaPublica(toValue(slug))),
+    queryFn: async () => {
+      const { data } = await axios.get(`/api/recetas/${toValue(slug)}`)
+      console.log(data)
+      return data
+    },
+    staleTime: 30 * 1000, // 30 segundos: volver a la receta enseguida no repite la petición
   })
